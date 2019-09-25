@@ -23,4 +23,26 @@ def connect_sm2901(address='GPIB0::12::INSTR'):
     rm = visa.ResourceManager()
     return rm.open_resource(address)
 
+## Settings functions
+    
+def set_current(amps, instrument):
+    instrument.write(':SOURce:CURRent:LEVel:IMMediate:AMPLitude %s' % amps)
+
+def set_voltage(volts, instrument):
+    instrument.write(':SOURce:VOLTage:LEVel:IMMediate:AMPLitude %s' % volts)
+
+## Measurement functions
+
+def meas_current(instrument):
+    instrument.write(':FORMat:DATA %s' % ('ASCii'))
+    return instrument.query_ascii_values(':MEASure:CURRent:DC?')[0]
+
+def meas_voltage(instrument):
+    instrument.write(':FORMat:DATA %s' % ('ASCii'))
+    return instrument.query_ascii_values(':MEASure:VOLTage:DC?')[0]
+
+def meas_resistance(instrument):
+    volt = meas_voltage(instrument)
+    current = meas_current(instrument)
+    return volt/current
 
