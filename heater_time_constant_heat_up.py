@@ -26,34 +26,83 @@ import instrument_module as instr
 
 # Simpler append function
 
+# Cooldown function
+def cooldown(instrument, setpoint):
+    """Shuts off heater and waits until its has cooled down"""
+    tc.set_heater_range(instrument, 0)
+    current_temp = tc.get_temp(instrument)
+    while current_temp > setpoint:
+        current_temp = tc.get_temp(instrument)
+        time.wait(1)
+
 ### Input variables
 
 setpoint = 150
+start_setpoint = 25
 sample_rate = 2
 meas_time = 1000
 
-### Code
 
+### Code
 # Setup of connections
 tc332 = tc.connect_tc332()
 
-# Set setpoint of tc
-tc.set_heater_range(tc332, setpoint)
+# Get heater to startoing temperature
+tc.set_heater_range(tc332, start_setpoint)
+tc.set_heater_range(tc332, 1)
 
-# Turn on heater
-temps_low = np.zeros([0,0])
-temps_med = np.zeros([0,0])
-temps_high = np.zeros([0,0])
+# Initialise variables
+temps_low = np.zeros([2,0])
+temps_med = np.zeros([2,0])
+temps_high = np.zeros([2,0])
 
 # Get start time and initial temperature
 start_time = time.time()
-temps_low = 
+start_temp = tc.get_temp(tc332)
+temps_low[0,0] = start_temp
+temps_low[1,0] = time.time() - start_time
 
+
+### Start low heater range measurement
 # Turn heater on low
-tc.set_heater_range(tc332, i+1)
+tc.set_heater_range(tc332, 1)
     
-    # Start temperature measurement
-    for t in range(meas_time):
-        temps[i,t] = tc.get_temp(tc332)
+# Start temperature measurement with low heater range
+for t in range(meas_time):
+    temps_low = np.append(temps_low,  np.array([tc.get_temp(tc332), time.time() - start_time]))
         
-    # Wait until 
+# Wait until heater has cooled down
+tc.set_heater_range(tc332, 0)
+current_temp = tc.get_temp(tc332)
+while current_temp > start_setpoint:
+    current_temp = tc.get_temp(tc332)
+    time.wait(1)
+    
+    
+### Start medium heater range measurement
+# Turn heater on medium
+tc.set_heater_range(tc332, 2)
+    
+# Start temperature measurement with med heater range
+for t in range(meas_time):
+    temps_med = np.append(temps_med,  np.array([tc.get_temp(tc332), time.time() - start_time]))
+        
+# Wait until heater has cooled down
+tc.set_heater_range(tc332, 0)
+current_temp = tc.get_temp(tc332)
+while current_temp > start_setpoint:
+    current_temp = tc.get_temp(tc332)
+    time.wait(1)
+
+
+### Start high heater range measurement
+# Turn heater on high
+tc.set_heater_range(tc332, 3)
+    
+# Start temperature measurement with high heater range
+for t in range(meas_time):
+    temps_high = np.append(temps_high,  np.array([tc.get_temp(tc332), time.time() - start_time]))
+
+# Turn off the heater        
+tc.set_heater_range(tc332, 0)
+

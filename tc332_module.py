@@ -30,24 +30,33 @@ def get_device_name(instrument):
     """Queries device name"""
     return instrument.query('*IDN?')
 
+
 def get_temp(instrument, unit='c'):
-    """Queries sensor temperature either in celsius or kelvin"""
-    temp = float(instrument.query('KRDG?'))
-    if unit == 'c':
-        temp = temp + 273.15
+    """Queries sensor temperature either in celsius 'c' or kelvin 'k'"""
+    if unit = 'k':
+        temp = float(instrument.query('KRDG?'))
+    elif unit == 'c':
+        temp = float(instrument.query('CRDG?'))
+    else:
+        print('Unit is not given correctly')
     return temp
+
 
 def get_setpoint(instrument, unit='c'):
     """Queries the setpoint for the heater either in celsius or kelvin. NB make sure the setpoint is set to temperature"""
     setpoint = instrument.query('SETP?')
+    #TODO check for units in order to give correct output
     if unit == 'c':
         setpoint = setpoint + 273.15
     return setpoint
+
 
 def get_heater_range(instrument):
     """Query for heater range, 0:off, 1:low, 2:med and 3:high"""
     return instrument.query('RANGE?')
     
+
+
 ### Control functions
     
 def set_heater_range(instrument, range_num):
@@ -62,6 +71,7 @@ def set_heater_range(instrument, range_num):
     else:
         ranges = ['low', 'medium', 'high']
         print('Range was set to the %s setting' % ranges[range_num-1])
+
 
 def set_setpoint(instrument, setpoint, unit='c'):
     """Set the setpoint for the heater, either in celsius or kelvin. NB make sure the setpoint is set to temperature"""
