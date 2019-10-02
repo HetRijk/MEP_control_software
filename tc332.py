@@ -8,7 +8,7 @@ Script to communicate with Lakeshore 332 Temperature Controller
 
 """
 
-import visa
+import pyvisa as visa
 import time
 import numpy as np
 import matplotlib.pyplot as plt
