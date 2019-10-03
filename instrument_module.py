@@ -15,7 +15,7 @@ Open questions/todos:
         import into more specific modules for each kind of or specific instrument
 """
 
-import visa
+import pyvisa as visa
 import time
 import numpy as np
 import matplotlib.pyplot as plt
@@ -46,7 +46,7 @@ def connect_all(addresses):
         except:
             print('Instrument with address %s failed to connect' % addresses[i])
         instruments.append(instrument)
-    
+    return instruments
 
 def indentify(instrument):
     return instrument.query('*IDN?')

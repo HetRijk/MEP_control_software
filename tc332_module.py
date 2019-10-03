@@ -6,6 +6,9 @@ Created on Fri Sep 13 12:08:09 2019
 
 Module with functions to control Lakeshore 332 Temperature Controller thorugh a GPIB connection
 
+TODO: 
+    - Add function to set PID to autotune (CMODE)
+    - Add check for setpoint unit ()
 """
 
 import pyvisa as visa
@@ -45,11 +48,17 @@ def get_temp(instrument, unit='c'):
 def get_setpoint(instrument, unit='c'):
     """Queries the setpoint for the heater either in celsius or kelvin.
     NB make sure the setpoint is set to temperature"""
-    setpoint = int(instrument.query('SETP?')[0])
+    setpoint = instrument.query('SETP?')
+    
+    # SETP? returns string, so values have to be parsed
+    value = float(setpoint[1:7])
+    if setpoint[0] == '-':
+        value = -value
+        
     #TODO check for units in order to give correct output
     #if unit == 'c':
         #setpoint = setpoint + 273.15
-    return setpoint
+    return value
 
 
 def get_heater_range(instrument):
@@ -65,10 +74,10 @@ def set_heater_range(instrument, range_num):
     time.sleep(1)
     range_set = get_heater_range(instrument)
     if range_set != range_num:
-        print('Range was NOT set correctly as %s' % range_num)
+        print('Heater range was NOT set correctly as %s' % range_num)
     else:
-        ranges = ['low', 'medium', 'high']
-        print('Range was set to the %s setting' % ranges[range_num-1])
+        ranges = ['OFF', 'low', 'medium', 'high']
+        print('Heater range was set to the %s setting' % ranges[range_num])
 
 
 def set_setpoint(instrument, setpoint, unit='c'):
@@ -77,9 +86,9 @@ def set_setpoint(instrument, setpoint, unit='c'):
     instrument.write('SETP %s' % setpoint)
 
     # Check if setting is applied
-    time.sleep(1)
+    time.sleep(0.1)
     setpoint_set = get_setpoint(instrument)
     if setpoint_set != setpoint:
-        print('Setpint was NOT set correctly')
+        print('Setpiont was NOT set correctly')
     else:
-        print('Setpoint was set to the %s degrees %s' % (setpoint, unit))
+        print('Setpoint was set to the %s degrees %s' % (setpoint, unit.upper()))
