@@ -18,17 +18,19 @@ import matplotlib.pyplot as plt
 
 ## Setup functions
 
-def connect_sm2901(address='GPIB0::12::INSTR'):
-    """Sets up connection to the instrument at the address"""
+def connect_sm2901():
+    """Sets up connection to the sourcemeter"""
+    address='USB0::0x0957::0x8B18::MY51141059::INSTR'
     rm = visa.ResourceManager()
     return rm.open_resource(address)
 
 ## Settings functions
     
-def set_current(amps, instrument):
+def set_current(instrument, amps):
     instrument.write(':SOURce:CURRent:LEVel:IMMediate:AMPLitude %s' % amps)
 
-def set_voltage(volts, instrument):
+def set_voltage(instrument, mvolts):
+    volts = mvolts * 10**-3
     instrument.write(':SOURce:VOLTage:LEVel:IMMediate:AMPLitude %s' % volts)
 
 ## Measurement functions
@@ -42,7 +44,7 @@ def meas_voltage(instrument):
     return instrument.query_ascii_values(':MEASure:VOLTage:DC?')[0]
 
 def meas_resistance(instrument):
-    volt = meas_voltage(instrument)
-    current = meas_current(instrument)
-    return volt/current
-
+    instrument.write(':FORMat:DATA %s' % ('ASCii'))
+    V = instrument.query_ascii_values(':MEASure:VOLTage:DC?')[0]
+    I = instrument.query_ascii_values(':MEASure:CURRent:DC?')[0]
+    return V/I

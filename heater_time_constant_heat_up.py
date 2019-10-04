@@ -27,33 +27,12 @@ import instrument_module as instr
 
 # Simpler append function
 
-# Cooldown function
-def cooldown(instrument, setpoint):
-    """Shuts off heater and waits until its has cooled down"""
-    tc.set_heater_range(instrument, 0)
-    current_temp = tc.get_temp(instrument)
-    while current_temp > setpoint:
-        current_temp = tc.get_temp(instrument)
-        time.wait(1)
 
-def date_time():
-    return time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
-
-def wait_for_temp(instrument, temperature):
-    """Wait until the heater reaches a certain temperature, both higher and lower than the current one"""
-    current_temp = tc.get_temp(instrument)
-    # higher temp case
-    if 
-        while current_temp > temperature:
-            time.sleep(1)
-            current_temp = tc.get_temp(instrument)
-        print('Cooled down to %s done' % temperature)    
-    # lower temp case 
     
 ### Input variables
 
 setpoint = 150
-start_setpoint = 25
+start_setpoint = 30
 sample_rate = 2
 meas_time = 1000
 
@@ -65,8 +44,9 @@ meas_len = meas_time / sample_time
 tc332 = tc.connect_tc332()
 
 # Get heater to starting temperature
-tc.set_setpoint(tc332, start_setpoint)
+print('Wait for start_temp started at %s' % instr.date_time())
 tc.set_heater_range(tc332, 1)
+tc.wait_for_temp(tc332, start_setpoint)
 
 # Initialise variables
 temps_low = np.zeros([2, 1])
@@ -88,7 +68,8 @@ tc.set_setpoint(tc332, setpoint)
 tc.set_heater_range(tc332, 1)
 
 # Start temperature measurement with low heater range
-print('Measurement for low range started at %s' % date_time())
+print('Measurement for low range started at %s' % instr.date_time())
+print('Takes until %s' % instr.time_later(meas_time))
 for t in range(int(meas_len)):
     temps_low = np.append(temps_low, np.array([tc.get_temp(tc332), time.time() - start_time]))
     time.sleep(sample_time)
@@ -113,7 +94,8 @@ temps_med[1, 0] = time.time() - start_time
 tc.set_heater_range(tc332, 2)
 
 # Start temperature measurement with med heater range
-print('Measurement for medium range started at %s' % date_time())
+print('Measurement for medium range started at %s' % instr.date_time())
+print('Takes until %s' % instr.time_later(meas_time))
 for t in range(meas_time):
     temps_med = np.append(temps_med, np.array([tc.get_temp(tc332), time.time() - start_time]))
     time.sleep(sample_time)
@@ -138,7 +120,8 @@ temps_high[1, 0] = time.time() - start_time
 tc.set_heater_range(tc332, 3)
 
 # Start temperature measurement with high heater range
-print('Measurement for high range started at %s' % date_time())
+print('Measurement for high range started at %s' % instr.date_time())
+print('Takes until %s' % instr.time_later(meas_time))
 for t in range(meas_time):
     temps_high = np.append(temps_high, np.array([tc.get_temp(tc332), time.time() - start_time]))
     time.sleep(sample_time)

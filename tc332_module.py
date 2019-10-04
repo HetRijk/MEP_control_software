@@ -11,10 +11,19 @@ TODO:
     - Add check for setpoint unit ()
 """
 
+## Import
+
+# Standard libraries
 import pyvisa as visa
 import time
 import numpy as np
 import matplotlib.pyplot as plt
+
+# Custom libraries
+import tc332_module as tc
+import sourcemeter_module as sm
+import instrument_module as instr
+
 
 ### Constants
 
@@ -22,8 +31,9 @@ kelvin = 273.15
 
 ### Setup functions
 
-def connect_tc332(address='GPIB0::12::INSTR'):
-    """Sets up connection to the instrument at the address"""
+def connect_tc332():
+    """Sets up connection to the temperature controller"""
+    address='GPIB0::12::INSTR'
     rm = visa.ResourceManager()
     return rm.open_resource(address)
 
@@ -32,7 +42,6 @@ def connect_tc332(address='GPIB0::12::INSTR'):
 def get_device_name(instrument):
     """Queries device name"""
     return instrument.query('*IDN?')
-
 
 def get_temp(instrument, unit='c'):
     """Queries sensor temperature either in celsius 'c' or kelvin 'k'"""
@@ -43,7 +52,6 @@ def get_temp(instrument, unit='c'):
     else:
         print('Unit is not given correctly')
     return temp
-
 
 def get_setpoint(instrument, unit='c'):
     """Queries the setpoint for the heater either in celsius or kelvin.
@@ -60,10 +68,10 @@ def get_setpoint(instrument, unit='c'):
         #setpoint = setpoint + 273.15
     return value
 
-
 def get_heater_range(instrument):
     """Query for heater range, 0:off, 1:low, 2:med and 3:high"""
     return int(instrument.query('RANGE?')[0])
+
 
 ### Control functions
 def set_heater_range(instrument, range_num):
@@ -92,3 +100,41 @@ def set_setpoint(instrument, setpoint, unit='c'):
         print('Setpiont was NOT set correctly')
     else:
         print('Setpoint was set to the %s degrees %s' % (setpoint, unit.upper()))
+        
+
+### Compound functions
+        
+def cooldown(instrument, setpoint):
+    """Shuts off heater and waits until its has cooled down"""
+    tc.set_heater_range(instrument, 0)
+    current_temp = tc.get_temp(instrument)
+    while current_temp > setpoint:
+        current_temp = tc.get_temp(instrument)
+        time.wait(1)
+        
+        
+def wait_for_temp(instrument, temperature, timeout=120):
+    """Wait until the heater reaches a certain temperature, both higher and lower than the current one.
+    NB: Does not change the heater range"""
+    set_setpoint(instrument, temperature)
+    current_temp = get_temp(instrument)
+    
+    # Higher temperature case
+    if current_temp > temperature:
+        t = 0
+        while t < timeout and current_temp > temperature:
+            time.sleep(1)
+            current_temp = get_temp(instrument)
+        t += 1
+        print('Cooled down to %s done' % temperature)
+    
+    # Lower temperature case
+    if current_temp < temperature:
+        t = 0
+        while t < timeout and current_temp < temperature:
+            time.sleep(1)
+            current_temp = get_temp(instrument)
+        t += 1
+        print('Heated up to %s done' % temperature)
+        
+

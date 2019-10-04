@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu Oct  3 13:41:51 2019
+Created on Fri Oct  4 14:25:57 2019
 
 @author: LocalAdmin
 
-Script to run test for comparing the two Pt1000's with each other mounted on the same heater
+Test for appending a vector to a matrix with acquired measurement data
 """
 
 ### Import
@@ -12,7 +12,6 @@ Script to run test for comparing the two Pt1000's with each other mounted on the
 # Standard libraries
 import pyvisa as visa
 import time
-import datetime as dtime
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -21,29 +20,29 @@ import tc332_module as tc
 import sourcemeter_module as sm
 import instrument_module as instr
 
+
 ### Variables
 
 sample_rate = 5
-meas_time = 1000
+meas_time = 200
 
 sample_time = sample_rate**(-1)
 meas_len = int(meas_time / sample_time)
 
-### Code
+## Code
 sm2901 = sm.connect_sm2901()
 
 sm.set_voltage(sm2901, 1)
 
-R = np.zeros([meas_len,2])
-V = np.zeros([meas_len,1])
-I = np.zeros([meas_len,1])
-T = np.zeros([meas_len,1])
-start_time = time.time()
-for i in range(meas_len):    
-    R[i,0] = sm.meas_resistance(sm2901)
-    R[i,1] = time.time() - start_time
-    print('Measurement %s out of %s' % (i+1, meas_len))
-    time.sleep(sample_time)
-    
-R_test = V/I   
+print('Start measurement, takes until %s' % instr.time_later(meas_time))
 
+start_time = time.time()
+R = np.zeros([2,1])
+current_array = np.zeros([2,1])
+for i in range(meas_len):
+    current_array[0] = sm.meas_resistance(sm2901)
+    current_array[1] = time.time() - start_time
+    R = np.concatenate((R, current_array), axis=1)
+    time.sleep(sample_time)
+
+R = np.delete(R, 0,1)

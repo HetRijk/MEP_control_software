@@ -17,6 +17,7 @@ Open questions/todos:
 
 import pyvisa as visa
 import time
+import datetime
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -37,16 +38,31 @@ def get_all_instruments():
     addresses = rm.list_resources()        
     return addresses
 
-def connect_all(addresses):
-    instruments = []
-    for i in range(len(addresses)):
-        try:
-            instrument  = connect(addresses[i])
-            print('Instrument %s successfully connected' % indentify(addresses[i]))
-        except:
-            print('Instrument with address %s failed to connect' % addresses[i])
-        instruments.append(instrument)
-    return instruments
+# Does not connect to any instruments
+#def connect_all(addresses):
+#    instruments = []
+#    for i in range(len(addresses)):
+#        try:
+#            instrument  = connect(addresses[i])
+#            print('Instrument %s successfully connected' % indentify(addresses[i]))
+#        except:
+#            print('Instrument with address %s failed to connect' % addresses[i])
+#        instruments.append(instrument)
+#    return instruments
 
 def indentify(instrument):
     return instrument.query('*IDN?')
+
+
+### Miscellaneous functions
+    
+def date_time():
+    return time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
+    
+def time_from_start(start_time):
+    return time.time() - start_time
+
+def time_later(extra_time):
+    now = datetime.datetime.now()
+    text = now + datetime.timedelta(minutes = extra_time/60)
+    return text

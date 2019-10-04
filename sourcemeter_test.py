@@ -4,7 +4,7 @@ Created on Thu Oct  3 13:41:51 2019
 
 @author: LocalAdmin
 
-Script to run test for comparing the two Pt1000's with each other mounted on the same heater
+Script to test sourcemeter
 """
 
 ### Import
@@ -42,8 +42,29 @@ start_time = time.time()
 for i in range(meas_len):    
     R[i,0] = sm.meas_resistance(sm2901)
     R[i,1] = time.time() - start_time
+    V[i] =  sm.meas_voltage(sm2901)
+    I[i] =  sm.meas_current(sm2901)
+    T[i] = time.time() - start_time
     print('Measurement %s out of %s' % (i+1, meas_len))
     time.sleep(sample_time)
     
 R_test = V/I   
 
+### Plotting
+plt.close('all')
+
+plt.figure(0)
+plt.plot(T,V)
+plt.title('Voltage against time')
+
+
+plt.figure(1)
+plt.plot(T,I)
+plt.title('Current against time')
+
+
+plt.figure(2)
+plt.plot(T,R)
+plt.plot(T,R_test)
+plt.title('Resistances against time')
+plt.legend('During', 'After')
