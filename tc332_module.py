@@ -6,7 +6,7 @@ Created on Fri Sep 13 12:08:09 2019
 
 Module with functions to control Lakeshore 332 Temperature Controller thorugh a GPIB connection
 
-TODO: 
+TODO:
     - Add function to set PID to autotune (CMODE)
     - Add check for setpoint unit ()
 """
@@ -57,12 +57,12 @@ def get_setpoint(instrument, unit='c'):
     """Queries the setpoint for the heater either in celsius or kelvin.
     NB make sure the setpoint is set to temperature"""
     setpoint = instrument.query('SETP?')
-    
+
     # SETP? returns string, so values have to be parsed
     value = float(setpoint[1:7])
     if setpoint[0] == '-':
         value = -value
-        
+
     #TODO check for units in order to give correct output
     #if unit == 'c':
         #setpoint = setpoint + 273.15
@@ -100,10 +100,10 @@ def set_setpoint(instrument, setpoint, unit='c'):
         print('Setpiont was NOT set correctly')
     else:
         print('Setpoint was set to the %s degrees %s' % (setpoint, unit.upper()))
-        
+
 
 ### Compound functions
-        
+
 def cooldown(instrument, setpoint):
     """Shuts off heater and waits until its has cooled down"""
     tc.set_heater_range(instrument, 0)
@@ -111,30 +111,37 @@ def cooldown(instrument, setpoint):
     while current_temp > setpoint:
         current_temp = tc.get_temp(instrument)
         time.wait(1)
-        
-        
-def wait_for_temp(instrument, temperature, timeout=120):
+
+
+def wait_for_temp(instrument, temperature, timeout=240):
     """Wait until the heater reaches a certain temperature, both higher and lower than the current one.
     NB: Does not change the heater range"""
     set_setpoint(instrument, temperature)
     current_temp = get_temp(instrument)
-    
+
     # Higher temperature case
     if current_temp > temperature:
+        print('Currently hotter than setpoint')
         t = 0
         while t < timeout and current_temp > temperature:
             time.sleep(1)
             current_temp = get_temp(instrument)
-        t += 1
-        print('Cooled down to %s done' % temperature)
-    
+            t += 1
+        if t == timeout:
+            print('Heater took too long (more than %s seconds)' % timeout)
+        else:
+            print('Cooled down to %s done' % temperature)
     # Lower temperature case
-    if current_temp < temperature:
+    elif current_temp < temperature:
+        print('Currently cooler than setpoint')
         t = 0
         while t < timeout and current_temp < temperature:
             time.sleep(1)
             current_temp = get_temp(instrument)
-        t += 1
-        print('Heated up to %s done' % temperature)
-        
-
+            t += 1
+        if t == timeout:
+            print('Heater took too long (more than %s seconds)' % timeout)
+        else:
+            print('Heated up to %s done' % temperature)
+    else:
+        print('Heater already at setpoint temperature')

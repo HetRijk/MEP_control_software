@@ -9,7 +9,7 @@ General VISA instrument control module
 General comments:
     - import as ctrl:
         import instrument_control as ctrl
-    
+
 Open questions/todos:
     - How to build on this module to create other modules?
         import into more specific modules for each kind of or specific instrument
@@ -35,7 +35,7 @@ def connect(address):
 def get_all_instruments():
     """Gets list of all addresses of connected instrument at the address"""
     rm = visa.ResourceManager()
-    addresses = rm.list_resources()        
+    addresses = rm.list_resources()
     return addresses
 
 # Does not connect to any instruments
@@ -55,14 +55,16 @@ def indentify(instrument):
 
 
 ### Miscellaneous functions
-    
+
 def date_time():
-    return time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
-    
+    return datetime.datetime.now()
+
 def time_from_start(start_time):
     return time.time() - start_time
 
 def time_later(extra_time):
+    """Gives the time 'extra_time' seconds past now"""
+    extra_time = int(extra_time / 60)
     now = datetime.datetime.now()
-    text = now + datetime.timedelta(minutes = extra_time/60)
+    text = now + datetime.timedelta(minutes = extra_time)
     return text
