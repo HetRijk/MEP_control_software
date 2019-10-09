@@ -33,7 +33,7 @@ kelvin = 273.15
 
 def connect_tc332():
     """Sets up connection to the temperature controller"""
-    address='GPIB0::12::INSTR'
+    address = 'GPIB0::12::INSTR'
     rm = visa.ResourceManager()
     return rm.open_resource(address)
 

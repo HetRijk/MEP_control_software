@@ -15,11 +15,17 @@ Open questions/todos:
         import into more specific modules for each kind of or specific instrument
 """
 
+# Standard libraries
 import pyvisa as visa
 import time
 import datetime
 import numpy as np
 import matplotlib.pyplot as plt
+
+# Custom libraries
+import tc332_module as tc
+import sourcemeter_module as sm
+import instrument_module as instr
 
 ## Setup functions
 
@@ -53,13 +59,29 @@ def get_all_instruments():
 def indentify(instrument):
     return instrument.query('*IDN?')
 
+# Measurement functions
+
+def measure_for(instrument, function, meas_time, sample_rate):
+    """Measures parameter that the function measures by function for meas_time at sample_rate"""
+    #TODO: fix sample rate to take time measurement takes into account
+    start_time = time.time()
+    t = 0
+    meas = list()
+    while t < meas_time:
+        t = instr.time_since(start_time)
+        meas.append([function(instrument), t])
+        print(instr.time_since(t-time.time()))
+        #time.sleep(sample_rate**-1 - instr.time_since(t-time.time()) )
+        time.sleep(sample_rate**-1)
+    meas = np.array(meas)
+    return meas
 
 ### Miscellaneous functions
 
 def date_time():
     return datetime.datetime.now()
 
-def time_from_start(start_time):
+def time_since(start_time):
     return time.time() - start_time
 
 def time_later(extra_time):

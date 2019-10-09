@@ -32,8 +32,17 @@ def set_current(instrument, amps):
 def set_voltage(instrument, mvolts):
     volts = mvolts * 10**-3
     instrument.write(':SOURce:VOLTage:LEVel:IMMediate:AMPLitude %s' % volts)
+    
+    # Check if value was set
+    time.sleep(0.5)
+    volts_actual = get_source_voltage(instrument)
+    if volts_actual != volts:
+        print('Source voltage was NOT correctly set to %s mV' % mvolts)
+    else:
+        print('Source voltage was set to %s mV' % mvolts)
+    
 
-## Measurement functions
+## Query functions
 
 def meas_current(instrument):
     instrument.write(':FORMat:DATA %s' % ('ASCii'))
@@ -48,3 +57,16 @@ def meas_resistance(instrument):
     V = instrument.query_ascii_values(':MEASure:VOLTage:DC?')[0]
     I = instrument.query_ascii_values(':MEASure:CURRent:DC?')[0]
     return V/I
+
+def get_source_voltage(instrument):
+    """Queries the source voltage of the sourcemeter"""
+    source = instrument.query('SOURce:VOLTage:LEVel:IMMediate:AMPLitude?')
+    
+    # Source is a string, so values have to be parsed
+    value = float(source[1:7])
+    if source[0] == '-':
+        value = -value
+    if int(source[12:16]) != 0:
+        value = value*10**int(source[12:16])
+        
+    return value
