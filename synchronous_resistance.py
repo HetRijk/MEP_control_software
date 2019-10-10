@@ -24,7 +24,9 @@ import instrument_module as instr
 ### Variables
 
 sample_rate = 5
-meas_time = 10
+meas_time = 60
+
+source_volt = 100
 
 sample_time = sample_rate**(-1)
 meas_len = int(meas_time / sample_time)
@@ -32,29 +34,7 @@ meas_len = int(meas_time / sample_time)
 ### Code
 sm2901 = sm.connect_sm2901()
 
-sm.set_voltage(sm2901, 1)
+sm.set_voltage(sm2901, 100)
 
 start_time = time.time()
-res_1mv = list()
-for t in range(meas_len):
-    res_1mv.append([instr.time_since(start_time), sm.meas_resistance(sm2901)])
-    time.sleep(sample_time)
-res_1mv = np.array(res_1mv)
-
-sm.set_voltage(sm2901, 10)
-
-start_time = time.time()
-res_10mv = list()
-for t in range(meas_len):
-    res_10mv.append([instr.time_since(start_time), sm.meas_resistance(sm2901)])
-    time.sleep(sample_time)
-res_10mv = np.array(res_10mv)
-
-# Plotting
-plt.close('close')
-
-plt.figure(0)
-plt.plot(res_1mv[:,0], res_1mv[:,1])
-
-plt.figure(1)
-plt.plot(res_10mv[:,0], res_10mv[:,1])
+data_res = instr.measure_for(sm2901, sm.meas_resistance, meas_time, sample_rate)

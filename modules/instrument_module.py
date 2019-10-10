@@ -61,22 +61,21 @@ def indentify(instrument):
 
 # Measurement functions
 
-def measure_for(instrument, function, meas_time, sample_rate):
-    """Measures parameter that the function measures by function for meas_time at sample_rate"""
-    #TODO: fix sample rate to take time measurement takes into account
+def measure_for(instrument, function, meas_time, sample_rate, meas=list()):
+    """Measures parameter that the function measures by function for meas_time at sample_rate.
+    NB Use np.array to turn list into numpy array after measurement is done."""
     start_time = time.time()
     t = 0
-    meas = list()
+    t_loop = time.time()
     while t < meas_time:
+        meas.append([t, function(instrument)])
+        time.sleep(sample_rate**-1 - instr.time_since(t_loop))
+        t_loop = time.time()
         t = instr.time_since(start_time)
-        meas.append([function(instrument), t])
-        print(instr.time_since(t-time.time()))
-        #time.sleep(sample_rate**-1 - instr.time_since(t-time.time()) )
-        time.sleep(sample_rate**-1)
-    meas = np.array(meas)
     return meas
+  
 
-### Miscellaneous functions
+# Timing functions
 
 def date_time():
     return datetime.datetime.now()
@@ -90,3 +89,16 @@ def time_later(extra_time):
     now = datetime.datetime.now()
     text = now + datetime.timedelta(minutes = extra_time)
     return text
+
+
+
+### Miscellaneous functions
+    
+def pt1000_temp(resistance):
+    temperature = 1E-05*resistance**2 + 0.2311*resistance - 243.32
+    return temperature
+
+def pt1000_res(temperature):
+    resistance = -6E-4*temperature**2 + 3.9197*temperature + 998.96
+    return resistance
+
