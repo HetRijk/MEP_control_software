@@ -61,15 +61,18 @@ def indentify(instrument):
 
 # Measurement functions
 
-def measure_for(instrument, function, meas_time, sample_rate, meas=list()):
+def measure_for(instrument, function, meas_time, sample_rate):
     """Measures parameter that the function measures by function for meas_time at sample_rate.
     NB Use np.array to turn list into numpy array after measurement is done."""
     start_time = time.time()
     t = 0
     t_loop = time.time()
+    meas = list()
     while t < meas_time:
         meas.append([t, function(instrument)])
+        
         time.sleep(sample_rate**-1 - instr.time_since(t_loop))
+        print(instr.time_since(t_loop))
         t_loop = time.time()
         t = instr.time_since(start_time)
     return meas

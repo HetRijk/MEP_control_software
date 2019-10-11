@@ -101,6 +101,11 @@ def set_setpoint(instrument, setpoint, unit='c'):
     else:
         print('Setpoint was set to the %s degrees %s' % (setpoint, unit.upper()))
 
+def set_tuning_mode(instrument, tuning_mode):
+    """Sets PID tuning mode of the temperature controller. 
+    Tuning: 1:Manual, 2:Zone, 3:OpenLoop, 4:AutoTune PID, 5:AutoTune PI, 6:AutoTune P"""
+    instrument.write('CMODE 1 %s'  % tuning_mode)
+    
 
 ### Compound functions
 
