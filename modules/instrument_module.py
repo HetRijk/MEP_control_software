@@ -21,6 +21,8 @@ import time
 import datetime
 import numpy as np
 import matplotlib.pyplot as plt
+import pickle as pkl
+import os
 
 # Custom libraries
 import tc332_module as tc
@@ -93,6 +95,19 @@ def time_later(extra_time):
     text = now + datetime.timedelta(minutes = extra_time)
     return text
 
+# Plotting functions
+    
+def save_plot(file_name):
+    """Saves current plot, both as pickle (figure) and .svg (image)"""
+    plt.savefig(file_name + '.svg')
+    plt.savefig(file_name + '.PNG')
+    
+    fig     = plt.gcf()
+
+    with open(file_name + '.pkl', 'wb') as fid:
+        pkl.dump(fig, fid)
+
+    print('MESSAGE: Plot saved as \n%s' % file_name)
 
 
 ### Miscellaneous functions

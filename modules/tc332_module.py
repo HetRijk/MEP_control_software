@@ -97,7 +97,7 @@ def set_setpoint(instrument, setpoint, unit='c'):
     time.sleep(0.1)
     setpoint_set = get_setpoint(instrument)
     if setpoint_set != setpoint:
-        print('Setpiont was NOT set correctly')
+        print('Setpoint was NOT set correctly')
     else:
         print('Setpoint was set to the %s degrees %s' % (setpoint, unit.upper()))
 

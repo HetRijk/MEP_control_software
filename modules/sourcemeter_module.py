@@ -41,7 +41,10 @@ def set_voltage(instrument, mvolts):
     else:
         print('Source voltage was set to %s mV' % mvolts)
     
-
+def set_limit_current(instrument, value):
+    """Sets the current limit to value in amperes"""
+    instrument.write('SENSe:CURRent:DC:PROTection:LEVel %s' % value)
+    
 ## Query functions
 
 def meas_current(instrument):
@@ -57,6 +60,13 @@ def meas_resistance(instrument):
     V = instrument.query_ascii_values(':MEASure:VOLTage:DC?')[0]
     I = instrument.query_ascii_values(':MEASure:CURRent:DC?')[0]
     return V/I
+
+def measure_vi(instrument):
+    instrument.write(':FORMat:DATA %s' % ('ASCii'))
+    V = instrument.query_ascii_values(':MEASure:VOLTage:DC?')[0]
+    I = instrument.query_ascii_values(':MEASure:CURRent:DC?')[0]
+    return V, I
+
 
 def get_source_voltage(instrument):
     """Queries the source voltage of the sourcemeter"""
