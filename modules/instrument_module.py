@@ -86,6 +86,7 @@ def date_time():
     return datetime.datetime.now()
 
 def time_since(start_time):
+    """Returns time since start_time"""
     return time.time() - start_time
 
 def time_later(extra_time):
@@ -95,7 +96,7 @@ def time_later(extra_time):
     text = now + datetime.timedelta(minutes = extra_time)
     return text
 
-# Plotting functions
+# Saving functions
     
 def save_plot(file_name):
     """Saves current plot, both as pickle (figure) and .svg (image)"""
@@ -107,7 +108,12 @@ def save_plot(file_name):
     with open(file_name + '.pkl', 'wb') as fid:
         pkl.dump(fig, fid)
 
-    print('MESSAGE: Plot saved as \n%s' % file_name)
+    print('Plot saved as \n%s' % file_name)
+    
+def save_data(file_name, data):
+    """Saves data as file_name.csv"""
+    np.savetxt(file_name+'.csv', data, delimiter=',')
+    
 
 
 ### Miscellaneous functions

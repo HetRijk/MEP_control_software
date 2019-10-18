@@ -51,19 +51,20 @@ def measurement(tc332, sm2901, meas_time, sample_rate, start_time=time.time()):
 
 start_setpoint = 25
 sample_rate = 5
-meas_time = 10
+meas_time = 600
 source_volt = 1E2 
-limit_current = 1E-8
-sleep_time = 0.5
+limit_current = 1E-6
+sleep_time = 120
 
-meas_name = 'wo3189_test_%s_mv_%s_curr' % (source_volt, limit_current)
+meas_name = 'wo3189_r23_41' 
+meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
 sample_time = sample_rate**(-1)
 meas_len = int(meas_time / sample_time)
 
+
 tc332 = tc.connect_tc332()
 sm2901 = sm.connect_sm2901()
-
 print('Devices connected')
 
 sm.set_voltage(sm2901, source_volt)
@@ -98,6 +99,27 @@ current = np.array(current).transpose()
 voltage = np.array(voltage).transpose()
 setpoints = np.array(setpoints).transpose()
 
+# Save measurement data
+
+data_folder = meas_name + '\data'
+figure_folder = meas_name + '\figures'
+
+try:
+    os.mkdir(meas_name)
+    try:
+        os.mkdir(data_folder)
+        os.mkdir(figure_folder)
+    except:
+        pass
+except:
+    pass
+
+instr.save_data('%s\%s_temperatures' % (data_folder, meas_name), temp)
+instr.save_data('%s\%s_current' % (data_folder, meas_name), current)
+instr.save_data('%s\%s_voltage' % (data_folder, meas_name), voltage)
+instr.save_data('%s\%s_setpoints' % (data_folder, meas_name), setpoints)
+
+
 res = np.array([voltage[0], voltage[1]/current[1]])
 
 print('Measurement done')
@@ -107,10 +129,7 @@ tc.set_heater_range(tc332, 0)
 # Plots
 plt.close('all')
 
-try:
-    os.mkdir('figures')
-except:
-    pass
+
 
 # Voltage
 plt.figure(0)
