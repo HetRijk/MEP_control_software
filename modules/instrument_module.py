@@ -93,7 +93,7 @@ def time_later(extra_time):
     """Gives the time 'extra_time' seconds past now"""
     extra_time = int(extra_time / 60)
     now = datetime.datetime.now()
-    text = now + datetime.timedelta(minutes = extra_time)
+    text = now + datetime.timedelta(minutes=extra_time)
     return text
 
 # Saving functions
@@ -113,8 +113,10 @@ def save_plot(file_name):
 def save_data(file_name, data):
     """Saves data as file_name.csv"""
     np.savetxt(file_name+'.csv', data, delimiter=',')
-    
 
+def load_data(file_name, data):
+    """Loads .csv data as numpy array"""
+    return np.loadtxt(file_name, delimiter=',')
 
 ### Miscellaneous functions
     
