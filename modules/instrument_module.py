@@ -112,11 +112,16 @@ def save_plot(file_name):
     
 def save_data(file_name, data):
     """Saves data as file_name.csv"""
-    np.savetxt(file_name+'.csv', data, delimiter=',')
+    np.savetxt(file_name+'.csv', np.transpose(data), delimiter=',')
 
-def load_data(file_name, data):
+def load_data(file_name):
     """Loads .csv data as numpy array"""
-    return np.loadtxt(file_name, delimiter=',')
+    return np.loadtxt(file_name + '.csv', delimiter=',')
+
+def load_plot(file_name):
+    """Open pickled plot"""
+    fig_handle = pkl.load(open(file_name,'rb'))
+    fig_handle.show()
 
 ### Miscellaneous functions
     

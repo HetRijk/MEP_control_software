@@ -88,6 +88,19 @@ def get_source_voltage(instrument):
         
     return value
 
+def get_limit_current(instrument):
+    """Queries instrument for current limti set"""
+    limit = instrument.query('SENSe:CURRent:DC:PROTection?')
+    
+    # Source is a string, so values have to be parsed
+    value = float(limit[1:7])
+    if limit[0] == '-':
+        value = -value
+    if int(limit[12:16]) != 0:
+        value = value*10**int(limit[12:16])
+    
+    return value
+    
 def check_limit(instrument):
     """Return Boolean on if current is within limit"""
     value = instrument.query('SENSe:CURRent:DC:PROTection:TRIPped?')[0]

@@ -1,0 +1,12 @@
+start_setpoint = 25
+sample_rate = 1
+meas_time = 7200
+source_volt = 1E2 
+limit_current = 1E-7
+sleep_time = 120
+
+Air to Vacuum at 600s
+Vacuum to H2 at 1200s
+H2 to Vacuum at 3900s
+Vacuum to Air at 4500s
+End measurement at 7200s

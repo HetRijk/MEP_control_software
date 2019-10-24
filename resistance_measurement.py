@@ -21,8 +21,9 @@ import os
 import tc332_module as tc
 import sourcemeter_module as sm
 import instrument_module as instr
+import multimeter_module as dmm
 
-def measurement(tc332, sm2901, meas_time, sample_rate, limit_current, main_time):
+def measurement(tc332, sm2901, dmm2100, meas_time, sample_rate, main_time):
     """Measurement loop"""
     t = instr.time_since(main_time)
     t_meas2 = 0
@@ -33,25 +34,42 @@ def measurement(tc332, sm2901, meas_time, sample_rate, limit_current, main_time)
     current = list()
     voltage = list()
     setpoints = list()
+    pressure = list()
     while t_meas2 < meas_time:
         # Measuring
         temp.append([t, tc.get_temp(tc332)])
         current.append([t, sm.meas_current(sm2901)])
         voltage.append([t, sm.meas_voltage(sm2901)])
         setpoints.append([t, tc.get_setpoint(tc332)])
-
+        pressure.append([t, dmm.meas_pressure(dmm2100)])
+        
         # Check current limit
+        limit_current = sm.get_limit_current(sm2901)
         if not sm.check_limit(sm2901):
             # Discard last measured values
             del temp[-1]
             del current[-1]
             del voltage[-1]
             del setpoints[-1]
+            del pressure[-1]
 
             # Increase limits
+            limit_current = sm.get_limit_current(sm2901)
             limit_current = 10*limit_current
             sm.set_limit_current(sm2901, limit_current)
             print('Current limit increased to %0.0e A at %2.1d s after start' % (limit_current, t))
+        if current[-1][1] < limit_current/30:
+            # Discard last measured values
+            del temp[-1]
+            del current[-1]
+            del voltage[-1]
+            del setpoints[-1]
+            del pressure[-1]
+            
+            # Decrease limits
+            limit_current = limit_current/10
+            sm.set_limit_current(sm2901, limit_current)
+            print('Current limit decreased to %0.0e A at %2.1d s after start' % (limit_current, t))
         
         #Timing
         time.sleep(sample_rate**-1 - instr.time_since(t_loop))
@@ -59,14 +77,14 @@ def measurement(tc332, sm2901, meas_time, sample_rate, limit_current, main_time)
         t = instr.time_since(main_time)
         t_meas2 = instr.time_since(t_meas)
         
-    return temp, current, voltage, setpoints
+    return temp, current, voltage, setpoints, pressure
 
 start_setpoint = 25
 sample_rate = 1
-meas_time = 10
+meas_time = 7200
 source_volt = 1E2 
 limit_current = 1E-7
-sleep_time = 0
+sleep_time = 120
 
 meas_name = 'wo3189_r13' 
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
@@ -77,6 +95,7 @@ meas_len = int(meas_time / sample_time)
 
 tc332 = tc.connect_tc332()
 sm2901 = sm.connect_sm2901()
+dmm2100 = dmm.connect_dmm2100()
 print('Devices connected')
 
 sm.set_source_voltage(sm2901, source_volt)
@@ -92,25 +111,29 @@ temp = list()
 current = list()
 voltage = list()
 setpoints = list()
+pressure = list()
 
 main_time = time.time()
 
 print('Start high measurement at %s' % instr.date_time())
 print('And takes %0.2f minutes' % (meas_time/60))
 
-meas_temp, meas_current, meas_voltage, meas_setpoints = measurement(tc332, sm2901, meas_time, sample_rate,
-                                                                    limit_current, main_time)
+meas_temp, meas_current, meas_voltage, meas_setpoints, meas_pressure = measurement(
+                                                                        tc332, sm2901, dmm2100,
+                                                                        meas_time, sample_rate, main_time)
 
 temp += meas_temp
 current += meas_current
 voltage += meas_voltage
 setpoints += meas_setpoints
+pressure += meas_pressure
 
 
 temp = np.array(temp).transpose()
 current = np.array(current).transpose()
 voltage = np.array(voltage).transpose()
 setpoints = np.array(setpoints).transpose()
+pressure = np.array(pressure).transpose()
 
 # Save measurement data
 
@@ -138,17 +161,13 @@ instr.save_data('%s\%s_current' % (data_folder, meas_name), current)
 instr.save_data('%s\%s_voltage' % (data_folder, meas_name), voltage)
 instr.save_data('%s\%s_setpoints' % (data_folder, meas_name), setpoints)
 instr.save_data('%s\%s_resistance' % (data_folder, meas_name), resistances)
-
-
+instr.save_data('%s\%s_pressure' % (data_folder, meas_name), pressure)
 
 print('Measurement done')
-
 #tc.set_heater_range(tc332, 0)
 
 # Plots
 plt.close('all')
-
-
 
 # Voltage
 plt.figure(0)
@@ -187,3 +206,12 @@ plt.ylabel('Temperature (*C)')
 plt.legend(['Setpoints', 'Heater'])
 
 instr.save_plot('%s\%s_temperatures' % (figure_folder, meas_name))
+
+# Pressure
+plt.figure(4)
+plt.plot(pressure[0], pressure[1])
+plt.title('Pressure in main chamber')
+plt.xlabel('t(s)')
+plt.ylabel('Pressure (bar)')
+
+instr.save_plot('%s\%s_pressure' % (figure_folder, meas_name))
