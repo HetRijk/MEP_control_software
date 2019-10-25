@@ -29,6 +29,7 @@ def measurement(tc332, sm2901, dmm2100, meas_time, sample_rate, main_time):
     t_meas2 = 0
     t_meas = time.time()
     t_loop = time.time()
+    limit_hit = 0
     
     temp = list()
     current = list()
@@ -45,7 +46,9 @@ def measurement(tc332, sm2901, dmm2100, meas_time, sample_rate, main_time):
         
         # Check current limit
         limit_current = sm.get_limit_current(sm2901)
-        if not sm.check_limit(sm2901):
+        if limit_hit == 1:
+            limit_hit = 0
+        elif not sm.check_limit(sm2901):
             # Discard last measured values
             del temp[-1]
             del current[-1]
@@ -57,8 +60,9 @@ def measurement(tc332, sm2901, dmm2100, meas_time, sample_rate, main_time):
             limit_current = sm.get_limit_current(sm2901)
             limit_current = 10*limit_current
             sm.set_limit_current(sm2901, limit_current)
+            limit_hit = 1
             print('Current limit increased to %0.0e A at %2.1d s after start' % (limit_current, t))
-        if current[-1][1] < limit_current/30:
+        elif current[-1][1] < limit_current/300:
             # Discard last measured values
             del temp[-1]
             del current[-1]
@@ -69,6 +73,7 @@ def measurement(tc332, sm2901, dmm2100, meas_time, sample_rate, main_time):
             # Decrease limits
             limit_current = limit_current/10
             sm.set_limit_current(sm2901, limit_current)
+            limit_hit = 1
             print('Current limit decreased to %0.0e A at %2.1d s after start' % (limit_current, t))
         
         #Timing
@@ -79,12 +84,12 @@ def measurement(tc332, sm2901, dmm2100, meas_time, sample_rate, main_time):
         
     return temp, current, voltage, setpoints, pressure
 
-start_setpoint = 25
+setpoint = 50
 sample_rate = 1
-meas_time = 7200
-source_volt = 1E2 
-limit_current = 1E-7
-sleep_time = 120
+meas_time = 4000
+source_volt = 1E2
+limit_current = 1E-6
+sleep_time = 0
 
 meas_name = 'wo3189_r13' 
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
@@ -102,8 +107,8 @@ sm.set_source_voltage(sm2901, source_volt)
 sm.set_limit_current(sm2901, limit_current)
 
 #tc.set_tuning_mode(tc332, 4)
-tc.set_heater_range(tc332, 3)
-#tc.wait_for_temp(tc332, start_setpoint)
+#tc.set_heater_range(tc332, 3)
+#tc.wait_for_temp(tc332, setpoint)
 time.sleep(sleep_time)
 print('Setup completed')
 

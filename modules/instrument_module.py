@@ -116,7 +116,7 @@ def save_data(file_name, data):
 
 def load_data(file_name):
     """Loads .csv data as numpy array"""
-    return np.loadtxt(file_name + '.csv', delimiter=',')
+    return np.transpose(np.loadtxt(file_name + '.csv', delimiter=','))
 
 def load_plot(file_name):
     """Open pickled plot"""
