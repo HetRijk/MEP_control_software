@@ -86,12 +86,12 @@ def measurement(tc332, sm2901, dmm2100, meas_time, sample_rate, main_time):
 
 setpoint = 50
 sample_rate = 1
-meas_time = 4000
+meas_time = 600
 source_volt = 1E2
-limit_current = 1E-6
+limit_current = 1E-7
 sleep_time = 0
 
-meas_name = 'wo3189_r13' 
+meas_name = 'wo3189_r3412' 
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
 sample_time = sample_rate**(-1)
