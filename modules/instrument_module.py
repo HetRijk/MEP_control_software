@@ -93,7 +93,7 @@ def time_later(extra_time):
     """Gives the time 'extra_time' seconds past now"""
     extra_time = int(extra_time / 60)
     now = datetime.datetime.now()
-    text = now + datetime.timedelta(minutes = extra_time)
+    text = now + datetime.timedelta(minutes=extra_time)
     return text
 
 # Saving functions
@@ -112,9 +112,16 @@ def save_plot(file_name):
     
 def save_data(file_name, data):
     """Saves data as file_name.csv"""
-    np.savetxt(file_name+'.csv', data, delimiter=',')
-    
+    np.savetxt(file_name+'.csv', np.transpose(data), delimiter=',')
 
+def load_data(file_name):
+    """Loads .csv data as numpy array"""
+    return np.transpose(np.loadtxt(file_name + '.csv', delimiter=','))
+
+def load_plot(file_name):
+    """Open pickled plot"""
+    fig_handle = pkl.load(open(file_name,'rb'))
+    fig_handle.show()
 
 ### Miscellaneous functions
     

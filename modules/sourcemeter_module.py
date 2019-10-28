@@ -26,10 +26,10 @@ def connect_sm2901():
 
 ## Settings functions
     
-def set_current(instrument, amps):
-    instrument.write(':SOURce:CURRent:LEVel:IMMediate:AMPLitude %s' % amps)
+#def set_current(instrument, amps):
+#    instrument.write(':SOURce:CURRent:LEVel:IMMediate:AMPLitude %s' % amps)
 
-def set_voltage(instrument, mvolts):
+def set_source_voltage(instrument, mvolts):
     volts = mvolts * 10**-3
     instrument.write(':SOURce:VOLTage:LEVel:IMMediate:AMPLitude %s' % volts)
     
@@ -61,12 +61,19 @@ def meas_resistance(instrument):
     I = instrument.query_ascii_values(':MEASure:CURRent:DC?')[0]
     return V/I
 
-def measure_vi(instrument):
-    instrument.write(':FORMat:DATA %s' % ('ASCii'))
-    V = instrument.query_ascii_values(':MEASure:VOLTage:DC?')[0]
-    I = instrument.query_ascii_values(':MEASure:CURRent:DC?')[0]
-    return V, I
-
+def meas_plusminus_current(instrument, source_max, num_points):
+    """Measures current as source voltage is varied between -source_max and source_max.
+    Should include 0, so num_points has to uneven number and at least 3."""
+    if num_points < 3 and num_points % 2 != 1:
+        print('Num_points should be at least 3 and uneven')
+    else:
+        sources = np.linspace(-source_max, source_max, num_points)
+        currents = list()
+        for i in range(len(sources)):
+            set_source_voltage(instrument, sources[i])
+            time.sleep(0.01)
+            currents.append(meas_current(instrument))
+    return currents, sources
 
 def get_source_voltage(instrument):
     """Queries the source voltage of the sourcemeter"""
@@ -80,3 +87,25 @@ def get_source_voltage(instrument):
         value = value*10**int(source[12:16])
         
     return value
+
+def get_limit_current(instrument):
+    """Queries instrument for current limti set"""
+    limit = instrument.query('SENSe:CURRent:DC:PROTection?')
+    
+    # Source is a string, so values have to be parsed
+    value = float(limit[1:7])
+    if limit[0] == '-':
+        value = -value
+    if int(limit[12:16]) != 0:
+        value = value*10**int(limit[12:16])
+    
+    return value
+    
+def check_limit(instrument):
+    """Return Boolean on if current is within limit"""
+    value = instrument.query('SENSe:CURRent:DC:PROTection:TRIPped?')[0]
+    if value == '0':
+        return_value = True
+    else:
+        return_value = False
+    return return_value

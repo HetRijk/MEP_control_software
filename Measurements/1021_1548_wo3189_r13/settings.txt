@@ -1,0 +1,11 @@
+WO3189 
+1021_1548
+
+full_hydrogen: 10V of hydrogen
+
+start_setpoint = 25
+sample_rate = 5
+meas_time = 600
+source_volt = 1E2 
+limit_current = 1E-7
+sleep_time = 0
