@@ -62,19 +62,19 @@ def measurement(tc332, sm2901, dmm2100, meas_time, sample_rate, main_time):
             sm.set_limit_current(sm2901, limit_current)
             limit_hit = 1
             print('Current limit increased to %0.0e A at %2.1d s after start' % (limit_current, t))
-        elif current[-1][1] < limit_current/300:
-            # Discard last measured values
-            del temp[-1]
-            del current[-1]
-            del voltage[-1]
-            del setpoints[-1]
-            del pressure[-1]
-            
-            # Decrease limits
-            limit_current = limit_current/10
-            sm.set_limit_current(sm2901, limit_current)
-            limit_hit = 1
-            print('Current limit decreased to %0.0e A at %2.1d s after start' % (limit_current, t))
+#        elif current[-1][1] < limit_current/300:
+#            # Discard last measured values
+#            del temp[-1]
+#            del current[-1]
+#            del voltage[-1]
+#            del setpoints[-1]
+#            del pressure[-1]
+#            
+#            # Decrease limits
+#            limit_current = limit_current/10
+#            sm.set_limit_current(sm2901, limit_current)
+#            limit_hit = 1
+#            print('Current limit decreased to %0.0e A at %2.1d s after start' % (limit_current, t))
         
         #Timing
         time.sleep(sample_rate**-1 - instr.time_since(t_loop))
@@ -84,14 +84,14 @@ def measurement(tc332, sm2901, dmm2100, meas_time, sample_rate, main_time):
         
     return temp, current, voltage, setpoints, pressure
 
-setpoint = 50
+setpoint = 65
 sample_rate = 1
-meas_time = 600
+meas_time = 7200
 source_volt = 1E2
 limit_current = 1E-7
 sleep_time = 0
 
-meas_name = 'wo3189_r3412' 
+meas_name = 'wo3189_r13' 
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
 sample_time = sample_rate**(-1)
