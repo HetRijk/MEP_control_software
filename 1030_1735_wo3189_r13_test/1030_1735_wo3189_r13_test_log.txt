@@ -1,0 +1,6 @@
+Devices connected
+Setup completed
+Start high measurement at 2019-10-30 17:35:02.364700
+And takes 1.00 minutes
+Current limit increased to 1e-06 A at  0 s after start
+Measurement done

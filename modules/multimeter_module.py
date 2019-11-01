@@ -28,6 +28,13 @@ def connect_dmm2100():
     rm = visa.ResourceManager()
     return rm.open_resource(address)
 
+def connect_dmm2110():
+    """Sets up connection to the Keithly DMM 2110, not the 2100"""
+    address = 'USB0::0x05E6::0x2110::8010814::INSTR'
+    rm = visa.ResourceManager()
+    return rm.open_resource(address)
+    
+
 def meas_voltage(instrument):
     """Measures the voltage of the dmm"""
     volt = instrument.query('MEAS:VOLTage:DC?')
@@ -36,8 +43,11 @@ def meas_voltage(instrument):
     value = float(volt[1:7])
     if volt[0] == '-':
         value = -value
+    exp_sign = 1
     if int(volt[-3:]) != 0:
-        value = value*10**int(volt[-3:])
+        if volt[-4] == '-':
+            exp_sign = -1        
+        value = value*10**(exp_sign * int(volt[-3:]))
         
     return value
 

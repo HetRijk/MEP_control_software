@@ -1,0 +1,9 @@
+Devices connected
+Setup completed
+Start high measurement at 2019-10-31 11:20:22.615822
+And takes 10.00 minutes
+Measurement done
+
+Sample at 65C
+
+Pressure measurement seems off as it cannot be higher than 1 bar

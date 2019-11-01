@@ -125,6 +125,13 @@ def load_plot(file_name):
 
 ### Miscellaneous functions
     
+def log_this(log, text):
+    log.write(text + '\n')
+    
+def log_and_print(log, text):
+    log.write(text + '\n')
+    print(text)
+    
 def pt1000_temp(resistance):
     temperature = 1E-05*resistance**2 + 0.2311*resistance - 243.32
     return temperature
