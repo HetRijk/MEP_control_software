@@ -20,6 +20,9 @@ def exponent(x, a, b, c):
 def reverse_exponent(x, a, b, c):
     return a * (1 - np.exp(- x / b)) + c
 
+def reverse_exponent(x, a, b, c):
+    return a * (1 - np.exp(-b * x)) + c
+
 def logarithm(x, a, b, c):
     loga = a*1E7 * np.log(1E-4*b * x) + c
     return loga
