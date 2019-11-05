@@ -1,0 +1,7 @@
+Devices connected
+Setup completed
+Start high measurement at 2019-11-04 15:54:24.973174
+And takes 10.00 minutes
+Measurement done
+
+Valve pump closed one minute before end

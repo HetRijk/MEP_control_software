@@ -61,7 +61,7 @@ source_volt = 1E2
 limit_current = 1E-6
 sleep_time = 0
 
-meas_name = 'main_pc_stability' 
+meas_name = 'mixing_pressure_test_small_main' 
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
 
