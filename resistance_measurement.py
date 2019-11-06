@@ -140,7 +140,7 @@ pressure = list()
 
 main_time = time.time()
 
-instr.log_and_print(log, 'Start high measurement at %s' % instr.date_time())
+instr.log_and_print(log, 'Start measurement at %s' % instr.date_time())
 instr.log_and_print(log, 'And takes %0.2f minutes' % (meas_time/60))
 
 meas_temp, meas_current, meas_voltage, meas_setpoints, meas_pressure = measurement(
