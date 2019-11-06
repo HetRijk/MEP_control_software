@@ -56,7 +56,7 @@ def measurement(dmm2100, meas_time, sample_rate, main_time):
 
 setpoint = 65
 sample_rate = 1
-meas_time = 3600
+meas_time = 60
 source_volt = 1E2
 limit_current = 1E-6
 sleep_time = 0
