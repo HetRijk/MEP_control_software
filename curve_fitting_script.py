@@ -18,29 +18,27 @@ def exponent(x, a, b, c):
     return a * np.exp(- x / b) + c
 
 def reverse_exponent(x, a, b, c):
-    return a * (1 - np.exp(- x / b)) + c
-
-def reverse_exponent(x, a, b, c):
     return a * (1 - np.exp(-b * x)) + c
 
 def logarithm(x, a, b, c):
-    loga = a*1E7 * np.log(1E-4*b * x) + c
+    loga = a * np.log(b * x) + c
     return loga
 
 def linear(x, a, b, c):
-    return  -a * x + b + c
+    return  a * x + b + c
 
 # Inputs
     
-folder = r'D:\Rijk\MEP_control_software\1031_1309_wo3189_r13_airtoh2\data'
-file = '1031_1309_wo3189_r13_airtoh2_resistance'
+folder = r'D:\Rijk\MEP_control_software\Measurements\1106_1116_mixing_pressure_test_small_main\data'
+file = '1106_1116_mixing_pressure_test_small_main_pressure'
 
-func = exponent
+func = linear
 
-start   = 1190
-stop    = start + 250
+start   = 400
+stop    = 3599
 
-p0      = [2E7, 1E4, 2E7]
+p0 = [1, 1, 1]
+#p0      = [2E7, 1E4, 2E7]
 
 # Code
 file_name = os.path.join(folder, file)
@@ -48,8 +46,11 @@ file_name = os.path.join(folder, file)
 # Import data
 data = instr.load_data(file_name)
 
-xdata = data[0][start:stop] 
-ydata = data[1][start:stop]
+xdata0 = data[0]
+ydata0 = data[1] 
+
+xdata = xdata0[start:stop] 
+ydata = ydata0[start:stop]
 
 xdata = xdata - min(xdata)
 
@@ -60,8 +61,8 @@ popt, pcov = curve_fit(func, xdata, ydata, p0, maxfev=int(1E7))
 # Plot fit
 plt.close('all')
 
-plt.plot(xdata, ydata)
-plt.plot(xdata, func(xdata, *popt))
+plt.plot(xdata0, ydata0)
+plt.plot(xdata + start, func(xdata, *popt))
 
 plt.legend(['Data', 'Fit'])
 

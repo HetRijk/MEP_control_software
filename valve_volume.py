@@ -21,8 +21,10 @@ def V_corner_long(A, B, C):
     return m.pi/2*B*C**2 + m.pi**2/8*(A-B)*C**2
 
 def V_chamber(A, B, C):
-    """"""
-    return m.pi * C**2 * (A + B - C/2)
+    """A is the length of the main pipe, 
+    B the distance from the middle of the main pipe to the end of the side pipe and 
+    C is the inner diameter of the pipe"""
+    return m.pi/4 * C**2 * (A + B - C/2)
 
 def V_adapter(D, D2, L):
     return m.pi/8 * L * (D**2 + D2**2)
