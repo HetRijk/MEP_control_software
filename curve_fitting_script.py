@@ -24,8 +24,8 @@ def logarithm(x, a, b, c):
     loga = a * np.log(b * x) + c
     return loga
 
-def linear(x, a, b, c):
-    return  a * x + b + c
+def linear(x, a, b):
+    return  a * x + b
 
 # Inputs
     
