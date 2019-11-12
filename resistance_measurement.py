@@ -86,12 +86,12 @@ def measurement(tc332, sm2901, dmm2100, meas_time, sample_rate, main_time):
 
 setpoint = 25
 sample_rate = 1
-meas_time = 60*3
+meas_time = 60*30
 source_volt = 1E3
 limit_current = 1E-7
 sleep_time = 0
 
-meas_name = 'wo3193_r4123' 
+meas_name = 'wo3193_r13_airtoh2' 
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
 
@@ -116,6 +116,12 @@ except:
     pass
 
 log = open(meas_name + '\\' + meas_name + '_log.txt', 'w+')
+
+instr.log_and_print(log, "Temperature setpoint is %s C" % setpoint)
+instr.log_and_print(log, "Sample rate is %s Hz" % sample_rate)
+instr.log_and_print(log, "Measurement time is %s s" % meas_time)
+instr.log_and_print(log, "Source voltage is %s mV" % source_volt)
+instr.log_and_print(log, "Limit current starts at %s A" % limit_current)
 
 # Connect to device
 tc332 = tc.connect_tc332()
