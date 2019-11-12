@@ -84,14 +84,14 @@ def measurement(tc332, sm2901, dmm2100, meas_time, sample_rate, main_time):
         
     return temp, current, voltage, setpoints, pressure
 
-setpoint = 65
+setpoint = 25
 sample_rate = 1
-meas_time = 7200
-source_volt = 1E2
+meas_time = 60*3
+source_volt = 1E3
 limit_current = 1E-7
 sleep_time = 0
 
-meas_name = 'wo3189_r13_h2toair' 
+meas_name = 'wo3193_r4123' 
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
 
@@ -172,6 +172,11 @@ instr.save_data('%s\%s_resistance' % (data_folder, meas_name), resistances)
 instr.save_data('%s\%s_pressure' % (data_folder, meas_name), pressure)
 
 instr.log_and_print(log, 'Measurement done')
+
+mean    = np.mean(resistances)
+std     = np.std(resistances)
+text    = "Mean resistance is %e with std %e" % (mean, std)
+instr.log_and_print(log, text)
 #tc.set_heater_range(tc332, 0)
 
 # Plots

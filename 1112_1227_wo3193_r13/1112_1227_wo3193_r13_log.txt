@@ -1,0 +1,6 @@
+Devices connected
+Setup completed
+Start measurement at 2019-11-12 12:27:28.922681
+And takes 3.00 minutes
+Measurement done
+Mean resistance is 2.102501e+09 with std 2.858965e+09
