@@ -86,14 +86,16 @@ def measurement(tc332, sm2901, dmm2100, meas_time, sample_rate, main_time):
 
 setpoint = 65
 sample_rate = 1
-meas_time = 60*60
+meas_time1 = 60*9
+meas_time2 = 60*1
 source_volt = 1E3
-limit_current = 1E-6
+limit_current = 1E-7
 sleep_time = 0
 
-meas_name = 'wo3193_r13_h2toair' 
+meas_name = 'wo3193_r13_h2_100C' 
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
+meas_time = meas_time1 + meas_time2
 
 sample_time = sample_rate**(-1)
 meas_len = int(meas_time / sample_time)
@@ -151,7 +153,7 @@ instr.log_and_print(log, 'And takes %0.2f minutes' % (meas_time/60))
 
 meas_temp, meas_current, meas_voltage, meas_setpoints, meas_pressure = measurement(
                                                                         tc332, sm2901, dmm2100,
-                                                                        meas_time, sample_rate, main_time)
+                                                                        meas_time1, sample_rate, main_time)
 
 temp += meas_temp
 current += meas_current
@@ -159,6 +161,15 @@ voltage += meas_voltage
 setpoints += meas_setpoints
 pressure += meas_pressure
 
+meas_temp, meas_current, meas_voltage, meas_setpoints, meas_pressure = measurement(
+                                                                        tc332, sm2901, dmm2100,
+                                                                        meas_time2, sample_rate, main_time)
+
+temp += meas_temp
+current += meas_current
+voltage += meas_voltage
+setpoints += meas_setpoints
+pressure += meas_pressure
 
 temp = np.array(temp).transpose()
 current = np.array(current).transpose()

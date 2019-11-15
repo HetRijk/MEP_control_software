@@ -1,0 +1,8 @@
+Measurements taken of WO3193 chip with Pt
+At 25 degrees celsius
+At 1 V souce voltage
+
+Started in Air
+Exposed to H2
+Left in H2 overnight
+Exposed to air again in the morning while measuring

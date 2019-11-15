@@ -1,0 +1,11 @@
+Temperature setpoint is 65 C
+Sample rate is 1 Hz
+Measurement time is 600 s
+Source voltage is 1000.0 mV
+Limit current starts at 1e-07 A
+Devices connected
+Setup completed
+Start measurement at 2019-11-15 16:42:46.199797
+And takes 10.00 minutes
+Measurement done
+Mean resistance is 2.292685e+08 with std 2.295150e+08

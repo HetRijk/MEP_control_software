@@ -29,15 +29,15 @@ def linear(x, a, b):
 
 # Inputs
     
-folder = r'D:\Rijk\MEP_control_software\Measurements\1106_1116_mixing_pressure_test_small_main\data'
-file = '1106_1116_mixing_pressure_test_small_main_pressure'
+folder = r'D:\Rijk\MEP_control_software\1113_1139_wo3193_r13_h2_static_30_min\data'
+file = '1113_1139_wo3193_r13_h2_static_resistance'
 
 func = linear
 
-start   = 400
+start   = 0
 stop    = 3599
 
-p0 = [1, 1, 1]
+p0 = [1, 1]
 #p0      = [2E7, 1E4, 2E7]
 
 # Code
