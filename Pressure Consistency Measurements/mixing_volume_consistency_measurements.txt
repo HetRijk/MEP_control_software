@@ -1,0 +1,18 @@
+Set supply volume for pressure controller 26-11 untill 28-11
+
+When the pressure controller is given a set volume of gas as high pressure input, it cannot give the main chamber a higher pressure that the one of the given volume. Therefore when the input voltage of the PC corresponds to a higher pressure than the given pressure, the pc should open up completely and give that pressure to the main chamber, while giving off an error beep.
+However, the pc lets some amount of gas leak away, therefore the given pressure cannot be maintained infinitely, but after some time the pressure will start to drop.
+
+Measurement details
+Start with all chambers under vacuum pressure (here: 0.08 bar)
+Prepare air and h2 chambers with 1 bar of gas.
+Let them expand into mixing chamber
+Give pc a voltage that corresponds to a lower pressure than that of the mixed volume and measure until the pressure starts to drop
+
+Given pressure: 5V
+Done at
+4V
+3V
+2V
+
+- How long does it last at each voltage?

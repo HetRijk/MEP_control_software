@@ -84,14 +84,14 @@ def measurement(tc332, sm2901, dmm2100, meas_time, sample_rate, main_time):
         
     return temp, current, voltage, setpoints, pressure
 
-setpoint = 65
+setpoint = 25
 sample_rate = 1
-meas_time = 60*60
+meas_time = 60*10
 source_volt = 1E3
-limit_current = 1E-6
+limit_current = 1E-7
 sleep_time = 0
 
-meas_name = 'wo3193_r13_h2toair' 
+meas_name = 'wo3193_r13_airStatic' 
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
 

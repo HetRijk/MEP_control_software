@@ -55,10 +55,10 @@ def measurement(dmm2100, meas_time, sample_rate, main_time):
     return voltage, pressure
 
 sample_rate = 1
-meas_time = 600
+meas_time = 60*60
 sleep_time = 0
 
-meas_name = 'mixing_pressure_test_small_main_03bar' 
+meas_name = 'mixing_volume_consistency_2V' 
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
 

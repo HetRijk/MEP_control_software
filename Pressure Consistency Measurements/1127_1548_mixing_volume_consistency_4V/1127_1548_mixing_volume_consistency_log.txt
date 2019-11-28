@@ -1,0 +1,5 @@
+Devices connected
+Setup completed
+Start high measurement at 2019-11-27 15:48:54.151388
+And takes 30.00 minutes
+Measurement done
