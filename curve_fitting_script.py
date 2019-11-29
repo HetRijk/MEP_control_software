@@ -29,15 +29,15 @@ def linear(x, a, b):
 
 # Inputs
     
-folder = r'D:\Rijk\MEP_control_software\1113_1139_wo3193_r13_h2_static_30_min\data'
-file = '1113_1139_wo3193_r13_h2_static_resistance'
+folder = r'C:\Users\Rijk\Documents\MEP\MEP_control_software\Measurements\WO3189\Important ones\Time constants 65C\1031_1552_wo3189_r13_h2toair\data'
+file = '1031_1552_wo3189_r13_h2toair_resistance'
 
-func = linear
+func = reverse_exponent
 
-start   = 0
-stop    = 3599
+start   = 1180
+stop    = 2000
 
-p0 = [1, 1]
+p0 = [1, 1, 1]
 #p0      = [2E7, 1E4, 2E7]
 
 # Code
@@ -64,11 +64,13 @@ plt.close('all')
 plt.plot(xdata0, ydata0)
 plt.plot(xdata + start, func(xdata, *popt))
 
+plt.yscale('log')
+
 plt.legend(['Data', 'Fit'])
 
-instr.save_plot(file_name + '_fit')
-
-instr.save_data(file_name + '_fit_coef', popt)
-instr.save_data(file_name + '_fit_cov', pcov)
-instr.save_data(file_name + '_fit_data', np.array([xdata, func(xdata, *popt)]))
+#instr.save_plot(file_name + '_fit')
+#
+#instr.save_data(file_name + '_fit_coef', popt)
+#instr.save_data(file_name + '_fit_cov', pcov)
+#instr.save_data(file_name + '_fit_data', np.array([xdata, func(xdata, *popt)]))
 
