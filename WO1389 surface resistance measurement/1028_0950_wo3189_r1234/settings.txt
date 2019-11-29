@@ -1,0 +1,6 @@
+setpoint = 25
+sample_rate = 1
+meas_time = 600
+source_volt = 1E2
+limit_current = 1E-7
+sleep_time = 0
