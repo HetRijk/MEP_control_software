@@ -51,7 +51,7 @@ pc_main         = cylinder(6.5, 95) #Estimated
 
 Valve     = cylinder(14, 80)
 
-P0 = 0.3
+P0 = 1
 
 
 Vair    = 2*adapter + chamber_large
