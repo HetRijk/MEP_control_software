@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 import instrument_module as instr
 
-def exponent(x, a, b, c):
+def negative_exponent(x, a, b, c):
     return a * np.exp(- x / b) + c
 
 def reverse_exponent(x, a, b, c):
@@ -29,16 +29,17 @@ def linear(x, a, b):
 
 # Inputs
     
-folder = r'C:\Users\Rijk\Documents\MEP\MEP_control_software\Measurements\WO3189\Important ones\Time constants 65C\1031_1552_wo3189_r13_h2toair\data'
-file = '1031_1552_wo3189_r13_h2toair_resistance'
+folder = r'C:\Users\Rijk\Documents\MEP\MEP_control_software\Measurements\WO3189\Time constants 50C\1025_1722_wo3189_r13 h2 to air\data'
+file = '1025_1722_wo3189_r13_resistance'
 
-func = reverse_exponent
+func = negative_exponent
 
-start   = 1180
-stop    = 2000
+start   = 1219
+stop    = 3500
 
 p0 = [1, 1, 1]
 #p0      = [2E7, 1E4, 2E7]
+#bounds = (0, np.inf)
 
 # Code
 file_name = os.path.join(folder, file)
@@ -54,23 +55,54 @@ ydata = ydata0[start:stop]
 
 xdata = xdata - min(xdata)
 
+
+for i in range(len(ydata)):
+    if ydata[i] < 0.01:
+        ydata[i] = 1E9
+    else:
+        ydata[i] = ydata[i]
+
 # Perform regular fit and constrained fit
-#popt = np.polyfit(np.log(xdata), ydata, deg=1)
 popt, pcov = curve_fit(func, xdata, ydata, p0, maxfev=int(1E7))
+#popt, pcov = curve_fit(func, xdata, ydata, p0, maxfev=int(1E7), bounds=bounds)
 
 # Plot fit
+
 plt.close('all')
 
+plt.figure()
 plt.plot(xdata0, ydata0)
 plt.plot(xdata + start, func(xdata, *popt))
 
+plt.title('Resistance with source voltage %s mV' % 1000)
+plt.xlabel('t(s)')
+plt.ylabel('Resistance (Ohm)')
+
 plt.yscale('log')
+#plt.yscale('linear')
 
 plt.legend(['Data', 'Fit'])
 
-#instr.save_plot(file_name + '_fit')
-#
-#instr.save_data(file_name + '_fit_coef', popt)
-#instr.save_data(file_name + '_fit_cov', pcov)
-#instr.save_data(file_name + '_fit_data', np.array([xdata, func(xdata, *popt)]))
+instr.save_plot(file_name + '_fit')
+
+# Zoomed in on the fit
+plt.figure()
+plt.plot(xdata0, ydata0)
+plt.plot(xdata + start, func(xdata, *popt))
+
+plt.title('Resistance with source voltage %s mV' % 1000)
+plt.xlabel('t(s)')
+plt.ylabel('Resistance (Ohm)')
+
+#plt.yscale('log')
+plt.yscale('linear')
+plt.xlim([start, stop])
+
+plt.legend(['Data', 'Fit'])
+
+instr.save_plot(file_name + '_fit_zoom')
+
+instr.save_data(file_name + '_fit_coef', popt)
+instr.save_data(file_name + '_fit_cov', pcov)
+instr.save_data(file_name + '_fit_data', np.array([xdata, func(xdata, *popt)]))
 

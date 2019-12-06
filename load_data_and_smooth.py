@@ -22,8 +22,8 @@ def smooth(y, box_pts):
 
 # Inputs
     
-folder = r'C:\Users\Rijk\Documents\MEP\MEP_control_software\Measurements\WO3189\Important ones\Time constants 65C\1031_1552_wo3189_r13_h2toair\data'
-file_name = '1031_1552_wo3189_r13_h2toair_resistance'
+folder = r'C:\Users\Rijk\Documents\MEP\MEP_control_software\Measurements\WO3193\25 degrees\1112_1542_wo3193_r13_airtoh2\data'
+file_name = '1112_1542_wo3193_r13_airtoh2_resistance'
 file = os.path.join(folder, file_name)
 
 start   = 0
@@ -40,17 +40,24 @@ data = instr.load_data(file)
 xdata0 = data[0]
 ydata0 = data[1] 
 
-y_smooth = smooth(ydata0, 20)
+y = np.zeros(np.shape(ydata0))
+for i in range(len(ydata0)):
+    if ydata0[i] < 0.01:
+        y[i] = 1E9
+    else:
+        y[i] = ydata0[i]
+
+#y_smooth = smooth(ydata0, 20)
 
 plt.figure()
 plt.plot(xdata0, ydata0)
-plt.plot(xdata0, y_smooth)
+plt.plot(xdata0, y)
 
 #plt.yscale('log')
 
 plt.xlabel('t (s)')
 plt.ylabel('Resistance (Ohm)')
 
-plt.legend(['Original data', 'Smooth 20'])
+plt.legend(['Original data', 'Edited'])
 
 
