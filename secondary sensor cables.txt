@@ -1,0 +1,13 @@
+Secondary hydrogen sensor - cable management
+
+Layout
+Pin 1	Green 		Heater +
+Pin 2	Red		Sensor +
+Pin 3	Orange		Heater -
+Pin 4	Blue		Sensor -
+
+Adapter
+Green	to	Black
+Red	to	Red
+Orange	to	Brown
+Blue	to	Blue

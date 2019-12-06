@@ -1,0 +1,7 @@
+Sample rate is 1 Hz
+Measurement time is 600 s
+Devices connected
+Setup completed
+Start measurement at 2019-12-05 12:49:54.006815
+And takes 10.00 minutes
+Measurement done
