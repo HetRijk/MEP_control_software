@@ -132,6 +132,14 @@ def log_and_print(log, text):
     log.write(text + '\n')
     print(text)
     
+def log_mean_std(log, data, data_name):
+    """"Logs the mean and the standard deviation of input data. 
+    NB: make sure you only put measurement values in, not also the time data"""
+    mean    = np.mean(data)
+    std     = np.std(data)
+    text    = "Mean %s is %e with std %e" % (data_name, mean, std)
+    instr.log_and_print(log, text)
+    
 def pt1000_temp(resistance):
     temperature = 1E-05*resistance**2 + 0.2311*resistance - 243.32
     return temperature
