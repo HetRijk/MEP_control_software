@@ -81,14 +81,13 @@ def measurement(sm2901, meas_time, sample_rate, main_time):
         
     return current, voltage
 
-setpoint = 25
 sample_rate = 1
 meas_time = 60*10
-source_volt = 1E3
-limit_current = 1E-5
+source_volt = 5E3
+limit_current = 1E-6
 sleep_time = 0
 
-meas_name = 'secondary_sensor' 
+meas_name = '33MOhm_resistance' 
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
  
@@ -114,7 +113,6 @@ except:
 
 log = open(meas_name + '\\' + meas_name + '_log.txt', 'w+')
 
-instr.log_and_print(log, "Temperature setpoint is %s C" % setpoint)
 instr.log_and_print(log, "Sample rate is %s Hz" % sample_rate)
 instr.log_and_print(log, "Measurement time is %s s" % meas_time)
 instr.log_and_print(log, "Source voltage is %s mV" % source_volt)
@@ -162,11 +160,9 @@ instr.save_data('%s\%s_resistance' % (data_folder, meas_name), resistances)
 
 instr.log_and_print(log, 'Measurement done')
 
-mean    = np.mean(resistances)
-std     = np.std(resistances)
-text    = "Mean resistance is %e with std %e" % (mean, std)
-instr.log_and_print(log, text)
-#tc.set_heater_range(tc332, 0)
+instr.log_mean_std(log, resistances[1], 'resistance')
+instr.log_mean_std(log, voltage[1], 'voltage_mV')
+instr.log_mean_std(log, current[1], 'current')
 
 # Plots
 plt.close('all')
