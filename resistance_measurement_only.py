@@ -82,7 +82,7 @@ def measurement(sm2901, meas_time, sample_rate, main_time):
     return current, voltage
 
 sample_rate = 1
-meas_time = 60*10
+meas_time = 60*30
 source_volt = 5E3
 limit_current = 1E-6
 sleep_time = 0
