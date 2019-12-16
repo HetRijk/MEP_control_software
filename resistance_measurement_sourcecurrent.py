@@ -81,11 +81,11 @@ def measurement(sm2901, meas_time, sample_rate, main_time):
     return current, voltage
 
 sample_rate     = 1
-meas_time       = 60*5
+meas_time       = 60*10
 source_current  = 1E-7
 limit_voltage   = 1E1
 
-meas_name = '33MOhm_resistance_coax_9-commonground' 
+meas_name = '33MOhm_resistance_coax_8-forceground' 
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
  
