@@ -82,12 +82,12 @@ def measurement(sm2901, meas_time, sample_rate, main_time):
     return current, voltage
 
 sample_rate = 1
-meas_time = 60*30
+meas_time = 60*0.5
 source_volt = 5E3
 limit_current = 1E-6
 sleep_time = 0
 
-meas_name = '33MOhm_resistance' 
+meas_name = '33MOhm_resistance_coax_noContactAtSM' 
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
  
@@ -122,7 +122,7 @@ instr.log_and_print(log, "Limit current starts at %s A" % limit_current)
 sm2901 = sm.connect_sm2901()
 instr.log_and_print(log, 'Devices connected')
 
-sm.set_source_voltage(sm2901, source_volt)
+#sm.set_source_voltage(sm2901, source_volt)
 sm.set_limit_current(sm2901, limit_current)
 
 #tc.set_tuning_mode(tc332, 4)
@@ -192,7 +192,7 @@ plt.title('Resistance with source voltage %s mV' % source_volt)
 plt.xlabel('t(s)')
 plt.ylabel('Resistance (Ohm)')
 
-instr.save_plot('%s\%s_resistance_log' % (figure_folder, meas_name))
+instr.save_plot('%s\%s_resistance' % (figure_folder, meas_name))
 
 # Close log file
 log.close()

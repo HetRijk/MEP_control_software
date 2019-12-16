@@ -26,7 +26,7 @@ import multimeter_module as dmm
 # Settings
 # =============================================================================
 
-source_volt_start   = 2.5E3
+source_volt_start   = -5E3
 source_volt_end     = 5E3
 num_points_v        = 10
 
@@ -34,15 +34,15 @@ samples_per_v       = 10
 sample_rate         = 1
 
 limit_current = 1E-3
-sleep_time = 0
 
-meas_name = 'Secondary_sensor_Source2_5V' 
+meas_name = '33MOhm_resistance_IV_curve_test' 
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
 # Setting calculations
 
 sample_time     = sample_rate**(-1)
 meas_num        = samples_per_v * num_points_v
+meas_time_per_v = samples_per_v / sample_rate
 meas_time       = meas_num / sample_rate
 
 source_volts    = np.linspace(source_volt_start, source_volt_end, num_points_v)
@@ -80,7 +80,6 @@ instr.log_and_print(log, 'Devices connected')
 sm.set_source_voltage(sm2901, source_volt_start)
 sm.set_limit_current(sm2901, limit_current)
 
-time.sleep(sleep_time)
 instr.log_and_print(log, 'Setup completed')
 
 # =============================================================================
@@ -93,47 +92,27 @@ instr.log_and_print(log, 'Start measurement at %s' % instr.date_time())
 instr.log_and_print(log, 'And takes %0.2f minutes' % (meas_time/60))
 
 t = instr.time_since(main_time)
-t_meas2 = 0
-t_meas = time.time()
 t_loop = time.time()
 limit_hit = 0
 
-temp = list()
 current = list()
 voltage = list()
-setpoints = list()
-pressure = list()
 
-while t_meas2 < meas_time:
-    # Measuring
-    current.append([t, sm.meas_current(sm2901)])
-    voltage.append([t, sm.meas_voltage(sm2901)])
+for i in range(num_points_v):    
+    sm.set_source_voltage(sm2901, source_volts[i])
+    time.sleep(sample_rate**-1 * 2)
     
-    # Check current limit
-    limit_current = sm.get_limit_current(sm2901)
-    if limit_hit == 1:
-        limit_hit = 0
-    elif not sm.check_limit(sm2901):
-        # Discard last measured values
-        del temp[-1]
-        del current[-1]
-        del voltage[-1]
-        del setpoints[-1]
-        del pressure[-1]
-
-        # Increase limits
-        limit_current = sm.get_limit_current(sm2901)
-        limit_current = 10*limit_current
-        sm.set_limit_current(sm2901, limit_current)
-        limit_hit = 1
-        instr.log_and_print(log, 'Current limit increased to %0.0e A at %2.1d s after start' % (limit_current, t))
-
-    #Timing
-    time.sleep(sample_rate**-1 - instr.time_since(t_loop))
-    t_loop = time.time()
-    t = instr.time_since(main_time)
-    t_meas2 = instr.time_since(t_meas)
-
+    for i in range(samples_per_v):
+        # Measuring
+        current.append([t, sm.meas_current(sm2901)])
+        voltage.append([t, sm.meas_voltage(sm2901)])
+        
+        #Timing
+        sleepy_time =sample_rate**-1 - instr.time_since(t_loop)
+        if not sleepy_time < 0:
+            time.sleep(sleepy_time)
+        t_loop = time.time()
+        t = instr.time_since(main_time)
 
 current = np.array(current).transpose()
 voltage = np.array(voltage).transpose()
@@ -160,7 +139,7 @@ plt.close('all')
 # Voltage
 plt.figure(0)
 plt.plot(voltage[0], voltage[1])
-plt.title('Voltage measured with source voltage %s mV' % source_volt)
+plt.title('Voltage supplied by Sourcemeter')
 plt.xlabel('t(s)')
 plt.ylabel('Voltage (V)')
 
@@ -169,7 +148,7 @@ instr.save_plot('%s\%s_voltage' % (figure_folder, meas_name))
 # Current
 plt.figure(1)
 plt.plot(current[0], current[1]*1E9)
-plt.title('Current with source voltage %s mV' % source_volt)
+plt.title('Current measured by Sourcemeter')
 plt.xlabel('t(s)')
 plt.ylabel('Current (nA)')
 
@@ -178,7 +157,7 @@ instr.save_plot('%s\%s_current' % (figure_folder, meas_name))
 # Resistance
 plt.figure(2)
 plt.plot(resistances[0], resistances[1])
-plt.title('Resistance with source voltage %s mV' % source_volt)
+plt.title('Resistance measured')
 plt.xlabel('t(s)')
 plt.ylabel('Resistance (Ohm)')
 
