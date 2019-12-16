@@ -82,12 +82,12 @@ def measurement(sm2901, meas_time, sample_rate, main_time):
     return current, voltage
 
 sample_rate = 1
-meas_time = 60*0.5
-source_volt = 5E3
+meas_time = 60*1
+source_volt = 5
 limit_current = 1E-6
 sleep_time = 0
 
-meas_name = '33MOhm_resistance_coax_noContactAtSM' 
+meas_name = '33MOhm_resistance_coax_5+senseground' 
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
  
@@ -115,7 +115,7 @@ log = open(meas_name + '\\' + meas_name + '_log.txt', 'w+')
 
 instr.log_and_print(log, "Sample rate is %s Hz" % sample_rate)
 instr.log_and_print(log, "Measurement time is %s s" % meas_time)
-instr.log_and_print(log, "Source voltage is %s mV" % source_volt)
+instr.log_and_print(log, "Source voltage is %s V" % source_volt)
 instr.log_and_print(log, "Limit current starts at %s A" % limit_current)
 
 # Connect to device
@@ -161,7 +161,7 @@ instr.save_data('%s\%s_resistance' % (data_folder, meas_name), resistances)
 instr.log_and_print(log, 'Measurement done')
 
 instr.log_mean_std(log, resistances[1], 'resistance')
-instr.log_mean_std(log, voltage[1], 'voltage_mV')
+instr.log_mean_std(log, voltage[1], 'voltage_V')
 instr.log_mean_std(log, current[1], 'current')
 
 # Plots
@@ -170,7 +170,7 @@ plt.close('all')
 # Voltage
 plt.figure(0)
 plt.plot(voltage[0], voltage[1])
-plt.title('Voltage measured with source voltage %s mV' % source_volt)
+plt.title('Voltage measured with source voltage %s V' % source_volt)
 plt.xlabel('t(s)')
 plt.ylabel('Voltage (V)')
 
@@ -179,7 +179,7 @@ instr.save_plot('%s\%s_voltage' % (figure_folder, meas_name))
 # Current
 plt.figure(1)
 plt.plot(current[0], current[1]*1E9)
-plt.title('Current with source voltage %s mV' % source_volt)
+plt.title('Current with source voltage %s V' % source_volt)
 plt.xlabel('t(s)')
 plt.ylabel('Current (nA)')
 
@@ -188,7 +188,7 @@ instr.save_plot('%s\%s_current' % (figure_folder, meas_name))
 # Resistance
 plt.figure(2)
 plt.plot(resistances[0], resistances[1])
-plt.title('Resistance with source voltage %s mV' % source_volt)
+plt.title('Resistance with source voltage %s V' % source_volt)
 plt.xlabel('t(s)')
 plt.ylabel('Resistance (Ohm)')
 

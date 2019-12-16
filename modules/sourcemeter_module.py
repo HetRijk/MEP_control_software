@@ -29,21 +29,35 @@ def connect_sm2901():
 #def set_current(instrument, amps):
 #    instrument.write(':SOURce:CURRent:LEVel:IMMediate:AMPLitude %s' % amps)
 
-def set_source_voltage(instrument, mvolts):
-    volts = mvolts * 10**-3
+def set_source_voltage(instrument, volts):
     instrument.write(':SOURce:VOLTage:LEVel:IMMediate:AMPLitude %s' % volts)
     
     # Check if value was set
     time.sleep(0.5)
     volts_actual = get_source_voltage(instrument)
     if volts_actual != volts:
-        print('Source voltage was NOT correctly set to %s mV' % mvolts)
+        print('Source voltage was NOT correctly set to %s V' % volts)
     else:
-        print('Source voltage was set to %s mV' % mvolts)
+        print('Source voltage was set to %s V' % volts)
+
+def set_source_current(instrument, amps):
+    instrument.write(':SOURce:CURRent:LEVel:IMMediate:AMPLitude %s' % amps)
+    
+    # Check if value was set
+    time.sleep(0.5)
+    amps_actual = get_source_current(instrument)
+    if amps_actual != amps:
+        print('Source current was NOT correctly set to %s A' % amps)
+    else:
+        print('Source current was set to %s A' % amps)
     
 def set_limit_current(instrument, value):
     """Sets the current limit to value in amperes"""
     instrument.write('SENSe:CURRent:DC:PROTection:LEVel %s' % value)
+    
+def set_limit_voltage(instrument, value):
+    """Sets the voltage limit to value in volts"""
+    instrument.write('SENSe:VOLTage:DC:PROTection:LEVel %s' % value)    
     
 ## Query functions
 
@@ -88,8 +102,21 @@ def get_source_voltage(instrument):
         
     return value
 
+def get_source_current(instrument):
+    """Queries the source current of the sourcemeter"""
+    source = instrument.query('SOURce:CURRent:LEVel:IMMediate:AMPLitude?')
+    
+    # Source is a string, so values have to be parsed
+    value = float(source[1:7])
+    if source[0] == '-':
+        value = -value
+    if int(source[12:16]) != 0:
+        value = value*10**int(source[12:16])
+        
+    return value
+
 def get_limit_current(instrument):
-    """Queries instrument for current limti set"""
+    """Queries instrument for current limit set"""
     limit = instrument.query('SENSe:CURRent:DC:PROTection?')
     
     # Source is a string, so values have to be parsed
@@ -101,6 +128,19 @@ def get_limit_current(instrument):
     
     return value
     
+def get_limit_voltage(instrument):
+    """Queries instrument for voltage limit set"""
+    limit = instrument.query('SENSe:VOLTage:DC:PROTection?')
+    
+    # Source is a string, so values have to be parsed
+    value = float(limit[1:7])
+    if limit[0] == '-':
+        value = -value
+    if int(limit[12:16]) != 0:
+        value = value*10**int(limit[12:16])
+    
+    return value
+
 def check_limit(instrument):
     """Return Boolean on if current is within limit"""
     value = instrument.query('SENSe:CURRent:DC:PROTection:TRIPped?')[0]

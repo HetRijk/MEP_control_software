@@ -87,7 +87,7 @@ def measurement(tc332, sm2901, dmm2100, meas_time, sample_rate, main_time):
 setpoint = 25
 sample_rate = 1
 meas_time = 60*10
-source_volt = 1E3
+source_volt = 1
 limit_current = 1E-7
 sleep_time = 0
 
@@ -120,7 +120,7 @@ log = open(meas_name + '\\' + meas_name + '_log.txt', 'w+')
 instr.log_and_print(log, "Temperature setpoint is %s C" % setpoint)
 instr.log_and_print(log, "Sample rate is %s Hz" % sample_rate)
 instr.log_and_print(log, "Measurement time is %s s" % meas_time)
-instr.log_and_print(log, "Source voltage is %s mV" % source_volt)
+instr.log_and_print(log, "Source voltage is %s V" % source_volt)
 instr.log_and_print(log, "Limit current starts at %s A" % limit_current)
 
 # Connect to device
@@ -191,7 +191,7 @@ plt.close('all')
 # Voltage
 plt.figure(0)
 plt.plot(voltage[0], voltage[1])
-plt.title('Voltage measured with source voltage %s mV' % source_volt)
+plt.title('Voltage measured with source voltage %s V' % source_volt)
 plt.xlabel('t(s)')
 plt.ylabel('Voltage (V)')
 
@@ -200,7 +200,7 @@ instr.save_plot('%s\%s_voltage' % (figure_folder, meas_name))
 # Current
 plt.figure(1)
 plt.plot(current[0], current[1]*1E9)
-plt.title('Current with source voltage %s mV' % source_volt)
+plt.title('Current with source voltage %s V' % source_volt)
 plt.xlabel('t(s)')
 plt.ylabel('Current (nA)')
 
@@ -209,7 +209,7 @@ instr.save_plot('%s\%s_current' % (figure_folder, meas_name))
 # Resistance
 plt.figure(2)
 plt.plot(resistances[0], resistances[1])
-plt.title('Resistance with source voltage %s mV' % source_volt)
+plt.title('Resistance with source voltage %s V' % source_volt)
 plt.xlabel('t(s)')
 plt.ylabel('Resistance (Ohm)')
 
