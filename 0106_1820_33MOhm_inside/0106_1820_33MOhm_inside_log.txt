@@ -1,0 +1,12 @@
+Sample rate is 10 Hz
+Measurement time is 600 s
+Source current is 1e-08 A
+Limit voltage starts at 1.0 V
+Devices connected
+Setup completed
+Start measurement at 2020-01-06 18:20:50.241764
+And takes 10.00 minutes
+Measurement done
+Mean resistance is 3.023224e+07 with std 1.537301e+06
+Mean voltage_V is 3.022526e-01 with std 1.370331e-02
+Mean current is 1.000056e-08 with std 6.976061e-11
