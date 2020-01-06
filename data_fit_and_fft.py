@@ -97,24 +97,26 @@ plt.legend(['Data', 'Fit'])
 
 #instr.save_plot(file_name + '_fit')
 
-## Zoomed in on the fit
-#plt.figure()
-#plt.plot(xdata0, ydata0)
-#plt.plot(xdata + start, func(xdata, *popt))
-#
-#plt.title('Resistance with source voltage %s mV' % 1000)
-#plt.xlabel('t(s)')
-#plt.ylabel('Resistance (Ohm)')
-#
-##plt.yscale('log')
-#plt.yscale('linear')
-#plt.xlim([start, stop])
-#
-#plt.legend(['Data', 'Fit'])
-#
-#instr.save_plot(file_name + '_fit_zoom')
-#
-#instr.save_data(file_name + '_fit_coef', popt)
-#instr.save_data(file_name + '_fit_cov', pcov)
-#instr.save_data(file_name + '_fit_data', np.array([xdata, func(xdata, *popt)]))
+## Subtract linear part of the measurement
+y_nonlin = ydata0 - func(xdata0, *popt)
 
+# Fourier Transform of data
+y_fft = np.fft.fft(y_nonlin)
+
+fft_mag     = np.abs(y_fft)
+fft_phase   = np.angle(y_fft) 
+
+plt.figure()
+plt.plot(fft_mag)
+
+plt.xlabel('f(Hz)')
+plt.title('FFT of WO3196 noise data with linear part subtracted')
+plt.legend(['Magnitude'])
+
+
+plt.figure()
+plt.plot(fft_phase)
+
+plt.xlabel('f(Hz)')
+plt.title('FFT of WO3196 noise data with linear part subtracted')
+plt.legend(['Phase'])

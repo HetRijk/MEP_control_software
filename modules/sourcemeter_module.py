@@ -141,9 +141,19 @@ def get_limit_voltage(instrument):
     
     return value
 
-def check_limit(instrument):
+def check_current_limit(instrument):
     """Return Boolean on if current is within limit"""
     value = instrument.query('SENSe:CURRent:DC:PROTection:TRIPped?')[0]
+    if value == '0':
+        return_value = True
+    else:
+        return_value = False
+    return return_value
+
+
+def check_voltage_limit(instrument):
+    """Return Boolean on if current is within limit"""
+    value = instrument.query('SENSe:VOLTage:DC:PROTection:TRIPped?')[0]
     if value == '0':
         return_value = True
     else:
