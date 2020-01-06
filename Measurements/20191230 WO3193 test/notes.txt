@@ -1,0 +1,5 @@
+Sourcemeter not set to 4-wire mode, so I am not sure what I measured here
+
+No change seen when introducing H2
+
+Tested if signal was due to resistance by halving the source voltage and measuring

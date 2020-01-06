@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+s# -*- coding: utf-8 -*-
 """
 Created on Mon Oct 14 14:50:11 2019
 
@@ -85,7 +85,7 @@ meas_time       = 60*10
 source_current  = 1E-7
 limit_voltage   = 1E1
 
-meas_name = '33MOhm_resistance_coax_8-forceground' 
+meas_name = '33MOhm_main_5_noground' 
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
  
@@ -104,7 +104,7 @@ try:
         pass
     try:
         os.mkdir(figure_folder)
-    except:
+    except: 
         pass
 except:
     pass

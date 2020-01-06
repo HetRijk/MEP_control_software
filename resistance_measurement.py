@@ -77,21 +77,24 @@ def measurement(tc332, sm2901, dmm2100, meas_time, sample_rate, main_time):
 #            instr.log_and_print(log, 'Current limit decreased to %0.0e A at %2.1d s after start' % (limit_current, t))
         
         #Timing
-        time.sleep(sample_rate**-1 - instr.time_since(t_loop))
+        if sample_rate**-1 - instr.time_since(t_loop) > 0:
+            time.sleep(sample_rate**-1 - instr.time_since(t_loop))
+        else:
+            pass
         t_loop = time.time()
         t = instr.time_since(main_time)
         t_meas2 = instr.time_since(t_meas)
         
     return temp, current, voltage, setpoints, pressure
 
-setpoint = 25
-sample_rate = 1
+setpoint = 65
+sample_rate = 5
 meas_time = 60*10
-source_volt = 1
-limit_current = 1E-7
+#source_volt = 1E0
+#limit_current = 15E-9
 sleep_time = 0
 
-meas_name = 'wo3193_r13_airStatic' 
+meas_name = 'wo3196_dev2_h2' 
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
 
@@ -128,9 +131,9 @@ tc332 = tc.connect_tc332()
 sm2901 = sm.connect_sm2901()
 dmm2100 = dmm.connect_dmm2110()
 instr.log_and_print(log, 'Devices connected')
-
-sm.set_source_voltage(sm2901, source_volt)
-sm.set_limit_current(sm2901, limit_current)
+#
+#sm.set_source_voltage(sm2901, source_volt)
+#sm.set_limit_current(sm2901, limit_current)
 
 #tc.set_tuning_mode(tc332, 4)
 #tc.set_heater_range(tc332, 3)
@@ -213,7 +216,7 @@ plt.title('Resistance with source voltage %s V' % source_volt)
 plt.xlabel('t(s)')
 plt.ylabel('Resistance (Ohm)')
 
-instr.save_plot('%s\%s_resistance_log' % (figure_folder, meas_name))
+instr.save_plot('%s\%s_resistance' % (figure_folder, meas_name))
 
 # Temperature
 plt.figure(3)
@@ -232,6 +235,8 @@ plt.plot(pressure[0], pressure[1])
 plt.title('Pressure in main chamber')
 plt.xlabel('t(s)')
 plt.ylabel('Pressure (bar)')
+
+#plt.ylim([0, max(pressure[1])])
 
 instr.save_plot('%s\%s_pressure' % (figure_folder, meas_name))
 
