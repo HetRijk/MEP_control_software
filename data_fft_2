@@ -1,0 +1,72 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Jan  7 16:15:48 2020
+
+@author: rich
+"""
+import os
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import pi
+from scipy.fftpack import fft
+import instrument_module as instr
+
+sample_rate = 10
+N = (2 - 0) * sample_rate
+
+main_folder = r'/home/rich/Documents/MEP/MEP_control_software/'
+measurement = '0106_1734_33MOhm_outside'
+measured = '_' + 'resistance'
+file = os.path.join(main_folder, measurement, 'data', measurement + measured)
+
+
+start   = 10
+stop    = 340
+
+# Import data
+data = instr.load_data(file)
+
+xdata0 = data[0]
+ydata0 = data[1] 
+
+if start > 0:
+    if stop < len(xdata0):
+        xdata0 = xdata0[start:stop]
+        ydata0 = ydata0[start:stop]
+    else:
+        print('Stop index too large for current array')
+        xdata0 = xdata0[start:]
+        ydata0 = ydata0[start:]
+        xdata0 = xdata0 - min(xdata0)
+        
+else:
+    print('Start index zero or lower, so not used')
+    if stop < len(xdata0):
+        xdata0 = xdata0[:stop]
+        ydata0 = ydata0[:stop]
+    else:
+        print('Stop index too large for current array')
+
+time = xdata0
+time_data = ydata0
+
+plt.figure()
+plt.plot (time, time_data)
+plt.title ('Time Domain Signal')
+plt.xlabel ('Time')
+plt.ylabel ('Amplitude')
+plt.show ()
+
+frequency = np.linspace (0.0, sample_rate/2, int(N/2))
+
+freq_data = fft(time_data)
+y = 2/N * np.abs (freq_data [0:np.int (N/2)])
+
+plt.figure()
+plt.plot(frequency, y)
+plt.title('Frequency domain Signal')
+plt.xlabel('Frequency in Hz')
+plt.ylabel('Amplitude')
+plt.show()
+

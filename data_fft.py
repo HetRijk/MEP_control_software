@@ -29,14 +29,15 @@ def linear(x, a, b):
 
 # Inputs
     
-folder = r'/home/rich/Documents/MEP/MEP_control_software/0106_1734_33MOhm_outside/data/'
-file_name = '0106_1734_33MOhm_outside_resistance'
-file = os.path.join(folder, file_name)
+main_folder = r'/home/rich/Documents/MEP/MEP_control_software/'
+measurement = '0106_1734_33MOhm_outside'
+measured = '_' + 'resistance'
+file = os.path.join(main_folder, measurement, 'data', measurement + measured)
 
 func = linear
 
 start   = 10
-stop    = 3500
+stop    = 340
 
 p0 = [1, 1]
 #p0      = [2E7, 1E4, 2E7]
@@ -65,26 +66,17 @@ else:
         ydata0 = ydata0[:stop]
     else:
         print('Stop index too large for current array')
-#
-## Correction for logarithmic fitting purposes
-##   gets rid of the negative values in y
-#for i in range(len(ydata)):
-#    if ydata[i] < 0.01:
-#        ydata[i] = 1E9
-#    else:
-#        ydata[i] = ydata[i]
+        
+# Calculate sample rate form xdata
+#   assuming it is constant
+sample_rate = np.round(np.mean(np.diff(xdata0)), decimals=1)**-1
+freqs       = 
 
-# Perform regular fit and constrained fit
-popt, pcov = curve_fit(func, xdata0, ydata0, p0, maxfev=int(1E7))
-#popt, pcov = curve_fit(func, xdata, ydata, p0, maxfev=int(1E7), bounds=bounds)
-
-# Plot fit
-
+# Plot data
 plt.close('all')
 
 plt.figure()
 plt.plot(xdata0, ydata0)
-plt.plot(xdata0 + start, func(xdata0, *popt))
 
 plt.title('Resistance with source voltage %s mV' % 1000)
 plt.xlabel('t(s)')
@@ -93,15 +85,9 @@ plt.ylabel('Resistance (Ohm)')
 #plt.yscale('log')
 #plt.yscale('linear')
 
-plt.legend(['Data', 'Fit'])
-
-#instr.save_plot(file_name + '_fit')
-
-## Subtract linear part of the measurement
-y_nonlin = ydata0 - func(xdata0, *popt)
 
 # Fourier Transform of data
-y_fft = np.fft.fft(y_nonlin)
+y_fft = np.fft.fft(ydata0)
 
 fft_mag     = np.abs(y_fft)
 fft_phase   = np.angle(y_fft) 
@@ -110,7 +96,7 @@ plt.figure()
 plt.plot(fft_mag)
 
 plt.xlabel('f(Hz)')
-plt.title('FFT of WO3196 noise data with linear part subtracted')
+plt.title('FFT of WO3196 noise data')
 plt.legend(['Magnitude'])
 
 
@@ -118,5 +104,5 @@ plt.figure()
 plt.plot(fft_phase)
 
 plt.xlabel('f(Hz)')
-plt.title('FFT of WO3196 noise data with linear part subtracted')
+plt.title('FFT of WO3196 noise data')
 plt.legend(['Phase'])
