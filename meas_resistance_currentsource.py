@@ -182,11 +182,9 @@ instr.save_data('%s\%s_pressure' % (data_folder, meas_name), pressure)
 
 instr.log_and_print(log, 'Measurement done')
 
-mean    = np.mean(resistances)
-std     = np.std(resistances)
-text    = "Mean resistance is %e with std %e" % (mean, std)
-instr.log_and_print(log, text)
-#tc.set_heater_range(tc332, 0)
+instr.log_mean_std(log, resistances[1], 'resistance')
+instr.log_mean_std(log, voltage[1], 'voltage')
+instr.log_mean_std(log, current[1], 'current')
 
 # Plots
 plt.close('all')

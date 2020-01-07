@@ -71,14 +71,13 @@ def measurement(sm2901, meas_time, sample_rate, main_time):
         
     return current, voltage
 
-setpoint = 65
-sample_rate = 10
-meas_time = 60*10
+sample_rate = 200
+meas_time = 60*1
 source_current = 1E-7
 limit_voltage = 1E1
 sleep_time = 0
 
-meas_name = '33MOhm_inside_highersource' 
+meas_name = '33MOhm_highsamplerate_2wire' 
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
  
@@ -153,7 +152,7 @@ instr.save_data('%s\%s_resistance' % (data_folder, meas_name), resistances)
 instr.log_and_print(log, 'Measurement done')
 
 instr.log_mean_std(log, resistances[1], 'resistance')
-instr.log_mean_std(log, voltage[1], 'voltage_V')
+instr.log_mean_std(log, voltage[1], 'voltage')
 instr.log_mean_std(log, current[1], 'current')
 
 # Plots
