@@ -52,35 +52,25 @@ def measurement(sm2901, meas_time, sample_rate, main_time):
             sm.set_limit_current(sm2901, limit_current)
             limit_hit = 1
             instr.log_and_print(log, 'Current limit increased to %0.0e A at %2.1d s after start' % (limit_current, t))
-#        elif current[-1][1] < limit_current/100:
-#            # Discard last measured values
-#            del temp[-1]
-#            del current[-1]
-#            del voltage[-1]
-#            del setpoints[-1]
-#            del pressure[-1]
-#        
-#            # Decrease limits
-#            limit_current = limit_current/10
-#            sm.set_limit_current(sm2901, limit_current)
-#            limit_hit = 1
-#            instr.log_and_print(log, 'Current limit decreased to %0.0e A at %2.1d s after start' % (limit_current, t))
         
         #Timing
-        time.sleep(sample_rate**-1 - instr.time_since(t_loop))
+        if sample_rate**-1 - instr.time_since(t_loop) > 0:
+            time.sleep(sample_rate**-1 - instr.time_since(t_loop))
+        else:
+            pass
         t_loop = time.time()
         t = instr.time_since(main_time)
         t_meas2 = instr.time_since(t_meas)
         
     return current, voltage
 
-sample_rate = 1
-meas_time = 60*1
+sample_rate = 200
+meas_time = 1
 source_volt = 5
 limit_current = 1E-4
 sleep_time = 0
 
-meas_name = '2ndSensor_h2full_2V' 
+meas_name = 'sample_rate_test' 
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
  

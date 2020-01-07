@@ -1,0 +1,8 @@
+Sample rate is 10 Hz
+Measurement time is 60 s
+Source voltage is 5 V
+Limit current starts at 0.0001 A
+Devices connected
+Setup completed
+Start measurement at 2020-01-07 17:23:33.337800
+And takes 1.00 minutes
