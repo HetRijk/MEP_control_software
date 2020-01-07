@@ -1,0 +1,8 @@
+Sample rate is 10 Hz
+Measurement time is 600 s
+Devices connected
+Setup completed
+Start measurement at 2020-01-07 13:22:45.606800
+And takes 10.00 minutes
+Measurement done
+Mean resistance is 1.479464e+06 with std 3.061133e+04

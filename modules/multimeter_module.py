@@ -51,6 +51,22 @@ def meas_voltage(instrument):
         
     return value
 
+def meas_resistance(instrument):
+    """Measures the resistance of the dmm"""
+    resistance = instrument.query('MEAS:RESistance?')
+    
+    # Source is a string, so values have to be parsed
+    value = float(resistance[1:11])
+    if resistance[0] == '-':
+        value = -value
+    exp_sign = 1
+    if int(resistance[-3:-1]) != 0:
+        if resistance[-4] == '-':
+            exp_sign = -1        
+        value = value*10**(exp_sign * int(resistance[-3:]))
+        
+    return value
+
 def meas_pressure(instrument):
     """Measures dmm voltage and then converts it into pressure(bars)"""
     volt = meas_voltage(instrument)
