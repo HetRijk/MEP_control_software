@@ -31,35 +31,28 @@ def measurement(sm2901, meas_time, sample_rate, main_time):
     t_loop = time.time()
     limit_hit = 0
     
-    temp = list()
     current = list()
     voltage = list()
-    setpoints = list()
-    pressure = list()
     while t_meas2 < meas_time:
         # Measuring
         current.append([t, sm.meas_current(sm2901)])
         voltage.append([t, sm.meas_voltage(sm2901)])
         
         # Check current limit
-        limit_voltage = sm.get_limit_voltage(sm2901)
+        limit_current = sm.get_limit_current(sm2901)
         if limit_hit == 1:
             limit_hit = 0
-        elif not sm.check_voltage_limit(sm2901):
+        elif not sm.check_current_limit(sm2901):
             # Discard last measured values
-            del temp[-1]
             del current[-1]
             del voltage[-1]
-            del setpoints[-1]
-            del pressure[-1]
-
             # Increase limits
-            limit_voltage = sm.get_limit_voltage(sm2901)
-            limit_voltage = 10*limit_voltage
-            sm.set_limit_voltage(sm2901, limit_voltage)
+            limit_current = sm.get_limit_current(sm2901)
+            limit_current = 10*limit_current
+            sm.set_limit_current(sm2901, limit_current)
             limit_hit = 1
-            instr.log_and_print(log, 'Voltage limit increased to %0.0e V at %2.1d s after start' % (limit_voltage, t))
-
+            instr.log_and_print(log, 'Current limit increased to %0.0e A at %2.1d s after start' % (limit_current, t))
+        
         #Timing
         if sample_rate**-1 - instr.time_since(t_loop) > 0:
             time.sleep(sample_rate**-1 - instr.time_since(t_loop))
@@ -73,11 +66,11 @@ def measurement(sm2901, meas_time, sample_rate, main_time):
 
 sample_rate = 200
 meas_time = 60*1
-source_current = 1E-7
-limit_voltage = 1E1
+source_volt = 5
+limit_current = 1E-4
 sleep_time = 0
 
-meas_name = '33MOhm_highsamplerate_2wire' 
+meas_name = 'sample_rate_test' 
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
  
@@ -103,29 +96,26 @@ except:
 
 log = open(meas_name + '\\' + meas_name + '_log.txt', 'w+')
 
+instr.log_and_print(log, 'Measurement is done with voltage sourcing')
+
 instr.log_and_print(log, "Sample rate is %s Hz" % sample_rate)
 instr.log_and_print(log, "Measurement time is %s s" % meas_time)
-instr.log_and_print(log, "Source current is %s A" % source_current)
-instr.log_and_print(log, "Limit voltage starts at %s V" % limit_voltage)
-
+instr.log_and_print(log, "Source voltage is %s V" % source_volt)
+instr.log_and_print(log, "Limit current starts at %s A" % limit_current)
 
 # Connect to device
 sm2901 = sm.connect_sm2901()
 instr.log_and_print(log, 'Devices connected')
 
-#sm.set_source_voltage(sm2901, source_volt)
-#sm.set_limit_voltage(sm2901, limit_voltage)
+sm.set_source_voltage(sm2901, source_volt)
+sm.set_limit_current(sm2901, limit_current)
 
-#tc.set_tuning_mode(tc332, 4)
-#tc.set_heater_range(tc332, 3)
-#tc.wait_for_temp(tc332, setpoint)
+
 time.sleep(sleep_time)
 instr.log_and_print(log, 'Setup completed')
 
-temp = list()
 current = list()
 voltage = list()
-setpoints = list()
 pressure = list()
 
 main_time = time.time()
@@ -133,7 +123,8 @@ main_time = time.time()
 instr.log_and_print(log, 'Start measurement at %s' % instr.date_time())
 instr.log_and_print(log, 'And takes %0.2f minutes' % (meas_time/60))
 
-meas_current, meas_voltage = measurement(sm2901, meas_time, sample_rate, main_time)
+meas_current, meas_voltage = measurement(sm2901, 
+										meas_time, sample_rate, main_time)
 
 current += meas_current
 voltage += meas_voltage

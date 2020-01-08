@@ -4,17 +4,8 @@ Created on Wed Oct 30 18:45:29 2019
 
 @author: LocalAdmin
 
-Measuring pressure
-"""
-
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Oct 14 14:50:11 2019
-
-@author: LocalAdmin
-
-Test voltage and current measurement
-As the resistance that were measured before were negative
+Measuring pressure using the Keithley DMM2110 Multimeter 
+	hooked up to a Pressure Controller that gives pressure in volts (10V = 1 bar)
 """
 
 
@@ -88,10 +79,6 @@ log = open(meas_name + '\\' + meas_name + '_log.txt', 'w+')
 dmm2100 = dmm.connect_dmm2110()
 instr.log_and_print(log, 'Devices connected')
 
-
-#tc.set_tuning_mode(tc332, 4)
-#tc.set_heater_range(tc332, 3)
-#tc.wait_for_temp(tc332, setpoint)
 time.sleep(sleep_time)
 instr.log_and_print(log, 'Setup completed')
 
@@ -100,7 +87,7 @@ voltage = list()
 
 main_time = time.time()
 
-instr.log_and_print(log, 'Start high measurement at %s' % instr.date_time())
+instr.log_and_print(log, 'Start measurement at %s' % instr.date_time())
 instr.log_and_print(log, 'And takes %0.2f minutes' % (meas_time/60))
 
 meas_voltage, meas_pressure = measurement(dmm2100, meas_time, sample_rate, main_time)
@@ -109,14 +96,26 @@ voltage     += meas_voltage
 pressure    = np.array(pressure).transpose()
 voltage     = np.array(voltage).transpose()
 
+instr.save_data('%s\%s_voltage' % (data_folder, meas_name), voltage)
 instr.save_data('%s\%s_pressure' % (data_folder, meas_name), pressure)
 
 instr.log_and_print(log, 'Measurement done')
-#tc.set_heater_range(tc332, 0)
+
+instr.log_mean_std(log, voltage[1], 'voltage')
+
+instr.log_mean_std(log, pressure[1], 'pressure')
 
 # Plots
 plt.close('all')
 
+# Voltage
+plt.figure(0)
+plt.plot(voltage[0], voltage[1])
+plt.title('Voltage')
+plt.xlabel('t(s)')
+plt.ylabel('Voltage (V)')
+
+instr.save_plot('%s\%s_voltage' % (figure_folder, meas_name))
 # Pressure
 plt.figure(4)
 plt.plot(pressure[0], pressure[1])
