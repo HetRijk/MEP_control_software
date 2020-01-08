@@ -12,17 +12,17 @@ from scipy import pi
 from scipy.fftpack import fft
 import instrument_module as instr
 
-sample_rate = 10
-N = (2 - 0) * sample_rate
+#sample_rate = 
+#N = (2 - 0) * sample_rate
 
 main_folder = r'/home/rich/Documents/MEP/MEP_control_software/'
-measurement = '0106_1734_33MOhm_outside'
+measurement = '0107_1745_33MOhm_highsamplerate'
 measured = '_' + 'resistance'
 file = os.path.join(main_folder, measurement, 'data', measurement + measured)
 
 
-start   = 10
-stop    = 340
+start   = 0
+stop    = 5E3
 
 # Import data
 data = instr.load_data(file)
@@ -51,6 +51,12 @@ else:
 time = xdata0
 time_data = ydata0
 
+sample_rate = np.round(np.mean(np.diff(xdata0)), decimals=1)**-1
+i = 2
+while sample_rate == np.inf:
+    sample_rate = np.round(np.mean(np.diff(xdata0)), decimals=i)**-1
+    i += 1
+    
 plt.figure()
 plt.plot (time, time_data)
 plt.title ('Time Domain Signal')
@@ -58,15 +64,17 @@ plt.xlabel ('Time')
 plt.ylabel ('Amplitude')
 plt.show ()
 
-frequency = np.linspace (0.0, sample_rate/2, int(N/2))
+frequency = np.linspace (0.0, sample_rate/2, len(xdata0)/2+1)
 
-freq_data = fft(time_data)
-y = 2/N * np.abs (freq_data [0:np.int (N/2)])
+freq_data = np.fft.rfft(time_data)
+#y = 2/N * np.abs (freq_data [0:np.int (N/2)])
 
 plt.figure()
-plt.plot(frequency, y)
+#plt.plot(frequency, y)
+plt.plot(frequency, np.abs(freq_data)**2)
 plt.title('Frequency domain Signal')
-plt.xlabel('Frequency in Hz')
+plt.xlabel('Frequency in Hz (sort of)')
 plt.ylabel('Amplitude')
+plt.yscale('log')
 plt.show()
 

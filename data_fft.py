@@ -95,7 +95,7 @@ fft_phase   = np.angle(y_fft)
 plt.figure()
 plt.plot(fft_mag)
 
-plt.xlabel('f(Hz)')
+plt.xlabel('f(?)')
 plt.title('FFT of WO3196 noise data')
 plt.legend(['Magnitude'])
 
@@ -103,6 +103,6 @@ plt.legend(['Magnitude'])
 plt.figure()
 plt.plot(fft_phase)
 
-plt.xlabel('f(Hz)')
+plt.xlabel('f(?)')
 plt.title('FFT of WO3196 noise data')
 plt.legend(['Phase'])
