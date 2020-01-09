@@ -1,0 +1,9 @@
+0109_1705_33MOhm_dmm_samplerate_test
+
+Measurement is done with Keithely 2110 DMM
+Sample rate is 200 Hz
+Measurement time is 600 s
+Devices connected
+Setup completed
+Start measurement at 2020-01-09 17:05:48.187200
+And takes 10.00 minutes

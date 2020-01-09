@@ -1,0 +1,15 @@
+0109_1840_33MOhm_backward_outside
+
+Measurement is done with current sourcing
+Sample rate is 20 Hz
+Measurement time is 60 s
+Source current is 1e-07 A
+Limit voltage starts at 10.0 V
+Devices connected
+Setup completed
+Start measurement at 2020-01-09 18:41:10.031658
+And takes 1.00 minutes
+Measurement done
+Mean resistance is 3.017038e+07 with std 2.012205e+05
+Mean voltage is 3.016969e+00 with std 1.875031e-02
+Mean current is 9.999802e-08 with std 7.089560e-11

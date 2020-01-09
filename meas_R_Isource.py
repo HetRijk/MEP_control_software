@@ -65,13 +65,13 @@ def measurement(sm2901, meas_time, sample_rate, main_time):
         
     return current, voltage
 
-sample_rate = 200
+sample_rate = 20
 meas_time = 60*1
 source_current = 1E-7
 limit_voltage = 1E1
-sleep_time = 0
+sleep_time = 10
 
-meas_name = '33MOhm_highsamplerate_2wire' 
+meas_name = '33MOhm_backward_outside' 
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
  

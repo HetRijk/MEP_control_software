@@ -46,11 +46,10 @@ def measurement(dm2110, meas_time, sample_rate, main_time):
 
     return resistances
 
-sample_rate = 10
-meas_time = 60*10
-sleep_time = 0
+sample_rate = 200
+meas_time = 5
 
-meas_name = '2ndSensor_dmm_test'
+meas_name = '33MOhm_dmm_samplerate_test'
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
 sample_time = sample_rate**(-1)
@@ -86,8 +85,8 @@ instr.log_and_print(log, "Measurement time is %s s" % meas_time)
 dmm2110 = dmm.connect_dmm2110()
 instr.log_and_print(log, 'Devices connected')
 
-time.sleep(sleep_time)
-instr.log_and_print(log, 'Setup completed')
+dmm2110.write('RESistance:NPLCycles MINimum')
+dmm2110.write('RESistance:RESolution MAXimum')
 
 resistances = list()
 

@@ -1,0 +1,10 @@
+0109_1712_33MOhm_dmm_samplerate_test
+
+Measurement is done with Keithely 2110 DMM
+Sample rate is 200 Hz
+Measurement time is 5 s
+Devices connected
+Start measurement at 2020-01-09 17:12:16.534200
+And takes 0.08 minutes
+Measurement done
+Mean resistance is 3.427418e+07 with std 3.348843e+05
