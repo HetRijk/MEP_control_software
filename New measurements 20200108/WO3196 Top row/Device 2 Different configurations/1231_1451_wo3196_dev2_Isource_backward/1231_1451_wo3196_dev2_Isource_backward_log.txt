@@ -1,9 +1,0 @@
-Temperature setpoint is 25 C
-Sample rate is 1 Hz
-Measurement time is 600 s
-Source voltage is 1.0 V
-Limit current starts at 1.5e-08 A
-Devices connected
-Setup completed
-Start measurement at 2019-12-31 14:51:08.555249
-And takes 10.00 minutes

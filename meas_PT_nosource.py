@@ -29,27 +29,27 @@ def measurement(tc332, dmm2100, meas_time, sample_rate, main_time):
     t_meas2 = 0
     t_meas = time.time()
     t_loop = time.time()
-    
+
     temp = list()
     pressure = list()
     while t_meas2 < meas_time:
         # Measuring
         temp.append([t, tc.get_temp(tc332)])
         pressure.append([t, dmm.meas_pressure(dmm2100)])
-        
+
         #Timing
         time.sleep(sample_rate**-1 - instr.time_since(t_loop))
         t_loop = time.time()
         t = instr.time_since(main_time)
         t_meas2 = instr.time_since(t_meas)
-        
+
     return temp, pressure
 
 sample_rate = 1
 meas_time = 60*10
 sleep_time = 0
 
-meas_name = 'expansion_temp_test_increaseP_2' 
+meas_name = 'expansion_temp_test_increaseP_2'
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
 
@@ -74,6 +74,8 @@ except:
     pass
 
 log = open(meas_name + '\\' + meas_name + '_log.txt', 'w+')
+
+instr.log_and_print(log, meas_name + '\n')
 
 instr.log_and_print(log, "Sample rate is %s Hz" % sample_rate)
 instr.log_and_print(log, "Measurement time is %s s" % meas_time)

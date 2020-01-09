@@ -4,7 +4,7 @@ Created on Wed Oct 30 18:45:29 2019
 
 @author: LocalAdmin
 
-Measuring pressure using the Keithley DMM2110 Multimeter 
+Measuring pressure using the Keithley DMM2110 Multimeter
 	hooked up to a Pressure Controller that gives pressure in volts (10V = 1 bar)
 """
 
@@ -29,27 +29,27 @@ def measurement(dmm2100, meas_time, sample_rate, main_time):
     t_meas2 = 0
     t_meas = time.time()
     t_loop = time.time()
-    
+
     voltage = list()
     pressure = list()
     while t_meas2 < meas_time:
         # Measuring
         pressure.append([t, dmm.meas_pressure(dmm2100)])
         voltage.append([t, dmm.meas_voltage(dmm2100)])
-        
+
         #Timing
         time.sleep(sample_rate**-1 - instr.time_since(t_loop))
         t_loop = time.time()
         t = instr.time_since(main_time)
         t_meas2 = instr.time_since(t_meas)
-        
+
     return voltage, pressure
 
 sample_rate = 1
 meas_time = 60*60
 sleep_time = 0
 
-meas_name = 'mixing_volume_consistency_2V' 
+meas_name = 'mixing_volume_consistency_2V'
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
 
@@ -74,6 +74,8 @@ except:
     pass
 
 log = open(meas_name + '\\' + meas_name + '_log.txt', 'w+')
+
+instr.log_and_print(log, meas_name + '\n')
 
 # Connect to device
 dmm2100 = dmm.connect_dmm2110()
@@ -127,4 +129,3 @@ instr.save_plot('%s\%s_pressure' % (figure_folder, meas_name))
 
 # Close log file
 log.close()
-

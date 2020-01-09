@@ -30,7 +30,7 @@ def measurement(tc332, sm2901, dmm2110, meas_time, sample_rate, main_time):
     t_meas = time.time()
     t_loop = time.time()
     limit_hit = 0
-    
+
     temp = list()
     current = list()
     voltage = list()
@@ -43,7 +43,7 @@ def measurement(tc332, sm2901, dmm2110, meas_time, sample_rate, main_time):
         voltage.append([t, sm.meas_voltage(sm2901)])
         setpoints.append([t, tc.get_setpoint(tc332)])
         pressure.append([t, dmm.meas_pressure(dmm2110)])
-        
+
         # Check current limit
         limit_voltage = sm.get_limit_voltage(sm2901)
         if limit_hit == 1:
@@ -71,7 +71,7 @@ def measurement(tc332, sm2901, dmm2110, meas_time, sample_rate, main_time):
         t_loop = time.time()
         t = instr.time_since(main_time)
         t_meas2 = instr.time_since(t_meas)
-        
+
     return temp, current, voltage, setpoints, pressure
 
 setpoint = 65
@@ -81,7 +81,7 @@ source_current = 1E-8
 limit_voltage = 1E0
 sleep_time = 0
 
-meas_name = '33MOhm_outside' 
+meas_name = '33MOhm_outside'
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
 
@@ -106,6 +106,8 @@ except:
     pass
 
 log = open(meas_name + '\\' + meas_name + '_log.txt', 'w+')
+
+instr.log_and_print(log, meas_name + '\n')
 
 instr.log_and_print(log, 'Measurement is done with current sourcing')
 

@@ -30,14 +30,14 @@ def measurement(sm2901, meas_time, sample_rate, main_time):
     t_meas = time.time()
     t_loop = time.time()
     limit_hit = 0
-    
+
     current = list()
     voltage = list()
     while t_meas2 < meas_time:
         # Measuring
         current.append([t, sm.meas_current(sm2901)])
         voltage.append([t, sm.meas_voltage(sm2901)])
-        
+
         # Check current limit
         limit_current = sm.get_limit_current(sm2901)
         if limit_hit == 1:
@@ -52,7 +52,7 @@ def measurement(sm2901, meas_time, sample_rate, main_time):
             sm.set_limit_current(sm2901, limit_current)
             limit_hit = 1
             instr.log_and_print(log, 'Current limit increased to %0.0e A at %2.1d s after start' % (limit_current, t))
-        
+
         #Timing
         if sample_rate**-1 - instr.time_since(t_loop) > 0:
             time.sleep(sample_rate**-1 - instr.time_since(t_loop))
@@ -61,7 +61,7 @@ def measurement(sm2901, meas_time, sample_rate, main_time):
         t_loop = time.time()
         t = instr.time_since(main_time)
         t_meas2 = instr.time_since(t_meas)
-        
+
     return current, voltage
 
 sample_rate = 200
@@ -70,10 +70,10 @@ source_volt = 5
 limit_current = 1E-4
 sleep_time = 0
 
-meas_name = 'sample_rate_test' 
+meas_name = 'sample_rate_test'
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
- 
+
 sample_time = sample_rate**(-1)
 meas_len = int(meas_time / sample_time)
 
@@ -95,6 +95,8 @@ except:
     pass
 
 log = open(meas_name + '\\' + meas_name + '_log.txt', 'w+')
+
+instr.log_and_print(log, meas_name + '\n')
 
 instr.log_and_print(log, 'Measurement is done with voltage sourcing')
 
@@ -123,7 +125,7 @@ main_time = time.time()
 instr.log_and_print(log, 'Start measurement at %s' % instr.date_time())
 instr.log_and_print(log, 'And takes %0.2f minutes' % (meas_time/60))
 
-meas_current, meas_voltage = measurement(sm2901, 
+meas_current, meas_voltage = measurement(sm2901,
 										meas_time, sample_rate, main_time)
 
 current += meas_current
