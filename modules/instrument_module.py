@@ -58,7 +58,7 @@ def get_all_instruments():
 #        instruments.append(instrument)
 #    return instruments
 
-def indentify(instrument):
+def identify(instrument):
     return instrument.query('*IDN?')
 
 # Measurement functions
