@@ -4,7 +4,7 @@ Created on Thu Oct 24 11:32:44 2019
 
 @author: LocalAdmin
 
-DMM module
+DMM module for the Keithley 2110 5 1/2 Digit Multimeter
 """
 
 # Standard libraries
