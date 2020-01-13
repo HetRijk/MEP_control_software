@@ -9,5 +9,5 @@ And takes 1.00 minutes
 Current limit increased to 1e-04 A at  0 s after start
 Measurement done
 Mean resistance is 1.352560e+05 with std 3.166548e+02
-Mean voltage_V is 2.999998e+00 with std 3.751855e-06
+Mean voltage is 2.999998e+00 with std 3.751855e-06
 Mean current is 2.218027e-05 with std 5.195015e-08
