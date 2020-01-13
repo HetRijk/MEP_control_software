@@ -1,0 +1,11 @@
+0113_1406_2nd_sensor_vacuum_resistance_check
+
+Measurement is done with Keithely 2110 DMM
+Sample rate is 5 Hz
+Measurement time is 600 s
+Devices connected
+Start measurement at 2020-01-13 14:06:18.274348
+And takes 10.00 minutes
+Measurement done
+Mean resistance is 7.483134e+05 with std 3.891084e+03
+Mean pressure is 1.099636e-01 with std 2.687882e-01

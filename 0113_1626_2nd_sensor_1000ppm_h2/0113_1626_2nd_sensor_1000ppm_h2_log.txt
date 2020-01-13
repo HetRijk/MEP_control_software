@@ -1,0 +1,11 @@
+0113_1626_2nd_sensor_1000ppm_h2
+
+Measurement is done with Keithely 2110 DMM and Keithley 196 DMM
+Sample rate is 5 Hz
+Measurement time is 600 s
+Devices connected
+Start measurement at 2020-01-13 16:26:24.492868
+And takes 10.00 minutes
+Measurement done
+Mean resistance is 2.979147e+05 with std 3.739802e+03
+Mean pressure is 1.273655e-01 with std 2.041125e-01

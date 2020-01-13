@@ -24,10 +24,9 @@ def connect_sm2901():
     rm = visa.ResourceManager()
     return rm.open_resource(address)
 
-## Settings functions
-    
-#def set_current(instrument, amps):
-#    instrument.write(':SOURce:CURRent:LEVel:IMMediate:AMPLitude %s' % amps)
+# =============================================================================
+# Settings functions
+# =============================================================================
 
 def set_source_voltage(instrument, volts):
     instrument.write(':SOURce:VOLTage:LEVel:IMMediate:AMPLitude %s' % volts)
@@ -59,7 +58,34 @@ def set_limit_voltage(instrument, value):
     """Sets the voltage limit to value in volts"""
     instrument.write('SENSe:VOLTage:DC:PROTection:LEVel %s' % value)    
     
-## Query functions
+def set_measurement_time(instrument, time_meas, unit='plc'):
+    """Set the measurement time in seconds or number of PLCs
+    (power line cycles: 200 ms for EU grid of 50 Hz)"""
+    if unit=='plc':
+        instrument.write('SENSE:CURR:DC:NPLC %s' % time_meas)
+    if unit=='s':
+        instrument.write('SENSE:CURR:DC:APER %s' % time_meas) 
+    else:
+        print('Unit of measurement time_meas not given correctly for setting it')
+            
+    # Check if value was set
+    time.sleep(0.5)
+    time_actual = get_measurement_time(instrument, unit)
+    if time_actual != time_meas:
+        if unit=='plc':
+            print('Measurement time was NOT correctly set to %s PLC' % time_meas)
+        if unit=='s':
+            print('Measurement time was NOT correctly set to %s s' % time_meas)
+    else:
+        if unit=='plc':
+            print('Measurement time was set to %s PLC' % time_meas)
+        if unit=='s':
+            print('Measurement time was set to %s s' % time_meas)
+    
+    
+# =============================================================================
+# Query functions
+# =============================================================================
 
 def meas_current(instrument):
     instrument.write(':FORMat:DATA %s' % ('ASCii'))
@@ -140,6 +166,21 @@ def get_limit_voltage(instrument):
         value = value*10**int(limit[12:16])
     
     return value
+
+def get_measurement_time(instrument, unit='plc'):
+    """Queries for the measurement time"""
+    if unit=='plc':
+        value = instrument.query('SENSE:CURR:DC:NPLC?')
+    if unit=='s':
+        value = instrument.query('SENSE:CURR:DC:APER?') 
+    else:
+        print('Unit of measurement time not given correctly for query')
+        value = 1
+        
+    return value
+# =============================================================================
+# Compound functions
+# =============================================================================
 
 def check_current_limit(instrument):
     """Return Boolean on if current is within limit"""

@@ -49,10 +49,10 @@ def measurement(dmm2110, dmm196, meas_time, sample_rate, main_time):
 
     return resistance, pressure
 
-sample_rate = 200
-meas_time   = 5
+sample_rate = 5
+meas_time   = 60*10
 
-meas_name = '33MOhm_dmm_samplerate_test'
+meas_name = '2nd_sensor_1000ppm_h2'
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
 sample_time = sample_rate**(-1)
@@ -79,7 +79,7 @@ log = open(meas_name + '\\' + meas_name + '_log.txt', 'w+')
 
 instr.log_and_print(log, meas_name + '\n')
 
-instr.log_and_print(log, 'Measurement is done with Keithely 2110 DMM')
+instr.log_and_print(log, 'Measurement is done with Keithely 2110 DMM and Keithley 196 DMM')
 
 instr.log_and_print(log, "Sample rate is %s Hz" % sample_rate)
 instr.log_and_print(log, "Measurement time is %s s" % meas_time)
