@@ -79,12 +79,8 @@ else:
 
 # Perform regular fit and constrained fit
 #popt, pcov = curve_fit(func, xdata0, ydata0, maxfev=int(1E9))
-#popt, pcov = curve_fit(func, xdata0, ydata0, p0, maxfev=int(1E9))
+popt, pcov = curve_fit(func, xdata0, ydata0, p0, maxfev=int(1E9))
 #popt, pcov = curve_fit(func, xdata, ydata, p0, maxfev=int(1E7), bounds=bounds)
-
-#popt, pcov = curve_fit(func, ydata0, xdata0, maxfev=int(1E9))
-popt, pcov = curve_fit(func, ydata0, xdata0, p0, maxfev=int(1E9))
-#popt, pcov = curve_fit(func, ydata, xdata, p0, maxfev=int(1E7), bounds=bounds)
 
 # Plot fit
 
@@ -94,11 +90,8 @@ xdata = np.linspace(min(xdata0), max(xdata0), int(1E3))
 ydata = np.linspace(min(ydata0), max(ydata0), int(1E3))
 
 plt.figure()
-#plt.plot(xdata0, ydata0)
-#plt.plot(xdata, func(xdata, *popt))
-#
-plt.plot(ydata0, xdata0)
-plt.plot(ydata, func(xdata, *popt))
+plt.plot(xdata0, ydata0)
+plt.plot(xdata, func(xdata, *popt))
 
 #plt.title('Resistance with source voltage %s mV' % 1000)
 #plt.xlabel('t(s)')

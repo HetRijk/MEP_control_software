@@ -34,8 +34,8 @@ def measurement(dmm2100, meas_time, sample_rate, main_time):
     pressure = list()
     while t_meas2 < meas_time:
         # Measuring
-        pressure.append([t, dmm.meas_pressure(dmm2100)])
-        voltage.append([t, dmm.meas_voltage(dmm2100)])
+        pressure.append([t, dmm.meas_pressure(dmm2110)])
+        voltage.append([t, dmm.meas_voltage(dmm2110)])
 
         #Timing
         time.sleep(sample_rate**-1 - instr.time_since(t_loop))
@@ -78,7 +78,7 @@ log = open(meas_name + '\\' + meas_name + '_log.txt', 'w+')
 instr.log_and_print(log, meas_name + '\n')
 
 # Connect to device
-dmm2100 = dmm.connect_dmm2110()
+dmm2110 = dmm.connect_dmm2110()
 instr.log_and_print(log, 'Devices connected')
 
 time.sleep(sleep_time)
@@ -92,7 +92,7 @@ main_time = time.time()
 instr.log_and_print(log, 'Start measurement at %s' % instr.date_time())
 instr.log_and_print(log, 'And takes %0.2f minutes' % (meas_time/60))
 
-meas_voltage, meas_pressure = measurement(dmm2100, meas_time, sample_rate, main_time)
+meas_voltage, meas_pressure = measurement(dmm2110, meas_time, sample_rate, main_time)
 pressure    += meas_pressure
 voltage     += meas_voltage
 pressure    = np.array(pressure).transpose()
@@ -105,7 +105,7 @@ instr.log_and_print(log, 'Measurement done')
 
 instr.log_mean_std(log, voltage[1], 'voltage')
 
-instr.log_mean_std(log, pressure[1], 'pressure')
+instr.save_data('%s\%s_pressure' % (data_folder, meas_name), pressure)
 
 # Plots
 plt.close('all')
