@@ -1,0 +1,5 @@
+0113_1401_33MOhm_dmm_samplerate_test
+
+Measurement is done with Keithely 2110 DMM
+Sample rate is 200 Hz
+Measurement time is 5 s
