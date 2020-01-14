@@ -58,31 +58,61 @@ def set_limit_voltage(instrument, value):
     """Sets the voltage limit to value in volts"""
     instrument.write('SENSe:VOLTage:DC:PROTection:LEVel %s' % value)    
     
-def set_measurement_time(instrument, time_meas, unit='plc'):
+def set_meas_time_current(instrument, time_meas, unit='plc'):
     """Set the measurement time in seconds or number of PLCs
     (power line cycles: 200 ms for EU grid of 50 Hz)"""
     if unit=='plc':
         instrument.write('SENSE:CURR:DC:NPLC %s' % time_meas)
-    if unit=='s':
+    elif unit=='s':
         instrument.write('SENSE:CURR:DC:APER %s' % time_meas) 
     else:
         print('Unit of measurement time_meas not given correctly for setting it')
             
     # Check if value was set
     time.sleep(0.5)
-    time_actual = get_measurement_time(instrument, unit)
+    time_actual = get_meas_time_current(instrument, unit)
     if time_actual != time_meas:
         if unit=='plc':
             print('Measurement time was NOT correctly set to %s PLC' % time_meas)
-        if unit=='s':
+        elif unit=='s':
             print('Measurement time was NOT correctly set to %s s' % time_meas)
+        else:
+            pass
     else:
         if unit=='plc':
             print('Measurement time was set to %s PLC' % time_meas)
-        if unit=='s':
+        elif unit=='s':
             print('Measurement time was set to %s s' % time_meas)
-    
-    
+        else:
+            pass
+        
+def set_meas_time_voltage(instrument, time_meas, unit='plc'):
+    """Set the measurement time in seconds or number of PLCs
+    (power line cycles: 200 ms for EU grid of 50 Hz)"""
+    if unit=='plc':
+        instrument.write('SENSE:VOLT:DC:NPLC %s' % time_meas)
+    elif unit=='s':
+        instrument.write('SENSE:VOLT:DC:APER %s' % time_meas) 
+    else:
+        print('Unit of measurement time_meas not given correctly for setting it')
+            
+    # Check if value was set
+    time.sleep(0.5)
+    time_actual = get_meas_time_voltage(instrument, unit)
+    if time_actual != time_meas:
+        if unit=='plc':
+            print('Measurement time was NOT correctly set to %s PLC' % time_meas)
+        elif unit=='s':
+            print('Measurement time was NOT correctly set to %s s' % time_meas)
+        else:
+            pass
+    else:
+        if unit=='plc':
+            print('Measurement time was set to %s PLC' % time_meas)
+        elif unit=='s':
+            print('Measurement time was set to %s s' % time_meas)
+        else:
+            pass
 # =============================================================================
 # Query functions
 # =============================================================================
@@ -167,17 +197,44 @@ def get_limit_voltage(instrument):
     
     return value
 
-def get_measurement_time(instrument, unit='plc'):
+def get_meas_time_current(instrument, unit='plc'):
     """Queries for the measurement time"""
     if unit=='plc':
-        value = instrument.query('SENSE:CURR:DC:NPLC?')
-    if unit=='s':
-        value = instrument.query('SENSE:CURR:DC:APER?') 
+        sample_time = instrument.query('SENSE:CURR:DC:NPLC?')
+    elif unit=='s':
+        sample_time = instrument.query('SENSE:CURR:DC:APER?') 
     else:
         print('Unit of measurement time not given correctly for query')
-        value = 1
-        
+        sample_time = '+1.00000000E+000\n'
+    
+    # Source is a string, so values have to be parsed
+    value = float(sample_time[1:7])
+    if sample_time[0] == '-':
+        value = -value
+    if int(sample_time[12:16]) != 0:
+        value = value*10**int(sample_time[12:16])
+    
     return value
+
+def get_meas_time_voltage(instrument, unit='plc'):
+    """Queries for the measurement time"""
+    if unit=='plc':
+        sample_time = instrument.query('SENSE:VOLT:DC:NPLC?')
+    elif unit=='s':
+        sample_time = instrument.query('SENSE:VOLT:DC:APER?') 
+    else:
+        print('Unit of measurement time not given correctly for query')
+        sample_time = '+1.00000000E+000\n'
+    
+        # Source is a string, so values have to be parsed
+    value = float(sample_time[1:7])
+    if sample_time[0] == '-':
+        value = -value
+    if int(sample_time[12:16]) != 0:
+        value = value*10**int(sample_time[12:16])
+    
+    return sample_time
+
 # =============================================================================
 # Compound functions
 # =============================================================================

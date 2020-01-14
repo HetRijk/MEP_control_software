@@ -83,7 +83,7 @@ sm.set_source_current(sm2901, source_current_start)
 sm.set_limit_voltage(sm2901, limit_voltage)
 
 #Set measurement time
-sm.set_measurement_time(sm2901, 10, unit='plc')
+sm.set_meas_time_voltage(sm2901, 10, unit='plc')
 
 # Check that sample rate is not faster than the measurement time
 
