@@ -33,7 +33,86 @@ def connect_dmm2110():
     address = 'USB0::0x05E6::0x2110::8010814::INSTR'
     rm = visa.ResourceManager()
     return rm.open_resource(address)
+
+def set_meas_time_all(instrument, time_meas, unit='plc'):
+    """Set the measurement time for all measurements in seconds or number of PLCs
+    (power line cycles: 200 ms for EU grid of 50 Hz)"""
+    set_meas_time_current(instrument, time_meas, unit='plc')
+    set_meas_time_voltage(instrument, time_meas, unit='plc')
+    set_meas_time_resistance(instrument, time_meas, unit='plc')
     
+    
+def set_meas_time_current(instrument, time_meas, unit='plc'):
+    """Set the measurement time for current in seconds or number of PLCs
+    (power line cycles: 200 ms for EU grid of 50 Hz)"""
+    if unit == 'plc':
+        instrument.write('SENSE:CURR:DC:NPLC %s' % time_meas)
+    elif unit == 's':
+        instrument.write('SENSE:CURR:DC:APER %s' % time_meas) 
+    else:
+        print('Unit of measurement time_meas not given correctly for current')
+            
+    # Check if value was set
+    time.sleep(0.5)
+    time_actual = get_meas_time_current(instrument, unit)
+    if time_actual != time_meas:
+        if unit == 'plc':
+            print('Measurement time was NOT correctly set to %s PLC for current' % time_meas)
+        elif unit == 's':
+            print('Measurement time was NOT correctly set to %s s for current' % time_meas)
+    else:
+        if unit == 'plc':
+            print('Measurement time was set to %s PLC for current' % time_meas)
+        elif unit == 's':
+            print('Measurement time was set to %s s for current' % time_meas)
+    
+def set_meas_time_voltage(instrument, time_meas, unit='plc'):
+    """Set the measurement time for voltage in seconds or number of PLCs
+    (power line cycles: 200 ms for EU grid of 50 Hz)"""
+    if unit == 'plc':
+        instrument.write('SENSE:VOLT:DC:NPLC %s' % time_meas)
+    elif unit == 's':
+        instrument.write('SENSE:VOLT:DC:APER %s' % time_meas) 
+    else:
+        print('Unit of measurement time_meas not given correctly for voltage')
+            
+    # Check if value was set
+    time.sleep(0.5)
+    time_actual = get_meas_time_voltage(instrument, unit)
+    if time_actual != time_meas:
+        if unit == 'plc':
+            print('Measurement time was NOT correctly set to %s PLC for voltage' % time_meas)
+        elif unit == 's':
+            print('Measurement time was NOT correctly set to %s s for voltage' % time_meas)
+    else:
+        if unit == 'plc':
+            print('Measurement time was set to %s PLC for voltage' % time_meas)
+        elif unit == 's':
+            print('Measurement time was set to %s s for voltage' % time_meas)
+
+def set_meas_time_resistance(instrument, time_meas, unit='plc'):
+    """Set the measurement time for resistance in seconds or number of PLCs
+    (power line cycles: 200 ms for EU grid of 50 Hz)"""
+    if unit == 'plc':
+        instrument.write('SENSE:RESISTANCE:NPLC %s' % time_meas)
+    elif unit == 's':
+        instrument.write('SENSE:RESISTANCE:APER %s' % time_meas) 
+    else:
+        print('Unit of measurement time_meas not given correctly for resistance')
+            
+    # Check if value was set
+    time.sleep(0.5)
+    time_actual = get_meas_time_voltage(instrument, unit)
+    if time_actual != time_meas:
+        if unit == 'plc':
+            print('Measurement time was NOT correctly set to %s PLC for resistance' % time_meas)
+        elif unit == 's':
+            print('Measurement time was NOT correctly set to %s s for resistance' % time_meas)
+    else:
+        if unit == 'plc':
+            print('Measurement time was set to %s PLC for resistance' % time_meas)
+        elif unit == 's':
+            print('Measurement time was set to %s s for resistance' % time_meas)
 
 def meas_voltage(instrument):
     """Measures the voltage of the dmm"""
@@ -76,3 +155,60 @@ def meas_pressure(instrument):
 def volt_to_pressure(volt):
     """Turns voltage measured into pressure in bars"""
     return volt/10
+
+def get_meas_time_current(instrument, unit='plc'):
+    """Queries for the measurement time"""
+    if unit=='plc':
+        sample_time = instrument.query('SENSE:CURR:DC:NPLC?')
+    elif unit=='s':
+        sample_time = instrument.query('SENSE:CURR:DC:APER?') 
+    else:
+        print('Unit of measurement time not given correctly for query')
+        sample_time = '+1.00000000E+000\n'
+    
+    # Source is a string, so values have to be parsed
+    value = float(sample_time[1:7])
+    if sample_time[0] == '-':
+        value = -value
+    if int(sample_time[12:16]) != 0:
+        value = value*10**int(sample_time[12:16])
+        
+    return value
+
+def get_meas_time_voltage(instrument, unit='plc'):
+    """Queries for the measurement time"""
+    if unit=='plc':
+        sample_time = instrument.query('SENSE:VOLT:DC:NPLC?')
+    elif unit=='s':
+        sample_time = instrument.query('SENSE:VOLT:DC:APER?') 
+    else:
+        print('Unit of measurement time not given correctly for query')
+        sample_time = '+1.00000000E+000\n'
+    
+    # Source is a string, so values have to be parsed
+    value = float(sample_time[1:7])
+    if sample_time[0] == '-':
+        value = -value
+    if int(sample_time[12:16]) != 0:
+        value = value*10**int(sample_time[12:16])
+        
+    return value
+
+def get_meas_time_resistance(instrument, unit='plc'):
+    """Queries for the measurement time"""
+    if unit=='plc':
+        sample_time = instrument.query('SENSE:RESISTANCE:NPLC?')
+    elif unit=='s':
+        sample_time = instrument.query('SENSE:RESISTANCE:APER?') 
+    else:
+        print('Unit of measurement time not given correctly for query')
+        sample_time = '+1.00000000E+000\n'
+    
+    # Source is a string, so values have to be parsed
+    value = float(sample_time[1:7])
+    if sample_time[0] == '-':
+        value = -value
+    if int(sample_time[12:16]) != 0:
+        value = value*10**int(sample_time[12:16])
+        
+    return value

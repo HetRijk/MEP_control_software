@@ -50,9 +50,11 @@ def measurement(dmm2110, dmm196, meas_time, sample_rate, main_time):
     return resistance, pressure
 
 sample_rate = 5
-meas_time   = 60*10
+meas_time   = 60*5
 
-meas_name = '2nd_sensor_1000ppm_h2'
+NPLC        = 10
+
+meas_name = '2nd_sensor_vacuum'
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
 sample_time = sample_rate**(-1)
@@ -90,6 +92,16 @@ dmm196  = old_dmm.connect_dmm196()
 
 # Set DMM196 to measure DC voltage
 old_dmm.mode_dc_voltage(dmm196)
+
+# Set measurement time
+
+sample_time = 50**-1*NPLC
+if sample_rate**-1 < sample_time:
+    print("Sample rate of %s is too high for the time per sample set of %s" % (sample_rate, sample_time))
+    sample_time = sample_rate**-1/50**-1
+    dmm.set_meas_time_resistance(dmm2110, sample_time)
+else:
+    dmm.set_meas_time_resistance(dmm2110, NPLC)
 
 instr.log_and_print(log, 'Devices connected')
 
