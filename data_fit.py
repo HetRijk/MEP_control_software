@@ -33,7 +33,7 @@ def power_law(x, a, b, c):
 # Inputs
     
 folder = r'C:\Users\Rijk\Documents\MEP\Measurement setup\Other hydrogen sensor'
-file_name = 'response_data'
+file_name = 'calibration_curve_v2_loglog'
 file = os.path.join(folder, file_name)
 
 func = power_law
@@ -41,15 +41,15 @@ func = power_law
 start   = 0
 stop    = 3500
 
-p0 = [1E2, -3, 1E2]
+p0 = [1E12, -3/2, 1E5]
 #p0      = [2E7, 1E4, 2E7]
 #bounds = (0, np.inf)
 
 # Import data
 data = instr.load_data(file)
 
-xdata0 = data[0]
-ydata0 = data[1] 
+xdata0 = data[1]
+ydata0 = data[0] 
 
 if start > 0:
     if stop < len(xdata0):
@@ -97,14 +97,18 @@ plt.plot(xdata, func(xdata, *popt))
 #plt.xlabel('t(s)')
 #plt.ylabel('Resistance (Ohm)')
 
+plt.title('Calibration curve of 2nd hydrogen sensor: IDT SGAS701')
+plt.ylabel('Concentration H2 (ppm)')
+plt.xlabel('Resistance (Ohm)')
+
 #plt.ylim(min(xdata0), 120)
 #plt.xlim(min(ydata0), 1.2E5)
 
 #plt.yscale('log')
 #plt.yscale('linear')
 #
-#plt.xscale('log')
-#plt.yscale('log')
+plt.xscale('log')
+plt.yscale('log')
 
 plt.legend(['Data', 'Fit'])
 
