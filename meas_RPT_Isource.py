@@ -76,7 +76,7 @@ def measurement(tc332, sm2901, dmm2110, meas_time, sample_rate, main_time):
 
 setpoint = 65
 sample_rate = 5
-meas_time = 60*5
+meas_time = 60*1
 source_current = 1E-8
 limit_voltage = 1E0
 sleep_time = 0
