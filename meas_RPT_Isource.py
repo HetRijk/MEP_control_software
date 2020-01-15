@@ -116,6 +116,7 @@ instr.log_and_print(log, "Measurement time is %s s" % meas_time)
 instr.log_and_print(log, "Source current is %s A" % source_current)
 instr.log_and_print(log, "Limit voltage starts at %s V" % limit_voltage)
 instr.log_and_print(log, "Temperature setpoint is %s C" % setpoint)
+
 # Connect to device
 tc332 = tc.connect_tc332()
 sm2901 = sm.connect_sm2901()

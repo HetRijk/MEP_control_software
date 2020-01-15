@@ -26,28 +26,7 @@ import dmm196_module as old_dmm
 
 def measurement(dmm2110, dmm196, meas_time, sample_rate, main_time):
     """Measurement loop"""
-    t = instr.time_since(main_time)
-    t_meas2 = 0
-    t_meas = time.time()
-    t_loop = time.time()
 
-    resistance = list()
-    pressure = list()
-    while t_meas2 < meas_time:
-        # Measuring
-        pressure.append([t, old_dmm.meas_pressure(dmm196)])
-        resistance.append([t, dmm.meas_resistance(dmm2110)])
-
-        #Timing
-        if sample_rate**-1 - instr.time_since(t_loop) > 0:
-            time.sleep(sample_rate**-1 - instr.time_since(t_loop))
-        else:
-            pass
-        t_loop = time.time()
-        t = instr.time_since(main_time)
-        t_meas2 = instr.time_since(t_meas)
-
-    return resistance, pressure
 
 sample_rate = 5
 meas_time   = 60*5
@@ -57,8 +36,7 @@ NPLC        = 10
 meas_name = '2nd_sensor_vacuum'
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
-sample_time = sample_rate**(-1)
-meas_len = int(meas_time / sample_time)
+meas_len = int(meas_time * sample_rate)
 
 # Setup folder structure and initialise log
 data_folder = meas_name + '\data'
@@ -105,6 +83,10 @@ else:
 
 instr.log_and_print(log, 'Devices connected')
 
+# =============================================================================
+# Perform measurements
+# =============================================================================
+
 resistance  = list()
 pressure    = list()
 
@@ -113,10 +95,26 @@ main_time = time.time()
 instr.log_and_print(log, 'Start measurement at %s' % instr.date_time())
 instr.log_and_print(log, 'And takes %0.2f minutes' % (meas_time/60))
 
-meas_resistance, meas_pressure = measurement(dmm2110, dmm196, meas_time, sample_rate, main_time)
+t = instr.time_since(main_time)
+t_meas2 = 0
+t_meas = time.time()
+t_loop = time.time()
 
-resistance  += meas_resistance
-pressure    += meas_pressure
+resistance = list()
+pressure = list()
+while t_meas2 < meas_time:
+    # Measuring
+    pressure.append([t, old_dmm.meas_pressure(dmm196)])
+    resistance.append([t, dmm.meas_resistance(dmm2110)])
+
+    #Timing
+    if sample_rate**-1 - instr.time_since(t_loop) > 0:
+        time.sleep(sample_rate**-1 - instr.time_since(t_loop))
+    else:
+        pass
+    t_loop = time.time()
+    t = instr.time_since(main_time)
+    t_meas2 = instr.time_since(t_meas)
 
 resistance  = np.array(resistance).transpose()
 pressure    = np.array(pressure).transpose()
