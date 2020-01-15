@@ -23,6 +23,6 @@ import instrument_module as instr
 import multimeter_module as dmm
 import dmm196_module as old_dmm
 
-dmm2110 = dmm.connect_dmm2110()
-dmm196  = old_dmm.connect_dmm196()
+#dmm2110 = dmm.connect_dmm2110()
+#dmm196  = old_dmm.connect_dmm196()
 sm2901 = sm.connect_sm2901()

@@ -41,7 +41,6 @@ meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 # Setting calculations
 num_points      = int(2*source_current_max/step_size + 1)
 meas_num        = samples_per_step * num_points
-sample_time     = samples_per_step / sample_rate
 meas_time       = meas_num / sample_rate
 
 source_currents    = np.linspace(-source_current_max, source_current_max, num_points)
@@ -73,20 +72,25 @@ instr.log_and_print(log, "Limit voltage starts at %s V" % limit_voltage)
 # Connect to devices and setup
 # =============================================================================
 
+# Connect to device(s)
 sm2901 = sm.connect_sm2901()
 instr.log_and_print(log, 'Devices connected')
 
+# Set sourcemeter to 4-wire measure mode
+sm.set_4wire_mode(sm2901)
+
+# Set source current and limit voltage
 sm.set_source_current(sm2901, source_currents[0])
 sm.set_limit_voltage(sm2901, limit_voltage)
 
 # Set sample time
-sample_time = 50**-1*sample_time
+sample_time = 50**-1*sample_time # converts sample time to s instead of plc
 if sample_rate**-1 < sample_time:
     print("Sample rate of %s is too high for the time per sample set of %s" % (sample_rate, sample_time))
     sample_time = sample_rate**-1/50**-1
-    dmm.set_meas_time_resistance(sm2901, sample_time)
+    sm.set_meas_time_all(sm2901, sample_time, unit='s')
 else:
-    dmm.set_meas_time_resistance(sm2901, )
+    sm.set_meas_time_all(sm2901, int(sample_rate**-1), unit='s')
     
 instr.log_and_print(log, 'Setup completed')
 

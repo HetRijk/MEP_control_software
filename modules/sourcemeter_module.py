@@ -28,6 +28,10 @@ def connect_sm2901():
 # Settings functions
 # =============================================================================
 
+def set_4wire_mode(instrument):
+    """Sets the sourcemeter to remote mode, thereby enabling 4-wire measurements"""
+    instrument.write('SENSE:REMOTE ON')
+
 def set_source_voltage(instrument, volts):
     instrument.write(':SOURce:VOLTage:LEVel:IMMediate:AMPLitude %s' % volts)
     
@@ -57,6 +61,12 @@ def set_limit_current(instrument, value):
 def set_limit_voltage(instrument, value):
     """Sets the voltage limit to value in volts"""
     instrument.write('SENSe:VOLTage:DC:PROTection:LEVel %s' % value)    
+    
+def set_meas_time_all(instrument, time_meas, unit='plc'):
+    """Set the measurement time for all measurements in seconds or number of PLCs
+    (power line cycles: 200 ms for EU grid of 50 Hz)"""
+    set_meas_time_current(instrument, time_meas, unit)
+    set_meas_time_voltage(instrument, time_meas, unit)
     
 def set_meas_time_current(instrument, time_meas, unit='plc'):
     """Set the measurement time in seconds or number of PLCs
