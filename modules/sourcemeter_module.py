@@ -55,7 +55,7 @@ def set_source_current(instrument, amps):
     instrument.write(':SOURce:CURRent:LEVel:IMMediate:AMPLitude %s' % amps)
     
     # Check if value was set
-    time.sleep(0.01)
+    time.sleep(sleepy_time)
     amps_actual = get_source_current(instrument)
     if amps_actual != amps:
         print('Source current was NOT correctly set to %s A' % amps)
@@ -70,67 +70,29 @@ def set_limit_voltage(instrument, value):
     """Sets the voltage limit to value in volts"""
     instrument.write('SENSe:VOLTage:DC:PROTection:LEVel %s' % value)    
     
-def set_meas_time_all(instrument, time_meas, unit='plc'):
-    """Set the measurement time for all measurements in seconds or number of PLCs
-    (power line cycles: 200 ms for EU grid of 50 Hz)"""
-    set_meas_time_current(instrument, time_meas, unit)
-    set_meas_time_voltage(instrument, time_meas, unit)
-    
-def set_meas_time_current(instrument, time_meas, unit='plc'):
-    """Set the measurement time in seconds or number of PLCs
-    (power line cycles: 200 ms for EU grid of 50 Hz)"""
-    if unit=='plc':
-        instrument.write('SENSE:CURR:DC:NPLC %s' % time_meas)
-    elif unit=='s':
-        instrument.write('SENSE:CURR:DC:APER %s' % time_meas) 
-    else:
-        print('Unit of measurement time_meas not given correctly for setting it')
-            
+def set_meas_time_current(instrument, time_meas):
+    """Set the measurement time in seconds"""
+    instrument.write('SENSE:CURR:DC:APER %s' % time_meas) 
     # Check if value was set
     time.sleep(sleepy_time)
-    time_actual = get_meas_time_current(instrument, unit)
+    time_actual = get_meas_time_current(instrument)
     if time_actual != time_meas:
-        if unit=='plc':
-            print('Measurement time was NOT correctly set to %s PLC' % time_meas)
-        elif unit=='s':
-            print('Measurement time was NOT correctly set to %s s' % time_meas)
-        else:
-            pass
+        print('Measurement time was NOT correctly set to %s s' % time_meas)
     else:
-        if unit=='plc':
-            print('Measurement time was set to %s PLC' % time_meas)
-        elif unit=='s':
-            print('Measurement time was set to %s s' % time_meas)
-        else:
-            pass
-        
+        print('Measurement time was set to %s s' % time_meas)
+            
 def set_meas_time_voltage(instrument, time_meas, unit='plc'):
     """Set the measurement time in seconds or number of PLCs
     (power line cycles: 200 ms for EU grid of 50 Hz)"""
-    if unit=='plc':
-        instrument.write('SENSE:VOLT:DC:NPLC %s' % time_meas)
-    elif unit=='s':
-        instrument.write('SENSE:VOLT:DC:APER %s' % time_meas) 
-    else:
-        print('Unit of measurement time_meas not given correctly for setting it')
-            
+    instrument.write('SENSE:VOLT:DC:APER %s' % time_meas) 
     # Check if value was set
     time.sleep(sleepy_time)
     time_actual = get_meas_time_voltage(instrument, unit)
     if time_actual != time_meas:
-        if unit=='plc':
-            print('Measurement time was NOT correctly set to %s PLC' % time_meas)
-        elif unit=='s':
-            print('Measurement time was NOT correctly set to %s s' % time_meas)
-        else:
-            pass
+        print('Measurement time was NOT correctly set to %s s' % time_meas)
     else:
-        if unit=='plc':
-            print('Measurement time was set to %s PLC' % time_meas)
-        elif unit=='s':
-            print('Measurement time was set to %s s' % time_meas)
-        else:
-            pass
+        print('Measurement time was set to %s s' % time_meas)
+
 # =============================================================================
 # Query functions
 # =============================================================================
@@ -143,102 +105,29 @@ def meas_voltage(instrument):
     instrument.write(':FORMat:DATA %s' % ('ASCii'))
     return instrument.query_ascii_values(':MEASure:VOLTage:DC?')[0]
 
-def meas_resistance(instrument):
-    instrument.write(':FORMat:DATA %s' % ('ASCii'))
-    V = instrument.query_ascii_values(':MEASure:VOLTage:DC?')[0]
-    I = instrument.query_ascii_values(':MEASure:CURRent:DC?')[0]
-    return V/I
-
-
 def get_source_voltage(instrument):
     """Queries the source voltage of the sourcemeter"""
-    source = instrument.query('SOURce:VOLTage:LEVel:IMMediate:AMPLitude?')
-    
-    # Source is a string, so values have to be parsed
-    value = float(source[1:7])
-    if source[0] == '-':
-        value = -value
-    if int(source[12:16]) != 0:
-        value = value*10**int(source[12:16])
-        
-    return value
+    return float(instrument.query('SOURce:VOLTage:LEVel:IMMediate:AMPLitude?'))
 
 def get_source_current(instrument):
     """Queries the source current of the sourcemeter"""
-    source = instrument.query('SOURce:CURRent:LEVel:IMMediate:AMPLitude?')
-    
-    # Source is a string, so values have to be parsed
-    value = float(source[1:7])
-    if source[0] == '-':
-        value = -value
-    if int(source[12:16]) != 0:
-        value = value*10**int(source[12:16])
-        
-    return value
+    return float(instrument.query('SOURce:CURRent:LEVel:IMMediate:AMPLitude?'))
 
 def get_limit_current(instrument):
     """Queries instrument for current limit set"""
-    limit = instrument.query('SENSe:CURRent:DC:PROTection?')
-    
-    # Source is a string, so values have to be parsed
-    value = float(limit[1:7])
-    if limit[0] == '-':
-        value = -value
-    if int(limit[12:16]) != 0:
-        value = value*10**int(limit[12:16])
-    
-    return value
-    
+    return float(instrument.query('SENSe:CURRent:DC:PROTection?'))    
+
 def get_limit_voltage(instrument):
     """Queries instrument for voltage limit set"""
-    limit = instrument.query('SENSe:VOLTage:DC:PROTection?')
-    
-    # Source is a string, so values have to be parsed
-    value = float(limit[1:7])
-    if limit[0] == '-':
-        value = -value
-    if int(limit[12:16]) != 0:
-        value = value*10**int(limit[12:16])
-    
-    return value
+    return float(instrument.query('SENSe:VOLTage:DC:PROTection?'))
 
-def get_meas_time_current(instrument, unit='plc'):
+def get_meas_time_current(instrument):
     """Queries for the measurement time"""
-    if unit=='plc':
-        sample_time = instrument.query('SENSE:CURR:DC:NPLC?')
-    elif unit=='s':
-        sample_time = instrument.query('SENSE:CURR:DC:APER?') 
-    else:
-        print('Unit of measurement time not given correctly for query')
-        return
-    
-    # Source is a string, so values have to be parsed
-    value = float(sample_time[1:7])
-    if sample_time[0] == '-':
-        value = -value
-    if int(sample_time[12:16]) != 0:
-        value = value*10**int(sample_time[12:16])
-    
-    return value
+    return float(instrument.query('SENSE:CURR:DC:APER?'))
 
-def get_meas_time_voltage(instrument, unit='plc'):
+def get_meas_time_voltage(instrument):
     """Queries for the measurement time"""
-    if unit=='plc':
-        sample_time = instrument.query('SENSE:VOLT:DC:NPLC?')
-    elif unit=='s':
-        sample_time = instrument.query('SENSE:VOLT:DC:APER?') 
-    else:
-        print('Unit of measurement time not given correctly for query')
-        sample_time = '+1.00000000E+000\n'
-    
-        # Source is a string, so values have to be parsed
-    value = float(sample_time[1:7])
-    if sample_time[0] == '-':
-        value = -value
-    if int(sample_time[12:16]) != 0:
-        value = value*10**int(sample_time[12:16])
-    
-    return sample_time
+    return float(instrument.query('SENSE:VOLT:DC:APER?'))
 
 # =============================================================================
 # Compound functions
@@ -246,19 +135,9 @@ def get_meas_time_voltage(instrument, unit='plc'):
 
 def check_current_limit(instrument):
     """Return Boolean on if current is within limit"""
-    value = instrument.query('SENSe:CURRent:DC:PROTection:TRIPped?')[0]
-    if value == '0':
-        return_value = True
-    else:
-        return_value = False
-    return return_value
-
+    return int(instrument.query('SENSe:CURRent:DC:PROTection:TRIPped?'))
 
 def check_voltage_limit(instrument):
     """Return Boolean on if current is within limit"""
-    value = instrument.query('SENSe:VOLTage:DC:PROTection:TRIPped?')[0]
-    if value == '0':
-        return_value = True
-    else:
-        return_value = False
-    return return_value
+    return int(instrument.query('SENSe:VOLTage:DC:PROTection:TRIPped?'))
+    
