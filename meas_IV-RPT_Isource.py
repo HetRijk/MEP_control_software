@@ -30,10 +30,10 @@ source_current_max      = 1E-7
 limit_voltage           = 1E1
 meas_time               = 60*1
 
-step_size               = 1E-8
+step_size               = 2*source_current_max/2
 
-sample_time             = 10 #provide in # of PLC
-sample_rate             = 1
+sample_time             = 50**-1 * 10
+sample_rate             = 3
 
 meas_name = '33MOhm_resistance_IV_curve_test' 
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
@@ -41,8 +41,9 @@ meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 # Setting calculations
 num_points      = int(2*source_current_max/step_size + 1)
 
+sig_digit = int(-np.floor(np.log10(step_size/10)))
 source_currents    = np.round(np.linspace(-source_current_max, source_current_max, num_points),
-                              int(-np.floor(np.log10(step_size/10))))
+                              sig_digit)
 
 # Setup folder structure and initialise log
 data_folder = meas_name + '\data'
@@ -65,7 +66,10 @@ log = open(meas_name + '\\' + meas_name + '_log.txt', 'w+')
 
 instr.log_and_print(log, "Sample rate is %s Hz" % sample_rate)
 instr.log_and_print(log, "Measurement time is %s s" % meas_time)
+instr.log_and_print(log, "Maximum source current is %s A" % source_current_max)
 instr.log_and_print(log, "Limit voltage starts at %s V" % limit_voltage)
+instr.log_and_print(log, "Number of points per IV curve is %s" % num_points)
+instr.log_and_print(log, "Step size for the IV curves is %s" % step_size)
 
 # =============================================================================
 # Connect to devices and setup
@@ -83,13 +87,11 @@ sm.set_source_current(sm2901, source_currents[0])
 sm.set_limit_voltage(sm2901, limit_voltage)
 
 # Set sample time
-sample_time = 50**-1*sample_time # converts sample time to s instead of plc
 if sample_rate**-1 < sample_time:
     print("Sample rate of %s is too high for the time per sample set of %s" % (sample_rate, sample_time))
-    sample_time = sample_rate**-1/50**-1
-    sm.set_meas_time_all(sm2901, sample_time, unit='s')
+    sm.set_meas_time_current(sm2901, np.round(sample_rate**-1, int(-np.floor(np.log10(sample_rate**-1)))))
 else:
-    sm.set_meas_time_all(sm2901, int(sample_rate**-1), unit='s')
+    sm.set_meas_time_current(sm2901, sample_time)
     
 instr.log_and_print(log, 'Setup completed')
 
@@ -133,9 +135,15 @@ voltage = np.array(voltage).transpose()
 # Save measurement data
 instr.save_data('%s\%s_current' % (data_folder, meas_name), current)
 instr.save_data('%s\%s_voltage' % (data_folder, meas_name), voltage)
-instr.save_data('%s\%s_num_points_per_iv' % (data_folder, meas_name), num_points)
+#instr.save_data('%s\%s_num_points_per_iv' % (data_folder, meas_name), num_points)
 
 instr.log_and_print(log, 'Measurement done')
+
+instr.log_and_print(log, "One IV-curve took %.2f s to measure" % (current[0][num_points] - current[0][0]))
+instr.log_and_print(log, "and the actual sample rate was %.2f Hz" % ((current[0][num_points] - current[0][0])**-1))
+
+values, counts = np.unique(np.round(current[1], sig_digit), return_counts=True); del values
+instr.log_and_print(log, "So %i IV curve were measured" % max(counts))
 
 # Plots
 plt.close('all')

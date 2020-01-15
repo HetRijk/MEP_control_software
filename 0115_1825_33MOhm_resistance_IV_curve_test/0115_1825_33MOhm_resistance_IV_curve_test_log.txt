@@ -1,0 +1,10 @@
+Sample rate is 3 Hz
+Measurement time is 60 s
+Limit voltage starts at 10.0 V
+Number of points per IV curve is 3
+Step size for the IV curves is 1e-07
+Devices connected
+Setup completed
+Start measurement at 2020-01-15 18:25:15.516597
+And takes 1.00 minutes
+Measurement done

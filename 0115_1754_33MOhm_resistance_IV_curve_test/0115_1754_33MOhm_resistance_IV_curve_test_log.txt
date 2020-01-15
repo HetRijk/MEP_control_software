@@ -1,0 +1,4 @@
+Sample rate is 1 Hz
+Measurement time is 60 s
+Limit voltage starts at 10.0 V
+Devices connected
