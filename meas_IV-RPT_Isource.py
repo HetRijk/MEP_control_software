@@ -28,11 +28,11 @@ import multimeter_module as dmm
 
 source_current_max      = 1E-7
 limit_voltage           = 1E1
+meas_time               = 60*1
 
-step_size               = source_current_max / 10
+step_size               = 1E-8
 
-sample_time             = 10#provide in # of PLC
-samples_per_step        = 10
+sample_time             = 10 #provide in # of PLC
 sample_rate             = 1
 
 meas_name = '33MOhm_resistance_IV_curve_test' 
@@ -40,10 +40,9 @@ meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
 # Setting calculations
 num_points      = int(2*source_current_max/step_size + 1)
-meas_num        = samples_per_step * num_points
-meas_time       = meas_num / sample_rate
 
-source_currents    = np.linspace(-source_current_max, source_current_max, num_points)
+source_currents    = np.round(np.linspace(-source_current_max, source_current_max, num_points),
+                              int(-np.floor(np.log10(step_size/10))))
 
 # Setup folder structure and initialise log
 data_folder = meas_name + '\data'
@@ -98,32 +97,31 @@ instr.log_and_print(log, 'Setup completed')
 # Measurement
 # =============================================================================
 
-main_time = time.time()
-
 instr.log_and_print(log, 'Start measurement at %s' % instr.date_time())
 instr.log_and_print(log, 'And takes %0.2f minutes' % (meas_time/60))
 
-t = instr.time_since(main_time)
+main_time = time.time()
 t_loop = time.time()
-limit_hit = 0
+t_meas2 = 0
 
 current = list()
 voltage = list()
 
-for i in range(num_points):    
-    sm.set_source_current(sm2901, source_currents[i])
-    time.sleep(sample_rate**-1 * 2)
+while t_meas2 < meas_time:
+    for i, source_current in enumerate(source_currents):    
+        sm.set_source_current(sm2901, source_current)
+        
+        # Measuring
+        t = instr.time_since(main_time)
+        current.append([t, sm.meas_current(sm2901)])
+        voltage.append([t, sm.meas_voltage(sm2901)])
     
-    # Measuring
-    current.append([t, sm.meas_current(sm2901)])
-    voltage.append([t, sm.meas_voltage(sm2901)])
-    
-    #Timing
-    sleepy_time =sample_rate**-1 - instr.time_since(t_loop)
-    if not sleepy_time < 0:
-        time.sleep(sleepy_time)
-    t_loop = time.time()
-    t = instr.time_since(main_time)
+        #Timing (If you can  do it better, please do!)
+        sleepy_time = sample_rate**-1 - instr.time_since(t_loop)
+        if not sleepy_time < 0:
+            time.sleep(sleepy_time)
+        t_loop = time.time()
+        t_meas2 = instr.time_since(main_time)
 
 current = np.array(current).transpose()
 voltage = np.array(voltage).transpose()
@@ -135,6 +133,7 @@ voltage = np.array(voltage).transpose()
 # Save measurement data
 instr.save_data('%s\%s_current' % (data_folder, meas_name), current)
 instr.save_data('%s\%s_voltage' % (data_folder, meas_name), voltage)
+instr.save_data('%s\%s_num_points_per_iv' % (data_folder, meas_name), num_points)
 
 instr.log_and_print(log, 'Measurement done')
 

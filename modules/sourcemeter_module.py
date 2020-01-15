@@ -16,7 +16,15 @@ import time
 import numpy as np
 import matplotlib.pyplot as plt
 
-## Setup functions
+# =============================================================================
+# Parameters
+# =============================================================================
+
+sleepy_time = 0.01
+
+# =============================================================================
+# Connection functions
+# =============================================================================
 
 def connect_sm2901():
     """Sets up connection to the sourcemeter"""
@@ -36,7 +44,7 @@ def set_source_voltage(instrument, volts):
     instrument.write(':SOURce:VOLTage:LEVel:IMMediate:AMPLitude %s' % volts)
     
     # Check if value was set
-    time.sleep(0.5)
+    time.sleep(sleepy_time)
     volts_actual = get_source_voltage(instrument)
     if volts_actual != volts:
         print('Source voltage was NOT correctly set to %s V' % volts)
@@ -47,7 +55,7 @@ def set_source_current(instrument, amps):
     instrument.write(':SOURce:CURRent:LEVel:IMMediate:AMPLitude %s' % amps)
     
     # Check if value was set
-    time.sleep(0.5)
+    time.sleep(0.01)
     amps_actual = get_source_current(instrument)
     if amps_actual != amps:
         print('Source current was NOT correctly set to %s A' % amps)
@@ -79,7 +87,7 @@ def set_meas_time_current(instrument, time_meas, unit='plc'):
         print('Unit of measurement time_meas not given correctly for setting it')
             
     # Check if value was set
-    time.sleep(0.5)
+    time.sleep(sleepy_time)
     time_actual = get_meas_time_current(instrument, unit)
     if time_actual != time_meas:
         if unit=='plc':
@@ -107,7 +115,7 @@ def set_meas_time_voltage(instrument, time_meas, unit='plc'):
         print('Unit of measurement time_meas not given correctly for setting it')
             
     # Check if value was set
-    time.sleep(0.5)
+    time.sleep(sleepy_time)
     time_actual = get_meas_time_voltage(instrument, unit)
     if time_actual != time_meas:
         if unit=='plc':
@@ -141,19 +149,6 @@ def meas_resistance(instrument):
     I = instrument.query_ascii_values(':MEASure:CURRent:DC?')[0]
     return V/I
 
-def meas_plusminus_current(instrument, source_max, num_points):
-    """Measures current as source voltage is varied between -source_max and source_max.
-    Should include 0, so num_points has to uneven number and at least 3."""
-    if num_points < 3 and num_points % 2 != 1:
-        print('Num_points should be at least 3 and uneven')
-    else:
-        sources = np.linspace(-source_max, source_max, num_points)
-        currents = list()
-        for i in range(len(sources)):
-            set_source_voltage(instrument, sources[i])
-            time.sleep(0.01)
-            currents.append(meas_current(instrument))
-    return currents, sources
 
 def get_source_voltage(instrument):
     """Queries the source voltage of the sourcemeter"""
@@ -215,7 +210,7 @@ def get_meas_time_current(instrument, unit='plc'):
         sample_time = instrument.query('SENSE:CURR:DC:APER?') 
     else:
         print('Unit of measurement time not given correctly for query')
-        sample_time = '+1.00000000E+000\n'
+        return
     
     # Source is a string, so values have to be parsed
     value = float(sample_time[1:7])
