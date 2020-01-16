@@ -28,9 +28,9 @@ import multimeter_module as dmm
 
 source_current_max      = 1E-7
 limit_voltage           = 1E1
-#meas_time               = 60*1
+meas_time               = 60*1
 
-step_size               = 2*source_current_max/100
+step_size               = 2*source_current_max/10
 
 sample_time             = 50**-1 * 10
 sample_rate             = 3
@@ -41,7 +41,6 @@ meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
 # Setting calculations
 num_points      = int(2*source_current_max/step_size + 1)
-meas_time       = (num_points+4) / sample_rate
 
 sig_digit = int(-np.floor(np.log10(step_size/10)))
 source_currents    = np.round(np.linspace(-source_current_max, source_current_max, num_points),
@@ -71,14 +70,16 @@ instr.log_and_print(log, "Measurement time is %s s" % meas_time)
 instr.log_and_print(log, "Maximum source current is %s A" % source_current_max)
 instr.log_and_print(log, "Limit voltage starts at %s V" % limit_voltage)
 instr.log_and_print(log, "Number of points per IV curve is %s" % num_points)
-instr.log_and_print(log, "Step size for the IV curves is %.2f" % step_size)
+instr.log_and_print(log, "Step size for the IV curves is %.2e" % step_size)
 
 # =============================================================================
 # Connect to devices and setup
 # =============================================================================
 
 # Connect to device(s)
+tc332 = tc.connect_tc332()
 sm2901 = sm.connect_sm2901()
+dmm2110 = dmm.connect_dmm2110()
 instr.log_and_print(log, 'Devices connected')
 
 # Set sourcemeter to 4-wire measure mode
@@ -110,8 +111,11 @@ main_time = time.time()
 t_loop = time.time()
 t_meas2 = 0
 
+temperature = list()
 current = list()
 voltage = list()
+setpoints = list()
+pressure = list()
 
 while t_meas2 < meas_time:
     for i, source_current in enumerate(source_currents):    
@@ -121,7 +125,10 @@ while t_meas2 < meas_time:
         t = instr.time_since(main_time)
         current.append([t, sm.meas_current(sm2901)])
         voltage.append([t, sm.meas_voltage(sm2901)])
-    
+        setpoints.append([t, tc.get_setpoint(tc332)])
+        pressure.append([t, dmm.meas_pressure(dmm2110)])
+        temperature.append([t, tc.get_temp(tc332)])
+            
         #Timing (If you can  do it better, please do!)
         sleepy_time = sample_rate**-1 - instr.time_since(t_loop)
         if not sleepy_time < 0:
@@ -129,8 +136,11 @@ while t_meas2 < meas_time:
         t_loop = time.time()
         t_meas2 = instr.time_since(main_time)
 
+temperature = np.array(temperature).transpose()
 current = np.array(current).transpose()
 voltage = np.array(voltage).transpose()
+setpoints = np.array(setpoints).transpose()
+pressure = np.array(pressure).transpose()
 
 # =============================================================================
 # Data processing, plotting and storage
@@ -139,9 +149,15 @@ voltage = np.array(voltage).transpose()
 # Save measurement data
 instr.save_data('%s\%s_current' % (data_folder, meas_name), current)
 instr.save_data('%s\%s_voltage' % (data_folder, meas_name), voltage)
-#instr.save_data('%s\%s_num_points_per_iv' % (data_folder, meas_name), num_points)
+instr.save_data('%s\%s_temperatures' % (data_folder, meas_name), temperature)
+instr.save_data('%s\%s_setpoints' % (data_folder, meas_name), setpoints)
+instr.save_data('%s\%s_pressure' % (data_folder, meas_name), pressure)
+
 
 instr.log_and_print(log, 'Measurement done')
+
+instr.log_mean_std(log, pressure[1], 'pressure')
+instr.log_mean_std(log, temperature[1], 'temperature')
 
 instr.log_and_print(log, "One IV-curve took %.2f s to measure" % (current[0][num_points-1] - current[0][0]))
 instr.log_and_print(log, "and the actual sample rate was %.2f Hz" % ((current[0][num_points-1] - current[0][0])**-1))
@@ -170,6 +186,15 @@ plt.xlabel('t(s)')
 plt.ylabel('Current (nA)')
 
 instr.save_plot('%s\%s_current' % (figure_folder, meas_name))
+
+# IV Curve
+plt.figure(2)
+plt.plot(current[1][0:num_points-1], voltage[1][0:num_points-1])
+plt.title('IV Curve')
+plt.xlabel('Current (A)')
+plt.ylabel('Voltage (V)')
+
+instr.save_plot('%s\%s_ivcurve' % (figure_folder, meas_name))
 
 # Close log file
 log.close()

@@ -31,14 +31,14 @@ def measurement(tc332, sm2901, dmm2110, meas_time, sample_rate, main_time):
     t_loop = time.time()
     limit_hit = 0
 
-    temp = list()
+    temperature = list()
     current = list()
     voltage = list()
     setpoints = list()
     pressure = list()
     while t_meas2 < meas_time:
         # Measuring
-        temp.append([t, tc.get_temp(tc332)])
+        temperature.append([t, tc.get_temp(tc332)])
         current.append([t, sm.meas_current(sm2901)])
         voltage.append([t, sm.meas_voltage(sm2901)])
         setpoints.append([t, tc.get_setpoint(tc332)])
@@ -50,7 +50,7 @@ def measurement(tc332, sm2901, dmm2110, meas_time, sample_rate, main_time):
             limit_hit = 0
         elif not sm.check_voltage_limit(sm2901):
             # Discard last measured values
-            del temp[-1]
+            del temperature[-1]
             del current[-1]
             del voltage[-1]
             del setpoints[-1]
@@ -72,7 +72,7 @@ def measurement(tc332, sm2901, dmm2110, meas_time, sample_rate, main_time):
         t = instr.time_since(main_time)
         t_meas2 = instr.time_since(t_meas)
 
-    return temp, current, voltage, setpoints, pressure
+    return temperature, current, voltage, setpoints, pressure
 
 setpoint = 65
 sample_rate = 5
@@ -128,7 +128,7 @@ sm.set_limit_voltage(sm2901, limit_voltage)
 time.sleep(sleep_time)
 instr.log_and_print(log, 'Setup completed')
 
-temp = list()
+temperature = list()
 current = list()
 voltage = list()
 setpoints = list()
@@ -143,14 +143,14 @@ meas_temp, meas_current, meas_voltage, meas_setpoints, meas_pressure = measureme
                                                                         tc332, sm2901, dmm2110,
                                                                         meas_time, sample_rate, main_time)
 
-temp += meas_temp
+temperature += meas_temp
 current += meas_current
 voltage += meas_voltage
 setpoints += meas_setpoints
 pressure += meas_pressure
 
 
-temp = np.array(temp).transpose()
+temperature = np.array(temperature).transpose()
 current = np.array(current).transpose()
 voltage = np.array(voltage).transpose()
 setpoints = np.array(setpoints).transpose()
@@ -160,7 +160,7 @@ pressure = np.array(pressure).transpose()
 
 resistances = np.array([voltage[0], voltage[1]/current[1]])
 
-instr.save_data('%s\%s_temperatures' % (data_folder, meas_name), temp)
+instr.save_data('%s\%s_temperatures' % (data_folder, meas_name), temperature)
 instr.save_data('%s\%s_current' % (data_folder, meas_name), current)
 instr.save_data('%s\%s_voltage' % (data_folder, meas_name), voltage)
 instr.save_data('%s\%s_setpoints' % (data_folder, meas_name), setpoints)
@@ -173,7 +173,7 @@ instr.log_mean_std(log, resistances[1], 'resistance')
 instr.log_mean_std(log, voltage[1], 'voltage')
 instr.log_mean_std(log, current[1], 'current')
 instr.log_mean_std(log, pressure[1], 'pressure')
-instr.log_mean_std(log, temp[1], 'temperature')
+instr.log_mean_std(log, temperature[1], 'temperature')
 
 # Plots
 plt.close('all')
@@ -208,7 +208,7 @@ instr.save_plot('%s\%s_resistance' % (figure_folder, meas_name))
 # Temperature
 plt.figure(3)
 plt.plot(setpoints[0], setpoints[1])
-plt.plot(temp[0], temp[1])
+plt.plot(temperature[0], temperature[1])
 plt.title('Temperatures of heater')
 plt.xlabel('t(s)')
 plt.ylabel('Temperature (*C)')
