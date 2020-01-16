@@ -77,9 +77,9 @@ def set_meas_time_current(instrument, time_meas):
     time.sleep(sleepy_time)
     time_actual = get_meas_time_current(instrument)
     if time_actual != time_meas:
-        print('Measurement time was NOT correctly set to %s s' % time_meas)
+        print('Sample time was NOT correctly set to %s s' % time_meas)
     else:
-        print('Measurement time was set to %s s' % time_meas)
+        print('Sample time was set to %s s' % time_meas)
             
 def set_meas_time_voltage(instrument, time_meas, unit='plc'):
     """Set the measurement time in seconds or number of PLCs
@@ -89,9 +89,9 @@ def set_meas_time_voltage(instrument, time_meas, unit='plc'):
     time.sleep(sleepy_time)
     time_actual = get_meas_time_voltage(instrument, unit)
     if time_actual != time_meas:
-        print('Measurement time was NOT correctly set to %s s' % time_meas)
+        print('Sample time was NOT correctly set to %s s' % time_meas)
     else:
-        print('Measurement time was set to %s s' % time_meas)
+        print('Sample time was set to %s s' % time_meas)
 
 # =============================================================================
 # Query functions

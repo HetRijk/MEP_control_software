@@ -173,7 +173,7 @@ instr.log_mean_std(log, resistances[1], 'resistance')
 instr.log_mean_std(log, voltage[1], 'voltage')
 instr.log_mean_std(log, current[1], 'current')
 instr.log_mean_std(log, pressure[1], 'pressure')
-instr.log_mean_std(log, temperature[1], 'temperature')
+instr.log_mean_std(log, temp[1], 'temperature')
 
 # Plots
 plt.close('all')

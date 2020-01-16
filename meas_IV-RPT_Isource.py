@@ -28,18 +28,20 @@ import multimeter_module as dmm
 
 source_current_max      = 1E-7
 limit_voltage           = 1E1
-meas_time               = 60*1
+#meas_time               = 60*1
 
-step_size               = 2*source_current_max/2
+step_size               = 2*source_current_max/100
 
 sample_time             = 50**-1 * 10
 sample_rate             = 3
+wait_time               = 20
 
-meas_name = '33MOhm_resistance_IV_curve_test' 
+meas_name = 'WO3196_IV_curve_test' 
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
 # Setting calculations
 num_points      = int(2*source_current_max/step_size + 1)
+meas_time       = (num_points+4) / sample_rate
 
 sig_digit = int(-np.floor(np.log10(step_size/10)))
 source_currents    = np.round(np.linspace(-source_current_max, source_current_max, num_points),
@@ -69,7 +71,7 @@ instr.log_and_print(log, "Measurement time is %s s" % meas_time)
 instr.log_and_print(log, "Maximum source current is %s A" % source_current_max)
 instr.log_and_print(log, "Limit voltage starts at %s V" % limit_voltage)
 instr.log_and_print(log, "Number of points per IV curve is %s" % num_points)
-instr.log_and_print(log, "Step size for the IV curves is %s" % step_size)
+instr.log_and_print(log, "Step size for the IV curves is %.2f" % step_size)
 
 # =============================================================================
 # Connect to devices and setup
@@ -94,6 +96,8 @@ else:
     sm.set_meas_time_current(sm2901, sample_time)
     
 instr.log_and_print(log, 'Setup completed')
+
+time.sleep(wait_time)
 
 # =============================================================================
 # Measurement
@@ -139,10 +143,11 @@ instr.save_data('%s\%s_voltage' % (data_folder, meas_name), voltage)
 
 instr.log_and_print(log, 'Measurement done')
 
-instr.log_and_print(log, "One IV-curve took %.2f s to measure" % (current[0][num_points] - current[0][0]))
-instr.log_and_print(log, "and the actual sample rate was %.2f Hz" % ((current[0][num_points] - current[0][0])**-1))
+instr.log_and_print(log, "One IV-curve took %.2f s to measure" % (current[0][num_points-1] - current[0][0]))
+instr.log_and_print(log, "and the actual sample rate was %.2f Hz" % ((current[0][num_points-1] - current[0][0])**-1))
 
-values, counts = np.unique(np.round(current[1], sig_digit), return_counts=True); del values
+values, counts = np.unique(np.round(current[1], sig_digit), return_counts=True)
+del values
 instr.log_and_print(log, "So %i IV curve were measured" % max(counts))
 
 # Plots
