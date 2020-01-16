@@ -223,8 +223,6 @@ plt.title('Pressure in main chamber')
 plt.xlabel('t(s)')
 plt.ylabel('Pressure (bar)')
 
-#plt.ylim([0, max(pressure[1])])
-
 instr.save_plot('%s\%s_pressure' % (figure_folder, meas_name))
 
 # Close log file

@@ -1,0 +1,17 @@
+Sample rate is 1 Hz
+Measurement time is 30.0 s
+Maximum source current is 1e-07 A
+Limit voltage starts at 10.0 V
+Number of points per IV curve is 11
+Step size for the IV curves is 2.00e-08 A
+Temperature setpoint is 2.50e+01 C
+Devices connected
+Setup completed
+Start measurement at 2020-01-16 18:39:29.276900
+And takes 0.50 minutes
+Measurement done
+Mean pressure is 9.909818e-01 with std 1.556113e-05
+Mean temperature is 2.500448e+01 with std 1.177220e-03
+One IV-curve took 11.35 s to measure
+and the actual sample rate was 0.09 Hz
+So 4 IV curve were measured
