@@ -59,7 +59,7 @@ func = linear
 # =============================================================================
 # # Import data
 # =============================================================================
-time = instr.load_data(file_current)[0]
+ts = instr.load_data(file_current)[0]
 currents = instr.load_data(file_current)[1]
 voltages = instr.load_data(file_voltage)[1]
 

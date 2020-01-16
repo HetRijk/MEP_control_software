@@ -43,8 +43,8 @@ meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 num_points      = int(2*source_current_max/step_size + 1)
 
 sig_digit = int(-np.floor(np.log10(step_size/10)))
-source_currents    = np.round(np.linspace(-source_current_max, source_current_max, num_points),
-                              sig_digit)
+sources = np.linspace(-source_current_max, source_current_max,num_points)           
+source_currents    = np.round(np.append(sources, sources[::-1]), sig_digit)
 
 # Setup folder structure and initialise log
 data_folder = meas_name + '\data'
