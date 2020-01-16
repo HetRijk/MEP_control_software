@@ -48,7 +48,7 @@ def measurement(tc332, sm2901, dmm2110, meas_time, sample_rate, main_time):
         limit_voltage = sm.get_limit_voltage(sm2901)
         if limit_hit == 1:
             limit_hit = 0
-        elif not sm.check_voltage_limit(sm2901):
+        elif sm.check_voltage_limit(sm2901):
             # Discard last measured values
             del temperature[-1]
             del current[-1]
@@ -74,14 +74,14 @@ def measurement(tc332, sm2901, dmm2110, meas_time, sample_rate, main_time):
 
     return temperature, current, voltage, setpoints, pressure
 
-setpoint = 65
-sample_rate = 5
-meas_time = 60*1
-source_current = 1E-8
-limit_voltage = 1E0
-sleep_time = 0
+setpoint        = 25
+sample_rate     = 4
+meas_time       = 60*20
+source_current  = 1E-7
+limit_voltage   = 1E1
+sleep_time      = 10
 
-meas_name = '33MOhm_outside'
+meas_name = 'WO3196_ohmic_airtoh2'
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
 
@@ -125,7 +125,9 @@ instr.log_and_print(log, 'Devices connected')
 
 sm.set_source_current(sm2901, source_current)
 sm.set_limit_voltage(sm2901, limit_voltage)
+
 time.sleep(sleep_time)
+
 instr.log_and_print(log, 'Setup completed')
 
 temperature = list()
