@@ -7,6 +7,7 @@ Edits by Rijk @20200115
     - Made sure np.linespace() num parameters given are integers
     - Changed visa instrument ask method to query as ask is outdated
     - Changed raw_input to input as raw_input does not exist in Python3 and input functions the same
+    - Removed waitingTime parameter as it is useless
 """
 
 import os
@@ -50,14 +51,12 @@ def getDC():
 
 
 print('Input filename:   '),
-name = np.raw_input()
+name = input()
 fileName = str(name)
 
 if (os.path.isfile(fileName)):
     raise IOError("File already exists")
   
-waitingTime = 10
-
 initI1      = 0
 targetI1    = 10e-6
 stepI1      = 1000e-9

@@ -28,16 +28,16 @@ import multimeter_module as dmm
 
 source_current_max      = 1E-7
 limit_voltage           = 1E1
-meas_time               = 60*0.5
+meas_time               = 60*10
 setpoint                = 25
 
-step_size               = 2*source_current_max/50
+step_size               = 2*source_current_max/10
 
-sample_time             = 50**-1 * 10
-sample_rate             = 1
-wait_time               = 20
+sample_time             = 50**-1 * 1E-1
+sample_rate             = 4
+wait_time               = 10
 
-meas_name = 'WO3196_IV_curve_test' 
+meas_name = 'WO3196_IV_air_test' 
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
 # Setting calculations
@@ -88,6 +88,9 @@ instr.log_and_print(log, 'Devices connected')
 
 # Set sourcemeter to 4-wire measure mode
 sm.set_4wire_mode(sm2901)
+
+# Set sourcemeter to turn on on measurement
+sm.set_output_on(sm2901)
 
 # Set source current and limit voltage
 sm.set_source_current(sm2901, source_currents[0])
@@ -167,9 +170,7 @@ instr.log_mean_std(log, temperature[1], 'temperature')
 instr.log_and_print(log, "One IV-curve took %.2f s to measure" % (current[0][num_points-1] - current[0][0]))
 instr.log_and_print(log, "and the actual sample rate was %.2f Hz" % ((current[0][num_points-1] - current[0][0])**-1))
 
-values, counts = np.unique(np.round(current[1], sig_digit), return_counts=True)
-del values
-instr.log_and_print(log, "So %i IV curve were measured" % max(counts))
+instr.log_and_print(log, "So %i IV curve were measured" % int(len(current[0])/num_points))
 
 # Plots
 plt.close('all')

@@ -1,0 +1,18 @@
+0117_1231_WO3196_ohmic_air
+
+Measurement is done with current sourcing
+Sample rate is 4 Hz
+Measurement time is 600 s
+Source current is 1e-07 A
+Limit voltage starts at 10.0 V
+Temperature setpoint is 25 C
+Devices connected
+Setup completed
+Start measurement at 2020-01-17 12:32:07.659242
+And takes 10.00 minutes
+Measurement done
+Mean resistance is 1.593082e+07 with std 1.827551e+05
+Mean voltage is 1.593082e+00 with std 1.827551e-02
+Mean current is 1.000000e-07 with std 1.323489e-23
+Mean pressure is 1.000999e+00 with std 1.004307e-05
+Mean temperature is 2.500458e+01 with std 1.177623e-03

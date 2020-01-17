@@ -20,7 +20,7 @@ import matplotlib.pyplot as plt
 # Parameters
 # =============================================================================
 
-sleepy_time = 0.01
+sleepy_time = 0.001
 
 # =============================================================================
 # Connection functions
@@ -36,9 +36,15 @@ def connect_sm2901():
 # Settings functions
 # =============================================================================
 
+
+# Set sourcemeter to a certain mode
 def set_4wire_mode(instrument):
     """Sets the sourcemeter to remote mode, thereby enabling 4-wire measurements"""
     instrument.write('SENSE:REMOTE ON')
+    
+def set_output_on(instrument):
+    """Sets instrument to turn output on measurement"""
+    instrument.write("OUTPUT:ON:AUTO 1")
 
 def set_source_voltage(instrument, volts):
     instrument.write(':SOURce:VOLTage:LEVel:IMMediate:AMPLitude %s' % volts)

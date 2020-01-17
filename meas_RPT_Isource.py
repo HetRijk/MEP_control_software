@@ -74,16 +74,26 @@ def measurement(tc332, sm2901, dmm2110, meas_time, sample_rate, main_time):
 
     return temperature, current, voltage, setpoints, pressure
 
+# =============================================================================
+# Input Parameters
+# =============================================================================
+
 setpoint        = 25
 sample_rate     = 4
-meas_time       = 60*20
+meas_time       = 60*10
+
 source_current  = 1E-7
 limit_voltage   = 1E1
+
 sleep_time      = 10
 
-meas_name = 'WO3196_ohmic_airtoh2'
-meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
+meas_name = 'WO3196_ohmic_air'
 
+# =============================================================================
+# Preperatory code
+# =============================================================================
+
+meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
 sample_time = sample_rate**(-1)
 meas_len = int(meas_time / sample_time)
@@ -117,11 +127,19 @@ instr.log_and_print(log, "Source current is %s A" % source_current)
 instr.log_and_print(log, "Limit voltage starts at %s V" % limit_voltage)
 instr.log_and_print(log, "Temperature setpoint is %s C" % setpoint)
 
-# Connect to device
+# =============================================================================
+# Connect to devices
+# =============================================================================
 tc332 = tc.connect_tc332()
 sm2901 = sm.connect_sm2901()
 dmm2110 = dmm.connect_dmm2110()
 instr.log_and_print(log, 'Devices connected')
+
+# Set sourcemeter to 4-wire measure mode
+sm.set_4wire_mode(sm2901)
+
+# Set sourcemeter to turn on on measurement
+sm.set_output_on(sm2901)
 
 sm.set_source_current(sm2901, source_current)
 sm.set_limit_voltage(sm2901, limit_voltage)
