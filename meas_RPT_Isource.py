@@ -30,27 +30,21 @@ import multimeter_module as dmm
 
 source_current  = 1E-7
 limit_voltage   = 1E1
-meas_time       = 60*10
+meas_time       = 60*5
 setpoint        = 25
 
 sample_time     = 50**-1 * 10
 sample_rate     = 4
 
+wait_time      = 60*5
 
-
-
-wait_time      = 10
-
-meas_name = 'WO3196_ohmic_air'
+meas_name = 'WO3196_ohmic_vacuum'
 
 # =============================================================================
 # Preperatory code
 # =============================================================================
 
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
-
-
-
 
 # Setup folder structure and initialise log
 data_folder = meas_name + '\data'
@@ -79,11 +73,10 @@ instr.log_and_print(log, "Sample rate is %s Hz" % sample_rate)
 instr.log_and_print(log, "Measurement time is %s s" % meas_time)
 instr.log_and_print(log, "Source current is %s A" % source_current)
 instr.log_and_print(log, "Limit voltage starts at %s V" % limit_voltage)
-
 instr.log_and_print(log, "Temperature setpoint is %.2e C" % setpoint)
 
 # =============================================================================
-# Connect to devices
+# Connect to devices and setup
 # =============================================================================
 
 tc332 = tc.connect_tc332()
@@ -98,7 +91,7 @@ sm.set_4wire_mode(sm2901)
 sm.set_output_on(sm2901)
 
 # Set source current and limit voltage
-sm.set_source_current(sm2901, source_currents)
+sm.set_source_current(sm2901, source_current)
 sm.set_limit_voltage(sm2901, limit_voltage)
 
 # Set sample time
@@ -112,41 +105,31 @@ instr.log_and_print(log, 'Setup completed, now waits for %s' % wait_time)
 
 time.sleep(wait_time)
 
-instr.log_and_print(log, 'Setup completed')
-
 # =============================================================================
 # Measurement
 # =============================================================================
 
-temperature = list()
-current = list()
-voltage = list()
-setpoints = list()
-pressure = list()
-
-
 instr.log_and_print(log, 'Start measurement at %s' % instr.date_time())
 instr.log_and_print(log, 'And takes %0.2f minutes' % (meas_time/60))
 
-
-
 temperature = list()
 current = list()
 voltage = list()
 setpoints = list()
 pressure = list()
+
 main_time = time.time()
-t_meas2 = 0
+t = 0
 t_meas = time.time()
 t_loop = time.time()
 limit_hit = 0
 
 while t < meas_time:
     # Measuring
-	t = instr.time_since(main_time)
+    t = instr.time_since(main_time)
     current.append([t, sm.meas_current(sm2901)])
     voltage.append([t, sm.meas_voltage(sm2901)])
-	temperature.append([t, tc.get_temp(tc332)])
+    temperature.append([t, tc.get_temp(tc332)])
     setpoints.append([t, tc.get_setpoint(tc332)])
     pressure.append([t, dmm.meas_pressure(dmm2110)])
 
@@ -170,14 +153,13 @@ while t < meas_time:
     t_loop = time.time()
 
 
-
-
-
 temperature = np.array(temperature).transpose()
 current = np.array(current).transpose()
 voltage = np.array(voltage).transpose()
 setpoints = np.array(setpoints).transpose()
 pressure = np.array(pressure).transpose()
+
+instr.log_and_print(log, 'Measurement done')
 
 # =============================================================================
 # Data processing, plotting and storage
@@ -193,8 +175,6 @@ instr.save_data('%s\%s_resistance' % (data_folder, meas_name), resistances)
 instr.save_data('%s\%s_temperatures' % (data_folder, meas_name), temperature)
 instr.save_data('%s\%s_setpoints' % (data_folder, meas_name), setpoints)
 instr.save_data('%s\%s_pressure' % (data_folder, meas_name), pressure)
-
-instr.log_and_print(log, 'Measurement done')
 
 instr.log_mean_std(log, resistances[1], 'resistance')
 instr.log_mean_std(log, voltage[1], 'voltage')

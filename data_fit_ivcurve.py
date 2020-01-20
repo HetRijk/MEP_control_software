@@ -32,7 +32,7 @@ def power_law(x, a, b, c):
 
 # Inputs
     
-folder = r'C:\Users\Rijk\Documents\MEP\MEP_control_software'
+folder = r'D:\Rijk\MEP_control_software'
 file_name = '0117_1703_WO3196_full_IV_curve'
 
 file_current = os.path.join(folder, file_name, 'data', file_name + '_current')
@@ -96,8 +96,11 @@ popt, pcov = curve_fit(func, xdata0, ydata0, maxfev=int(1E9))
 xdata_fit = np.linspace(min(xdata0), max(xdata0), int(1E3))
 
 plt.figure()
-plt.plot(xdata0, ydata0)
-plt.plot(xdata_fit, func(xdata_fit, *popt))
+#plt.plot(xdata0, ydata0)
+#plt.plot(xdata_fit, func(xdata_fit, *popt))
+plt.plot(current_plus, voltage_plus)
+plt.plot(current_min, voltage_min)
+
 
 plt.title('IV curve of WO3916')
 plt.xlabel('Current (A)')
@@ -112,6 +115,7 @@ plt.ylabel('Voltage (V)')
 #plt.xscale('log')
 #plt.yscale('log')
 
-plt.legend(['Data', 'Fit'])
+#plt.legend(['Data', 'Fit'])
+plt.legend(['Plus', 'Minus'])
 
 #instr.save_plot(file_name + '_fit')
