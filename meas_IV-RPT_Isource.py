@@ -38,7 +38,7 @@ sample_time             = 50**-1 * 1E-1
 sample_rate             = 4
 wait_time               = 10
 
-meas_name = 'WO3196_IV_air_test' 
+meas_name = 'WO3196_h2_iv' 
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
 # Setting calculations
@@ -47,8 +47,6 @@ num_points      = int(2*source_current_max/step_size + 1)
 sig_digit = int(-np.floor(np.log10(step_size/10)))
 sources = np.linspace(-source_current_max, source_current_max,num_points)           
 source_currents    = np.round(np.append(sources, sources[::-1]), sig_digit)
-
-
 
 # Setup folder structure and initialise log
 data_folder = meas_name + '\data'
@@ -123,9 +121,9 @@ voltage = list()
 setpoints = list()
 pressure = list()
 
-main_time = time.time()
-t_loop = time.time()
-t_meas2 = 0
+main_time   = time.time()
+t_loop      = time.time()
+t           = 0
 
 while t < meas_time:
     for n, i in enumerate(source_currents):    
@@ -134,13 +132,13 @@ while t < meas_time:
         t = instr.time_since(main_time)
         current.append([t, sm.meas_current(sm2901)])
         voltage.append([t, sm.meas_voltage(sm2901)])
-		temperature.append([t, tc.get_temp(tc332)])
+        temperature.append([t, tc.get_temp(tc332)])
         setpoints.append([t, tc.get_setpoint(tc332)])
         pressure.append([t, dmm.meas_pressure(dmm2110)])
         
         
 		# Set the next source current
-	    if not n > len(source_currents)-1:
+        if n < len(source_currents)-1:
 	        sm.set_source_current(sm2901, source_currents[n+1])
 		
         #Timing (If you can  do it better, please do!)

@@ -40,8 +40,8 @@ file_voltage = os.path.join(folder, file_name, 'data', file_name + '_voltage')
 
 func = linear
 
-start   = 0
-stop    = 3500
+start   = 17
+stop    = 101 - 17
 
 #p0 = [1E12, -3/2, 1E5]
 #p0      = [2E7, 1E4, 2E7]
@@ -96,10 +96,10 @@ popt, pcov = curve_fit(func, xdata0, ydata0, maxfev=int(1E9))
 xdata_fit = np.linspace(min(xdata0), max(xdata0), int(1E3))
 
 plt.figure()
-#plt.plot(xdata0, ydata0)
-#plt.plot(xdata_fit, func(xdata_fit, *popt))
-plt.plot(current_plus, voltage_plus)
-plt.plot(current_min, voltage_min)
+plt.plot(xdata0, ydata0)
+plt.plot(xdata_fit, func(xdata_fit, *popt))
+#plt.plot(current_plus, voltage_plus)
+#plt.plot(current_min, voltage_min)
 
 
 plt.title('IV curve of WO3916')
@@ -115,7 +115,7 @@ plt.ylabel('Voltage (V)')
 #plt.xscale('log')
 #plt.yscale('log')
 
-#plt.legend(['Data', 'Fit'])
-plt.legend(['Plus', 'Minus'])
+plt.legend(['Data', 'Fit'])
+#plt.legend(['Plus', 'Minus'])
 
 #instr.save_plot(file_name + '_fit')

@@ -31,15 +31,15 @@ def linear(x, a):
 # # Inputs
 # =============================================================================
     
-meas_name = '0115_1650_33MOhm_resistance_IV_curve_test'
+meas_name = '0117_1703_WO3196_full_IV_curve'
 
-source_folder = r'C:\Users\Rijk\Documents\MEP\MEP_control_software'
+source_folder = r'D:\Rijk\MEP_control_software'
 
 num_points = 10
 
 folder = os.path.join(source_folder, meas_name)
 
-fit_folder = folder + '\\fit'
+fit_folder = folder + '\\fit_minus'
 try:
     os.mkdir(fit_folder)
 except:
@@ -52,6 +52,9 @@ file_voltage = file_name + '_voltage'
                             
 func = linear
 
+start   = 17
+stop    = start
+
 #p0 = [1E12, -3/2]
 #p0      = [2E7, 1E4, 2E7]
 #bounds = (0, np.inf)
@@ -60,9 +63,28 @@ func = linear
 # # Import data
 # =============================================================================
 ts = instr.load_data(file_current)[0]
-currents = instr.load_data(file_current)[1]
-voltages = instr.load_data(file_voltage)[1]
+currents = instr.load_data(file_current)[1][101:]
+voltages = instr.load_data(file_voltage)[1][101:]
 
+stop = len(currents) - stop
+
+if start > 0:
+    if stop < len(currents):
+        currents = currents[start:stop]
+        voltages = voltages[start:stop]
+    else:
+        print('Stop index too large for current array')
+        currents = currents[start:]
+        voltages = voltages[start:]
+        currents = currents - min(currents)
+        
+else:
+    print('Start index zero or lower, so not used')
+    if stop < len(currents):
+        currents = currents[:stop]
+        voltages = voltages[:stop]
+    else:
+        print('Stop index too large for current array')
 
 # =============================================================================
 # # Perform regular fit and constrained fit

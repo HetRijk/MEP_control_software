@@ -1,0 +1,8 @@
+0120_1707_WO3196_ohmic_h2
+
+Measurement is done with current sourcing
+Sample rate is 4 Hz
+Measurement time is 600 s
+Source current is 1e-07 A
+Limit voltage starts at 10.0 V
+Temperature setpoint is 2.50e+01 C

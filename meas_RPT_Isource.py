@@ -30,15 +30,15 @@ import multimeter_module as dmm
 
 source_current  = 1E-7
 limit_voltage   = 1E1
-meas_time       = 60*5
+meas_time       = 60*10
 setpoint        = 25
 
 sample_time     = 50**-1 * 10
 sample_rate     = 4
 
-wait_time      = 60*5
+wait_time       = 10
 
-meas_name = 'WO3196_ohmic_vacuum'
+meas_name = 'WO3196_ohmic_h2_2'
 
 # =============================================================================
 # Preperatory code
@@ -101,7 +101,7 @@ if sample_rate**-1 < sample_time:
 else:
     sm.set_meas_time_current(sm2901, sample_time)
     
-instr.log_and_print(log, 'Setup completed, now waits for %s' % wait_time)
+instr.log_and_print(log, 'Setup completed, now waits for %s s' % wait_time)
 
 time.sleep(wait_time)
 

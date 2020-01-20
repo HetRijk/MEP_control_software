@@ -1,0 +1,18 @@
+0120_1629_WO3196_ohmic_vacuum2
+
+Measurement is done with current sourcing
+Sample rate is 4 Hz
+Measurement time is 300 s
+Source current is 1e-07 A
+Limit voltage starts at 10.0 V
+Temperature setpoint is 2.50e+01 C
+Devices connected
+Setup completed, now waits for 10
+Start measurement at 2020-01-20 16:30:03.176984
+And takes 5.00 minutes
+Measurement done
+Mean resistance is 1.116474e+07 with std 3.023894e+04
+Mean voltage is 1.116474e+00 with std 3.023894e-03
+Mean current is 1.000000e-07 with std 1.323489e-23
+Mean pressure is 1.226906e-01 with std 6.843979e-05
+Mean temperature is 2.500466e+01 with std 1.152102e-03
