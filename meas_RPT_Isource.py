@@ -2,10 +2,10 @@
 """
 Created on Mon Oct 14 14:50:11 2019
 
-@author: LocalAdmin
+@author: Rijk Hogenbirk
 
-Test voltage and current measurement
-As the resistance that were measured before were negative
+Script to measure the ohmic resistance, pressure and temperature 
+with the Keysight B2901A Sourcemeter as a current source and voltage measurement device
 """
 
 
@@ -23,69 +23,23 @@ import sourcemeter_module as sm
 import instrument_module as instr
 import multimeter_module as dmm
 
-def measurement(tc332, sm2901, dmm2110, meas_time, sample_rate, main_time):
-    """Measurement loop"""
-    t = instr.time_since(main_time)
-    t_meas2 = 0
-    t_meas = time.time()
-    t_loop = time.time()
-    limit_hit = 0
-
-    temperature = list()
-    current = list()
-    voltage = list()
-    setpoints = list()
-    pressure = list()
-    while t_meas2 < meas_time:
-        # Measuring
-        temperature.append([t, tc.get_temp(tc332)])
-        current.append([t, sm.meas_current(sm2901)])
-        voltage.append([t, sm.meas_voltage(sm2901)])
-        setpoints.append([t, tc.get_setpoint(tc332)])
-        pressure.append([t, dmm.meas_pressure(dmm2110)])
-
-        # Check current limit
-        limit_voltage = sm.get_limit_voltage(sm2901)
-        if limit_hit == 1:
-            limit_hit = 0
-        elif sm.check_voltage_limit(sm2901):
-            # Discard last measured values
-            del temperature[-1]
-            del current[-1]
-            del voltage[-1]
-            del setpoints[-1]
-            del pressure[-1]
-
-            # Increase limits
-            limit_voltage = sm.get_limit_voltage(sm2901)
-            limit_voltage = 10*limit_voltage
-            sm.set_limit_voltage(sm2901, limit_voltage)
-            limit_hit = 1
-            instr.log_and_print(log, 'Voltage limit increased to %0.0e V at %2.1d s after start' % (limit_voltage, t))
-
-        #Timing
-        if sample_rate**-1 - instr.time_since(t_loop) > 0:
-            time.sleep(sample_rate**-1 - instr.time_since(t_loop))
-        else:
-            pass
-        t_loop = time.time()
-        t = instr.time_since(main_time)
-        t_meas2 = instr.time_since(t_meas)
-
-    return temperature, current, voltage, setpoints, pressure
 
 # =============================================================================
 # Input Parameters
 # =============================================================================
 
-setpoint        = 25
-sample_rate     = 4
-meas_time       = 60*10
-
 source_current  = 1E-7
 limit_voltage   = 1E1
+meas_time       = 60*10
+setpoint        = 25
 
-sleep_time      = 10
+sample_time     = 50**-1 * 10
+sample_rate     = 4
+
+
+
+
+wait_time      = 10
 
 meas_name = 'WO3196_ohmic_air'
 
@@ -95,8 +49,8 @@ meas_name = 'WO3196_ohmic_air'
 
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
-sample_time = sample_rate**(-1)
-meas_len = int(meas_time / sample_time)
+
+
 
 # Setup folder structure and initialise log
 data_folder = meas_name + '\data'
@@ -125,11 +79,13 @@ instr.log_and_print(log, "Sample rate is %s Hz" % sample_rate)
 instr.log_and_print(log, "Measurement time is %s s" % meas_time)
 instr.log_and_print(log, "Source current is %s A" % source_current)
 instr.log_and_print(log, "Limit voltage starts at %s V" % limit_voltage)
-instr.log_and_print(log, "Temperature setpoint is %s C" % setpoint)
+
+instr.log_and_print(log, "Temperature setpoint is %.2e C" % setpoint)
 
 # =============================================================================
 # Connect to devices
 # =============================================================================
+
 tc332 = tc.connect_tc332()
 sm2901 = sm.connect_sm2901()
 dmm2110 = dmm.connect_dmm2110()
@@ -141,12 +97,26 @@ sm.set_4wire_mode(sm2901)
 # Set sourcemeter to turn on on measurement
 sm.set_output_on(sm2901)
 
-sm.set_source_current(sm2901, source_current)
+# Set source current and limit voltage
+sm.set_source_current(sm2901, source_currents)
 sm.set_limit_voltage(sm2901, limit_voltage)
 
-time.sleep(sleep_time)
+# Set sample time
+if sample_rate**-1 < sample_time:
+    print("Sample rate of %s is too high for the time per sample set of %s" % (sample_rate, sample_time))
+    sm.set_meas_time_current(sm2901, np.round(sample_rate**-1, int(-np.floor(np.log10(sample_rate**-1)))))
+else:
+    sm.set_meas_time_current(sm2901, sample_time)
+    
+instr.log_and_print(log, 'Setup completed, now waits for %s' % wait_time)
+
+time.sleep(wait_time)
 
 instr.log_and_print(log, 'Setup completed')
+
+# =============================================================================
+# Measurement
+# =============================================================================
 
 temperature = list()
 current = list()
@@ -154,20 +124,53 @@ voltage = list()
 setpoints = list()
 pressure = list()
 
-main_time = time.time()
 
 instr.log_and_print(log, 'Start measurement at %s' % instr.date_time())
 instr.log_and_print(log, 'And takes %0.2f minutes' % (meas_time/60))
 
-meas_temp, meas_current, meas_voltage, meas_setpoints, meas_pressure = measurement(
-                                                                        tc332, sm2901, dmm2110,
-                                                                        meas_time, sample_rate, main_time)
 
-temperature += meas_temp
-current += meas_current
-voltage += meas_voltage
-setpoints += meas_setpoints
-pressure += meas_pressure
+
+temperature = list()
+current = list()
+voltage = list()
+setpoints = list()
+pressure = list()
+main_time = time.time()
+t_meas2 = 0
+t_meas = time.time()
+t_loop = time.time()
+limit_hit = 0
+
+while t < meas_time:
+    # Measuring
+	t = instr.time_since(main_time)
+    current.append([t, sm.meas_current(sm2901)])
+    voltage.append([t, sm.meas_voltage(sm2901)])
+	temperature.append([t, tc.get_temp(tc332)])
+    setpoints.append([t, tc.get_setpoint(tc332)])
+    pressure.append([t, dmm.meas_pressure(dmm2110)])
+
+    # Check current limit
+    limit_voltage = sm.get_limit_voltage(sm2901)
+    if limit_hit == 1:
+        limit_hit = 0
+    elif sm.check_voltage_limit(sm2901):
+        # Increase limits
+        limit_voltage = sm.get_limit_voltage(sm2901)
+        limit_voltage = 10*limit_voltage
+        sm.set_limit_voltage(sm2901, limit_voltage)
+        limit_hit = 1
+        instr.log_and_print(log, 'Voltage limit increased to %0.0e V at %2.1d s after start' % (limit_voltage, t))
+
+    #Timing (If you can  do it better, please do!)
+    sleepy_time = sample_rate**-1 - instr.time_since(t_loop)
+    if not sleepy_time < 0:
+        time.sleep(sleepy_time)
+		
+    t_loop = time.time()
+
+
+
 
 
 temperature = np.array(temperature).transpose()
@@ -176,15 +179,19 @@ voltage = np.array(voltage).transpose()
 setpoints = np.array(setpoints).transpose()
 pressure = np.array(pressure).transpose()
 
+# =============================================================================
+# Data processing, plotting and storage
+# =============================================================================
+
 # Save measurement data
 
 resistances = np.array([voltage[0], voltage[1]/current[1]])
 
-instr.save_data('%s\%s_temperatures' % (data_folder, meas_name), temperature)
 instr.save_data('%s\%s_current' % (data_folder, meas_name), current)
 instr.save_data('%s\%s_voltage' % (data_folder, meas_name), voltage)
-instr.save_data('%s\%s_setpoints' % (data_folder, meas_name), setpoints)
 instr.save_data('%s\%s_resistance' % (data_folder, meas_name), resistances)
+instr.save_data('%s\%s_temperatures' % (data_folder, meas_name), temperature)
+instr.save_data('%s\%s_setpoints' % (data_folder, meas_name), setpoints)
 instr.save_data('%s\%s_pressure' % (data_folder, meas_name), pressure)
 
 instr.log_and_print(log, 'Measurement done')

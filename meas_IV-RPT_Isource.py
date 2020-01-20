@@ -4,7 +4,8 @@ Created on Tue Dec 10 14:34:28 2019
 
 @author: Rijk Hogenbirk
 
-Script to measure the IV curve with the Sourcemeter as a voltage source and current measurement device
+Script to measure the IV curve 
+with the Keysight B2901A Sourcemeter as a current source and voltage measurement device
 """
 
 
@@ -68,6 +69,9 @@ except:
 
 log = open(meas_name + '\\' + meas_name + '_log.txt', 'w+')
 
+instr.log_and_print(log, meas_name + '\n')
+
+instr.log_and_print(log, 'Measurement is done with current sourcing')
 instr.log_and_print(log, "Sample rate is %s Hz" % sample_rate)
 instr.log_and_print(log, "Measurement time is %s s" % meas_time)
 instr.log_and_print(log, "Maximum source current is %s A" % source_current_max)
@@ -80,7 +84,6 @@ instr.log_and_print(log, "Temperature setpoint is %.2e C" % setpoint)
 # Connect to devices and setup
 # =============================================================================
 
-# Connect to device(s)
 tc332 = tc.connect_tc332()
 sm2901 = sm.connect_sm2901()
 dmm2110 = dmm.connect_dmm2110()
@@ -103,7 +106,7 @@ if sample_rate**-1 < sample_time:
 else:
     sm.set_meas_time_current(sm2901, sample_time)
     
-instr.log_and_print(log, 'Setup completed')
+instr.log_and_print(log, 'Setup completed, now waits for %s' % wait_time)
 
 time.sleep(wait_time)
 
@@ -114,35 +117,37 @@ time.sleep(wait_time)
 instr.log_and_print(log, 'Start measurement at %s' % instr.date_time())
 instr.log_and_print(log, 'And takes %0.2f minutes' % (meas_time/60))
 
-main_time = time.time()
-t_loop = time.time()
-t_meas2 = 0
-
 temperature = list()
 current = list()
 voltage = list()
 setpoints = list()
 pressure = list()
 
-while t_meas2 < meas_time:
-    for i, source_current in enumerate(source_currents):    
-        sm.set_source_current(sm2901, source_current)
+main_time = time.time()
+t_loop = time.time()
+t_meas2 = 0
+
+while t < meas_time:
+    for n, i in enumerate(source_currents):    
         
-        time.sleep(0.01)
         # Measuring
         t = instr.time_since(main_time)
         current.append([t, sm.meas_current(sm2901)])
         voltage.append([t, sm.meas_voltage(sm2901)])
+		temperature.append([t, tc.get_temp(tc332)])
         setpoints.append([t, tc.get_setpoint(tc332)])
         pressure.append([t, dmm.meas_pressure(dmm2110)])
-        temperature.append([t, tc.get_temp(tc332)])
-            
+        
+        
+		# Set the next source current
+	    if not n > len(source_currents)-1:
+	        sm.set_source_current(sm2901, source_currents[n+1])
+		
         #Timing (If you can  do it better, please do!)
         sleepy_time = sample_rate**-1 - instr.time_since(t_loop)
         if not sleepy_time < 0:
             time.sleep(sleepy_time)
         t_loop = time.time()
-        t_meas2 = instr.time_since(main_time)
 
 temperature = np.array(temperature).transpose()
 current = np.array(current).transpose()

@@ -129,12 +129,11 @@ pressure = list()
 
 for n, i in enumerate(source_currents):       
     # Measuring
-	
-	t = instr.time_since(main_time)
+    t = instr.time_since(main_time)
     current.append([t, sm.meas_current(sm2901)])
     voltage.append([t, sm.meas_voltage(sm2901)])
-	setpoints.append([t, tc.get_setpoint(tc332)])
-	pressure.append([t, dmm.meas_pressure(dmm2110)])
+    setpoints.append([t, tc.get_setpoint(tc332)])
+    pressure.append([t, dmm.meas_pressure(dmm2110)])
     temperature.append([t, tc.get_temp(tc332)])
 	
     # Set the next source current
