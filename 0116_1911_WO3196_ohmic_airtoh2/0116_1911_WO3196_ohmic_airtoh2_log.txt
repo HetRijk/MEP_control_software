@@ -1,0 +1,23 @@
+0116_1911_WO3196_ohmic_airtoh2
+
+Measurement is done with current sourcing
+Sample rate is 4 Hz
+Measurement time is 1200 s
+Source current is 1e-07 A
+Limit voltage starts at 10.0 V
+Temperature setpoint is 25 C
+Devices connected
+Setup completed
+Start measurement at 2020-01-16 19:11:11.444049
+And takes 20.00 minutes
+Voltage limit increased to 1e+02 V at  0 s after start
+Voltage limit increased to 1e+02 V at  1 s after start
+Voltage limit increased to 1e+02 V at  2 s after start
+Voltage limit increased to 1e+02 V at  3 s after start
+Voltage limit increased to 1e+02 V at  4 s after start
+Voltage limit increased to 1e+02 V at  6 s after start
+Voltage limit increased to 1e+02 V at  7 s after start
+Voltage limit increased to 1e+02 V at  8 s after start
+Voltage limit increased to 1e+02 V at  9 s after start
+Voltage limit increased to 1e+02 V at 10 s after start
+Voltage limit increased to 1e+02 V at 12 s after start

@@ -1,0 +1,9 @@
+0117_1203_WO3196_ohmic_air
+
+Measurement is done with current sourcing
+Sample rate is 4 Hz
+Measurement time is 60 s
+Source current is 1e-07 A
+Limit voltage starts at 10.0 V
+Temperature setpoint is 25 C
+Devices connected

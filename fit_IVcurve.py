@@ -31,9 +31,9 @@ def linear(x, a):
 # # Inputs
 # =============================================================================
     
-meas_name = '0116_1545_WO3196_IV_curve_test'
+meas_name = '0117_1527_WO3196_IV_air_test'
 
-source_folder = r'C:\Users\Rijk\Documents\MEP\MEP_control_software'
+source_folder = r'D:\Rijk\MEP_control_software'
 
 num_points = 11
 

@@ -48,7 +48,7 @@ def measurement(tc332, sm2901, dmm2110, meas_time, sample_rate, main_time):
         limit_voltage = sm.get_limit_voltage(sm2901)
         if limit_hit == 1:
             limit_hit = 0
-        elif not sm.check_voltage_limit(sm2901):
+        elif sm.check_voltage_limit(sm2901):
             # Discard last measured values
             del temperature[-1]
             del current[-1]
@@ -74,16 +74,26 @@ def measurement(tc332, sm2901, dmm2110, meas_time, sample_rate, main_time):
 
     return temperature, current, voltage, setpoints, pressure
 
-setpoint = 65
-sample_rate = 5
-meas_time = 60*1
-source_current = 1E-8
-limit_voltage = 1E0
-sleep_time = 0
+# =============================================================================
+# Input Parameters
+# =============================================================================
 
-meas_name = '33MOhm_outside'
+setpoint        = 25
+sample_rate     = 4
+meas_time       = 60*10
+
+source_current  = 1E-7
+limit_voltage   = 1E1
+
+sleep_time      = 10
+
+meas_name = 'WO3196_ohmic_air'
+
+# =============================================================================
+# Preperatory code
+# =============================================================================
+
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
-
 
 sample_time = sample_rate**(-1)
 meas_len = int(meas_time / sample_time)
@@ -117,15 +127,25 @@ instr.log_and_print(log, "Source current is %s A" % source_current)
 instr.log_and_print(log, "Limit voltage starts at %s V" % limit_voltage)
 instr.log_and_print(log, "Temperature setpoint is %s C" % setpoint)
 
-# Connect to device
+# =============================================================================
+# Connect to devices
+# =============================================================================
 tc332 = tc.connect_tc332()
 sm2901 = sm.connect_sm2901()
 dmm2110 = dmm.connect_dmm2110()
 instr.log_and_print(log, 'Devices connected')
 
+# Set sourcemeter to 4-wire measure mode
+sm.set_4wire_mode(sm2901)
+
+# Set sourcemeter to turn on on measurement
+sm.set_output_on(sm2901)
+
 sm.set_source_current(sm2901, source_current)
 sm.set_limit_voltage(sm2901, limit_voltage)
+
 time.sleep(sleep_time)
+
 instr.log_and_print(log, 'Setup completed')
 
 temperature = list()
@@ -222,8 +242,6 @@ plt.plot(pressure[0], pressure[1])
 plt.title('Pressure in main chamber')
 plt.xlabel('t(s)')
 plt.ylabel('Pressure (bar)')
-
-#plt.ylim([0, max(pressure[1])])
 
 instr.save_plot('%s\%s_pressure' % (figure_folder, meas_name))
 

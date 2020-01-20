@@ -28,15 +28,16 @@ import multimeter_module as dmm
 
 source_current_max      = 1E-7
 limit_voltage           = 1E1
-meas_time               = 60*1
+meas_time               = 60*10
+setpoint                = 25
 
 step_size               = 2*source_current_max/10
 
-sample_time             = 50**-1 * 10
-sample_rate             = 3
-wait_time               = 20
+sample_time             = 50**-1 * 1E-1
+sample_rate             = 4
+wait_time               = 10
 
-meas_name = 'WO3196_IV_curve_test' 
+meas_name = 'WO3196_IV_air_test' 
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
 # Setting calculations
@@ -45,6 +46,8 @@ num_points      = int(2*source_current_max/step_size + 1)
 sig_digit = int(-np.floor(np.log10(step_size/10)))
 sources = np.linspace(-source_current_max, source_current_max,num_points)           
 source_currents    = np.round(np.append(sources, sources[::-1]), sig_digit)
+
+
 
 # Setup folder structure and initialise log
 data_folder = meas_name + '\data'
@@ -70,7 +73,8 @@ instr.log_and_print(log, "Measurement time is %s s" % meas_time)
 instr.log_and_print(log, "Maximum source current is %s A" % source_current_max)
 instr.log_and_print(log, "Limit voltage starts at %s V" % limit_voltage)
 instr.log_and_print(log, "Number of points per IV curve is %s" % num_points)
-instr.log_and_print(log, "Step size for the IV curves is %.2e" % step_size)
+instr.log_and_print(log, "Step size for the IV curves is %.2e A" % step_size)
+instr.log_and_print(log, "Temperature setpoint is %.2e C" % setpoint)
 
 # =============================================================================
 # Connect to devices and setup
@@ -84,6 +88,9 @@ instr.log_and_print(log, 'Devices connected')
 
 # Set sourcemeter to 4-wire measure mode
 sm.set_4wire_mode(sm2901)
+
+# Set sourcemeter to turn on on measurement
+sm.set_output_on(sm2901)
 
 # Set source current and limit voltage
 sm.set_source_current(sm2901, source_currents[0])
@@ -121,6 +128,7 @@ while t_meas2 < meas_time:
     for i, source_current in enumerate(source_currents):    
         sm.set_source_current(sm2901, source_current)
         
+        time.sleep(0.01)
         # Measuring
         t = instr.time_since(main_time)
         current.append([t, sm.meas_current(sm2901)])
@@ -162,9 +170,7 @@ instr.log_mean_std(log, temperature[1], 'temperature')
 instr.log_and_print(log, "One IV-curve took %.2f s to measure" % (current[0][num_points-1] - current[0][0]))
 instr.log_and_print(log, "and the actual sample rate was %.2f Hz" % ((current[0][num_points-1] - current[0][0])**-1))
 
-values, counts = np.unique(np.round(current[1], sig_digit), return_counts=True)
-del values
-instr.log_and_print(log, "So %i IV curve were measured" % max(counts))
+instr.log_and_print(log, "So %i IV curve were measured" % int(len(current[0])/num_points))
 
 # Plots
 plt.close('all')
@@ -195,6 +201,27 @@ plt.xlabel('Current (A)')
 plt.ylabel('Voltage (V)')
 
 instr.save_plot('%s\%s_ivcurve' % (figure_folder, meas_name))
+
+# Temperature
+plt.figure(3)
+plt.plot(setpoints[0], setpoints[1])
+plt.plot(temperature[0], temperature[1])
+plt.title('Temperatures of heater')
+plt.xlabel('t(s)')
+plt.ylabel('Temperature (*C)')
+plt.legend(['Setpoints', 'Heater'])
+
+instr.save_plot('%s\%s_temperatures' % (figure_folder, meas_name))
+
+# Pressure
+plt.figure(4)
+plt.plot(pressure[0], pressure[1])
+plt.title('Pressure in main chamber')
+plt.xlabel('t(s)')
+plt.ylabel('Pressure (bar)')
+
+instr.save_plot('%s\%s_pressure' % (figure_folder, meas_name))
+
 
 # Close log file
 log.close()
