@@ -31,9 +31,9 @@ def linear(x, a):
 # # Inputs
 # =============================================================================
     
-meas_name = '0117_1527_WO3196_IV_air_test'
+meas_name = '0124_1704_WO3196_iv_drift'
 
-source_folder = r'D:\Rijk\MEP_control_software'
+source_folder = r'C:\Users\Rijk\Documents\MEP\MEP_control_software\Measurements\20200124 WO3196 Dark light and ohmic IV'
 
 num_points = 11
 
@@ -66,7 +66,13 @@ voltages = instr.load_data(file_name + '_voltage')[1]
 # =============================================================================
 num_ivcurves = int(np.floor(len(currents)/num_points))
 
-res_div     = voltages/currents
+res_div     = np.abs(voltages/currents)
+
+for j in range(10):
+    for i, r in enumerate(res_div):
+        if r > 1E8:
+            res_div[i] = np.mean(res_div)
+    
 
 res_fit = np.zeros([3, num_ivcurves])
 for i in range(num_ivcurves):    
@@ -99,25 +105,37 @@ plt.ylabel('Voltage (V)')
 
 plt.legend(['Data', 'Fit'])
 
-instr.save_plot(os.path.join(fit_folder, meas_name + '_secondcurveandfit'))
+#instr.save_plot(os.path.join(fit_folder, meas_name + '_secondcurveandfit'))
 
 plt.figure()
 plt.errorbar(res_fit[0], res_fit[1], yerr=res_fit[2])
-plt.plot(ts[::num_points], res_div[::num_points], '*')
+#plt.plot(ts, res_div)
 
 plt.title('Fitted resistances')
 
 
-#plt.figure()
-#plt.plot(ohm_res_curr, ohm_res)
-#plt.plot(currents, res_mean * np.ones(len(currents)))
-##plt.plot(currents, func(currents, *popt))
-#
-#plt.title('IV of 33MOhm with %.2e mean and %.2e std' % (res_mean, res_std))
-#plt.xlabel('Source current (A)')
-#plt.ylabel('Resistance (Ohm)')
-#
-#
-#plt.legend(['V/I Resistance', 'Fit Resistance'])
-#
-#instr.save_plot(os.path.join(fit_folder, meas_name + '_resistances'))
+plt.figure()
+for i in (np.arange(num_ivcurves))*num_points:
+    plt.plot(currents[i:i+num_points-1], voltages[i:i+num_points-1])
+    
+plt.title('All IV curves')
+plt.xlabel('Current (A)')
+plt.ylabel('Voltage (V)')
+
+
+plt.figure()
+for i in (np.arange(num_ivcurves)[::2])*num_points:
+    plt.plot(currents[i:i+num_points-1], voltages[i:i+num_points-1])
+    
+plt.title('All positive IV curves')
+plt.xlabel('Current (A)')
+plt.ylabel('Voltage (V)')
+
+
+plt.figure()
+for i in (np.arange(num_ivcurves)[1::2])*num_points:
+    plt.plot(currents[i:i+num_points-1], voltages[i:i+num_points-1])
+    
+plt.title('All negative IV curves')
+plt.xlabel('Current (A)')
+plt.ylabel('Voltage (V)')
