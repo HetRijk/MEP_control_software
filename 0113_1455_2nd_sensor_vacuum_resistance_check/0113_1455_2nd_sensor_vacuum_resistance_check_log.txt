@@ -1,8 +1,0 @@
-0113_1455_2nd_sensor_vacuum_resistance_check
-
-Measurement is done with Keithely 2110 DMM
-Sample rate is 5 Hz
-Measurement time is 1800 s
-Devices connected
-Start measurement at 2020-01-13 14:55:31.626348
-And takes 30.00 minutes
