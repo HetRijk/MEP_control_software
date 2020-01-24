@@ -38,7 +38,7 @@ sample_rate     = 4
 
 wait_time       = 10
 
-meas_name = 'WO3196_ohmic_h2_2'
+meas_name = 'WO3196_ohmic_air_light'
 
 # =============================================================================
 # Preperatory code
@@ -74,6 +74,7 @@ instr.log_and_print(log, "Measurement time is %s s" % meas_time)
 instr.log_and_print(log, "Source current is %s A" % source_current)
 instr.log_and_print(log, "Limit voltage starts at %s V" % limit_voltage)
 instr.log_and_print(log, "Temperature setpoint is %.2e C" % setpoint)
+instr.log_and_print(log, "Sample time has been set to %s s" % sample_time)
 
 # =============================================================================
 # Connect to devices and setup
