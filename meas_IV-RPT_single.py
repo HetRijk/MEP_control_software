@@ -36,7 +36,7 @@ sample_time             = 50**-1 * 10
 sample_rate             = 0.1
 wait_time               = 10
 
-meas_name = 'WO3196_full_IV_curve' 
+meas_name = 'WO3196_full_IV_curve_dark' 
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
 # Setting calculations
@@ -71,6 +71,7 @@ instr.log_and_print(log, meas_name + '\n')
 
 instr.log_and_print(log, 'Measurement is done with current sourcing')
 instr.log_and_print(log, "Sample rate is %s Hz" % sample_rate)
+instr.log_and_print(log, "Sample time has been set to %s s" % sample_time)
 instr.log_and_print(log, "Measurement time is %s s" % meas_time)
 instr.log_and_print(log, "Maximum source current is %s A" % source_current_max)
 instr.log_and_print(log, "Limit voltage starts at %s V" % limit_voltage)
@@ -86,6 +87,8 @@ tc332 = tc.connect_tc332()
 sm2901 = sm.connect_sm2901()
 dmm2110 = dmm.connect_dmm2110()
 instr.log_and_print(log, 'Devices connected')
+
+sm.set_source_mode_current(sm2901)
 
 # Set sourcemeter to 4-wire measure mode
 sm.set_4wire_mode(sm2901)
@@ -154,9 +157,6 @@ setpoints = np.array(setpoints).transpose()
 pressure = np.array(pressure).transpose()
 
 # Save measurement data
-
-
-
 instr.save_data('%s\%s_current' % (data_folder, meas_name), current)
 instr.save_data('%s\%s_voltage' % (data_folder, meas_name), voltage)
 instr.save_data('%s\%s_temperatures' % (data_folder, meas_name), temperature)

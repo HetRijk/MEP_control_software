@@ -1,0 +1,3 @@
+Measurement done
+Mean pressure is 1.000972e+00 with std 1.226322e-05
+Mean temperature is 2.500462e+01 with std 1.111703e-03
