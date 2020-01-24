@@ -34,11 +34,11 @@ setpoint                = 25
 
 step_size               = 2*source_current_max/10
 
-sample_time             = 50**-1 * 1E-1
+sample_time             = 50**-1 * 1E1
 sample_rate             = 4
 wait_time               = 10
 
-meas_name = 'WO3196_h2_iv' 
+meas_name = 'WO3196_iv_drift' 
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
 # Setting calculations
@@ -71,6 +71,7 @@ instr.log_and_print(log, meas_name + '\n')
 
 instr.log_and_print(log, 'Measurement is done with current sourcing')
 instr.log_and_print(log, "Sample rate is %s Hz" % sample_rate)
+instr.log_and_print(log, "Sample time has been set to %s s" % sample_time)
 instr.log_and_print(log, "Measurement time is %s s" % meas_time)
 instr.log_and_print(log, "Maximum source current is %s A" % source_current_max)
 instr.log_and_print(log, "Limit voltage starts at %s V" % limit_voltage)

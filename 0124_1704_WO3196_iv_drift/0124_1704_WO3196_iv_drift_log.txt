@@ -1,0 +1,21 @@
+0124_1704_WO3196_iv_drift
+
+Measurement is done with current sourcing
+Sample rate is 4 Hz
+Sample time has been set to 0.2 s
+Measurement time is 600 s
+Maximum source current is 1e-07 A
+Limit voltage starts at 10.0 V
+Number of points per IV curve is 11
+Step size for the IV curves is 2.00e-08 A
+Temperature setpoint is 2.50e+01 C
+Devices connected
+Setup completed, now waits for 10
+Start measurement at 2020-01-24 17:05:00.972576
+And takes 10.00 minutes
+Measurement done
+Mean pressure is 1.000967e+00 with std 1.258974e-05
+Mean temperature is 2.500426e+01 with std 1.170150e-03
+One IV-curve took 6.36 s to measure
+and the actual sample rate was 0.16 Hz
+So 88 IV curve were measured

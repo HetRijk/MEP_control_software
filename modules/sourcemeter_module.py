@@ -45,6 +45,10 @@ def set_4wire_mode(instrument):
 def set_output_on(instrument):
     """Sets instrument to turn output on measurement"""
     instrument.write("OUTPUT:ON:AUTO 1")
+    
+def set_source_mode_current(instrument):
+    """Sets instrument to current sourcing"""
+    instrument.write('SOURCE:FUNCtion:MODE CURRent')
 
 def set_source_voltage(instrument, volts):
     instrument.write(':SOURce:VOLTage:LEVel:IMMediate:AMPLitude %s' % volts)

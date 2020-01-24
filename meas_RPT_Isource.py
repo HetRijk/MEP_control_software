@@ -38,7 +38,7 @@ sample_rate     = 4
 
 wait_time       = 10
 
-meas_name = 'WO3196_ohmic_air_light'
+meas_name = 'WO3196_ohmic_drift'
 
 # =============================================================================
 # Preperatory code
@@ -75,6 +75,7 @@ instr.log_and_print(log, "Measurement time is %s s" % meas_time)
 instr.log_and_print(log, "Source current is %s A" % source_current)
 instr.log_and_print(log, "Limit voltage starts at %s V" % limit_voltage)
 instr.log_and_print(log, "Temperature setpoint is %.2e C" % setpoint)
+instr.log_and_print(log, "Sample time has been set to %s s" % sample_time)
 
 # =============================================================================
 # Connect to devices and setup
@@ -85,6 +86,8 @@ sm2901 = sm.connect_sm2901()
 dmm2110 = dmm.connect_dmm2110()
 instr.log_and_print(log, 'Devices connected')
 
+
+sm.set_source_mode_current(sm2901)
 # Set sourcemeter to 4-wire measure mode
 sm.set_4wire_mode(sm2901)
 
