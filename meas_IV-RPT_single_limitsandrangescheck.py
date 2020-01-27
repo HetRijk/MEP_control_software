@@ -100,7 +100,7 @@ sm.set_output_on(sm2901)
 sm.set_source_current(sm2901, source_currents[0])
 sm.set_limit_voltage(sm2901, limit_voltage)
 
-sm.set_range_current(sm2901, source_current_max)
+sm.set_range_current(sm2901, 1e-5)
 sm.set_range_voltage(sm2901, limit_voltage)
 
 # Set sample time
@@ -133,6 +133,8 @@ voltage = list()
 setpoints = list()
 pressure = list()
 limits = list()
+i_range = list()
+v_range = list()
 
 for n, i in enumerate(source_currents):       
     # Measuring
@@ -143,6 +145,8 @@ for n, i in enumerate(source_currents):
     pressure.append([t, dmm.meas_pressure(dmm2110)])
     temperature.append([t, tc.get_temp(tc332)])
     limits.append([t, sm.check_voltage_limit(sm2901)])
+    i_range.append([t, sm.get_range_current(sm2901)])
+    v_range.append([t, sm.get_range_voltage(sm2901)])
     
     # Set the next source current
     if not n > len(source_currents)-2:
@@ -160,6 +164,9 @@ current = np.array(current).transpose()
 voltage = np.array(voltage).transpose()
 setpoints = np.array(setpoints).transpose()
 pressure = np.array(pressure).transpose()
+limits = np.array(limits).transpose()
+i_range = np.array(i_range).transpose()
+v_range = np.array(v_range).transpose() 
 
 # Save measurement data
 instr.save_data('%s\%s_current' % (data_folder, meas_name), current)
@@ -167,6 +174,10 @@ instr.save_data('%s\%s_voltage' % (data_folder, meas_name), voltage)
 instr.save_data('%s\%s_temperatures' % (data_folder, meas_name), temperature)
 instr.save_data('%s\%s_setpoints' % (data_folder, meas_name), setpoints)
 instr.save_data('%s\%s_pressure' % (data_folder, meas_name), pressure)
+
+instr.save_data('%s\%s_limithit' % (data_folder, meas_name), limits)
+instr.save_data('%s\%s_irange' % (data_folder, meas_name), i_range)
+instr.save_data('%s\%s_vrange' % (data_folder, meas_name), v_range)
 
 instr.log_and_print(log, 'Measurement done')
 

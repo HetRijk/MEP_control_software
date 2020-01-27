@@ -28,9 +28,9 @@ import multimeter_module as dmm
 # Input Parameters
 # =============================================================================
 
-source_current  = 1E-7
+source_current  = 1E-8
 limit_voltage   = 1E1
-meas_time       = 60*10
+meas_time       = 60*1
 setpoint        = 25
 
 sample_time     = 50**-1 * 10
@@ -38,7 +38,7 @@ sample_rate     = 4
 
 wait_time       = 10
 
-meas_name = 'WO3196_ohmic_drift'
+meas_name = 'WO3196_ohmic_test'
 
 # =============================================================================
 # Preperatory code

@@ -1,0 +1,20 @@
+0127_1003_WO3196_ohmic_test
+
+Measurement is done with current sourcing
+Sample rate is 4 Hz
+Sample time has been set to 0.2 s
+Measurement time is 60 s
+Source current is 1e-08 A
+Limit voltage starts at 10.0 V
+Temperature setpoint is 2.50e+01 C
+Sample time has been set to 0.2 s
+Devices connected
+Setup completed, now waits for 10 s
+Start measurement at 2020-01-27 10:04:05.018900
+And takes 1.00 minutes
+Measurement done
+Mean resistance is 4.245877e+07 with std 9.801452e+04
+Mean voltage is 4.245877e-01 with std 9.801452e-04
+Mean current is 1.000000e-08 with std 4.963084e-24
+Mean pressure is 1.000897e+00 with std 1.344913e-05
+Mean temperature is 2.484627e+01 with std 3.789323e-02

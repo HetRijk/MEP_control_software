@@ -46,6 +46,7 @@ def set_output_on(instrument):
     """Sets instrument to turn output on measurement"""
     instrument.write("OUTPUT:ON:AUTO 1")
     
+    
 def set_source_mode_current(instrument):
     """Sets instrument to current sourcing"""
     instrument.write('SOURCE:FUNCtion:MODE CURRent')
@@ -57,7 +58,7 @@ def set_source_voltage(instrument, volts):
     time.sleep(sleepy_time)
     volts_actual = get_source_voltage(instrument)
     if volts_actual != volts:
-        print('Source voltage was NOT correctly set to %s V' % volts)
+        print('Source voltage was INCORRECTLY set to %s V' % volts)
     else:
         print('Source voltage was set to %s V' % volts)
 
@@ -68,7 +69,7 @@ def set_source_current(instrument, amps):
     time.sleep(sleepy_time)
     amps_actual = get_source_current(instrument)
     if amps_actual != amps:
-        print('Source current was NOT correctly set to %s A' % amps)
+        print('Source current was INCORRECTLY set to %s A' % amps)
     else:
         print('Source current was set to %s A' % amps)
     
@@ -78,7 +79,39 @@ def set_limit_current(instrument, value):
     
 def set_limit_voltage(instrument, value):
     """Sets the voltage limit to value in volts"""
-    instrument.write('SENSe:VOLTage:DC:PROTection:LEVel %s' % value)    
+    instrument.write('SENSe:VOLTage:DC:PROTection:LEVel %s' % value)
+
+def set_range_current(instrument, value):
+    """Sets the measurement range of the instrument for current"""    
+    instrument.write(':SOURce:CURRent:RANGe %G' % value)
+
+    # Check if value was set
+    time.sleep(sleepy_time)
+    actual_value = get_range_current(instrument)
+    if value != actual_value:
+        print('Current measurement range was INCORRECTLY set to %s A' % actual_value)
+        print('And not to %s A' % value)
+    else:
+        print('Current measurement range was set to %s A' % actual_value)
+    
+    
+def set_range_voltage(instrument, value):
+    """Sets the measurement range of the instrument for voltage"""    
+    instrument.write(':SOURce:VOLTage:RANGe %G' % value)
+    
+    # Check if value was set
+    time.sleep(sleepy_time)
+    actual_value = get_range_voltage(instrument)
+    if value != actual_value:
+        print('Voltage measurement range was INCORRECTLY set to %s V' % actual_value)
+        print('And not to %s V' % value)
+    else:
+        print('Voltage measurement range was set to %s V' % actual_value)
+    
+def set_meas_time_all(instrument, time_meas):
+    """Sets measurement time for all measurements"""
+    set_meas_time_current(instrument, time_meas)
+    set_meas_time_voltage(instrument, time_meas)
     
 def set_meas_time_current(instrument, time_meas):
     """Set the measurement time in seconds"""
@@ -87,21 +120,21 @@ def set_meas_time_current(instrument, time_meas):
     time.sleep(sleepy_time)
     time_actual = get_meas_time_current(instrument)
     if time_actual != time_meas:
-        print('Sample time was NOT correctly set to %s s' % time_meas)
+        print('Sample time was INCORRECTLY set to %s s' % time_actual)
+        print('And not to %s s' % time_meas)
     else:
-        print('Sample time was set to %s s' % time_meas)
+        print('Sample time was set to %s s' % time_actual)
             
-def set_meas_time_voltage(instrument, time_meas, unit='plc'):
-    """Set the measurement time in seconds or number of PLCs
-    (power line cycles: 200 ms for EU grid of 50 Hz)"""
+def set_meas_time_voltage(instrument, time_meas):
+    """Set the measurement time in seconds"""
     instrument.write('SENSE:VOLT:DC:APER %s' % time_meas) 
     # Check if value was set
     time.sleep(sleepy_time)
-    time_actual = get_meas_time_voltage(instrument, unit)
+    time_actual = get_meas_time_voltage(instrument)
     if time_actual != time_meas:
-        print('Sample time was NOT correctly set to %s s' % time_meas)
+        print('Sample time was INCORRECTLY set to %s s' % time_actual)
     else:
-        print('Sample time was set to %s s' % time_meas)
+        print('Sample time was set to %s s' % time_actual)
 
 # =============================================================================
 # Query functions
@@ -138,6 +171,15 @@ def get_meas_time_current(instrument):
 def get_meas_time_voltage(instrument):
     """Queries for the measurement time"""
     return float(instrument.query('SENSE:VOLT:DC:APER?'))
+
+def get_range_current(instrument):
+    """"Queries for the current measurement range"""
+    return float(instrument.query('SOURce:CURRent:RANGe?'))
+
+def get_range_voltage(instrument):
+    """"Queries for the voltage measurement range"""
+    return float(instrument.query('SOURce:VOLTage:RANGe?'))
+
 
 # =============================================================================
 # Compound functions
