@@ -28,7 +28,7 @@ import multimeter_module as dmm
 # Input Parameters
 # =============================================================================
 
-source_current  = 1E-7
+source_current  = 0.6E-7
 limit_voltage   = 1E1
 meas_time       = 60*10
 setpoint        = 25
@@ -38,7 +38,7 @@ sample_rate     = 4
 
 wait_time       = 10
 
-meas_name = 'WO3196_ohmic_test'
+meas_name = 'WO3196_ohmic_h2'
 
 # =============================================================================
 # Preperatory code
@@ -98,7 +98,8 @@ sm.set_output_on(sm2901)
 sm.set_source_current(sm2901, source_current)
 sm.set_limit_voltage(sm2901, limit_voltage)
 
-sm.set_range_current(sm2901, source_current)
+sm.set_range_current(sm2901, 1.1*source_current)
+sm.set_range_voltage(sm2901, 2*limit_voltage)
 
 
 # Set sample time

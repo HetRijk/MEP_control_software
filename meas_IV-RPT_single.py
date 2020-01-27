@@ -28,7 +28,7 @@ import multimeter_module as dmm
 
 source_current_max      = 1E-7
 limit_voltage           = 1E1
-setpoint                = 25
+setpoint                = 65
 
 step_size               = 2*source_current_max/30
 
@@ -36,7 +36,7 @@ sample_time             = 50**-1 * 10
 sample_rate             = 0.1
 wait_time               = 10
 
-meas_name = 'WO3196_full_IV_curve_dark' 
+meas_name = 'WO3196_full_IV_curve_h2_100nA' 
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
 # Setting calculations
@@ -100,7 +100,7 @@ sm.set_output_on(sm2901)
 sm.set_source_current(sm2901, source_currents[0])
 sm.set_limit_voltage(sm2901, limit_voltage)
 
-sm.set_range_current(sm2901, source_current_max)
+sm.set_range_current(sm2901, 1.1*source_current_max)
 sm.set_range_voltage(sm2901, limit_voltage)
 
 # Set sample time
@@ -160,6 +160,7 @@ current = np.array(current).transpose()
 voltage = np.array(voltage).transpose()
 setpoints = np.array(setpoints).transpose()
 pressure = np.array(pressure).transpose()
+limits = np.array(limits).transpose()
 
 # Save measurement data
 instr.save_data('%s\%s_current' % (data_folder, meas_name), current)
@@ -167,6 +168,7 @@ instr.save_data('%s\%s_voltage' % (data_folder, meas_name), voltage)
 instr.save_data('%s\%s_temperatures' % (data_folder, meas_name), temperature)
 instr.save_data('%s\%s_setpoints' % (data_folder, meas_name), setpoints)
 instr.save_data('%s\%s_pressure' % (data_folder, meas_name), pressure)
+instr.save_data('%s\%s_limithit' % (data_folder, meas_name), limits)
 
 instr.log_and_print(log, 'Measurement done')
 

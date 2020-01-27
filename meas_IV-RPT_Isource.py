@@ -29,7 +29,7 @@ import multimeter_module as dmm
 
 source_current_max      = 1E-7
 limit_voltage           = 1E1
-meas_time               = 60*10
+meas_time               = 60*5
 setpoint                = 25
 
 step_size               = 2*source_current_max/10
@@ -38,7 +38,7 @@ sample_time             = 50**-1 * 1E1
 sample_rate             = 4
 wait_time               = 10
 
-meas_name = 'WO3196_iv_drift' 
+meas_name = 'WO3196_air' 
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
 # Setting calculations
