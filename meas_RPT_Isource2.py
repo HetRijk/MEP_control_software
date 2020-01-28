@@ -30,15 +30,15 @@ import multimeter_module as dmm
 
 source_current  = 0.6E-7
 limit_voltage   = 1E1
-meas_time       = 60*10
-setpoint        = 25
+meas_time       = 60*30
+setpoint        = 65
 
 sample_time     = 50**-1 * 10
-sample_rate     = 4
+sample_rate     = 1
 
 wait_time       = 10
 
-meas_name = 'WO3196_ohmic_h2'
+meas_name = 'WO3196_ohmic_h2toair_65'
 
 # =============================================================================
 # Preperatory code

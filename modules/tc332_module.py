@@ -73,16 +73,19 @@ def get_heater_range(instrument):
     return int(instrument.query('RANGE?')[0])
 
 
-### Control functions
+# =============================================================================
+# Control functions
+# =============================================================================
 def set_heater_range(instrument, range_num):
     """Sets heater range, range_num = 0:off, 1:low, 2:med and 3:high. Tested to be working"""
     instrument.write('RANGE ' + str(range_num))
 
     # Check if setting is applied
     time.sleep(1)
+    ranges = ['OFF', 'low', 'medium', 'high']
     range_set = get_heater_range(instrument)
     if range_set != range_num:
-        print('Heater range was NOT set correctly as %s' % range_num)
+        print('Heater range was NOT set correctly as %s' % ranges[range_num])
     else:
         ranges = ['OFF', 'low', 'medium', 'high']
         print('Heater range was set to the %s setting' % ranges[range_num])
@@ -107,7 +110,9 @@ def set_tuning_mode(instrument, tuning_mode):
     instrument.write('CMODE 1 %s'  % tuning_mode)
     
 
-### Compound functions
+# =============================================================================
+# Compound functions
+# =============================================================================
 
 def cooldown(instrument, setpoint):
     """Shuts off heater and waits until its has cooled down"""
