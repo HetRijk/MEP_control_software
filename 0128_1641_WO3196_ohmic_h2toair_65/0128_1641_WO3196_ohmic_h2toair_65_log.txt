@@ -1,0 +1,20 @@
+0128_1641_WO3196_ohmic_h2toair_65
+
+Measurement is done with current sourcing
+Sample rate is 1 Hz
+Sample time has been set to 0.2 s
+Measurement time is 1800 s
+Source current is 6e-08 A
+Limit voltage starts at 10.0 V
+Temperature setpoint is 6.50e+01 C
+Sample time has been set to 0.2 s
+Devices connected
+Setup completed, now waits for 10 s
+Start measurement at 2020-01-28 16:41:55.875287
+And takes 30.00 minutes
+Measurement done
+Mean resistance is 2.172767e+07 with std 3.017431e+05
+Mean voltage is 1.303658e+00 with std 1.810456e-02
+Mean current is 5.999990e-08 with std 2.355714e-15
+Mean pressure is 8.332871e-01 with std 3.495015e-01
+Mean temperature is 6.500441e+01 with std 6.297150e-03
