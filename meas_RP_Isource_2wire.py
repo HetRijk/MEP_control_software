@@ -15,6 +15,7 @@ import time
 import datetime
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.ticker as mtick
 import os
 
 # Custom libraries
@@ -30,15 +31,14 @@ import multimeter_module as dmm
 
 source_current  = 1E-7
 limit_voltage   = 1E1
-meas_time       = 60*10
-setpoint        = 65
+meas_time       = 60 * 20
 
 sample_time     = 50**-1 * 10
 sample_rate     = 1
 
 wait_time       = 10
 
-meas_name = '2nd_sensor_calibration_heatup'
+meas_name = '2nd_sensor_h2_5300mV'
 
 # =============================================================================
 # Preperatory code
@@ -74,21 +74,16 @@ instr.log_and_print(log, "Sample time has been set to %s s" % sample_time)
 instr.log_and_print(log, "Measurement time is %s s" % meas_time)
 instr.log_and_print(log, "Source current is %s A" % source_current)
 instr.log_and_print(log, "Limit voltage starts at %s V" % limit_voltage)
-instr.log_and_print(log, "Temperature setpoint is %.2e C" % setpoint)
 
 # =============================================================================
 # Connect to devices and setup
 # =============================================================================
 
-tc332 = tc.connect_tc332()
 sm2901 = sm.connect_sm2901()
 dmm2110 = dmm.connect_dmm2110()
 instr.log_and_print(log, 'Devices connected')
 
-
 sm.set_source_mode_current(sm2901)
-# Set sourcemeter to 4-wire measure mode
-sm.set_4wire_mode(sm2901)
 
 # Set sourcemeter to turn on on measurement
 sm.set_output_on(sm2901)
@@ -98,7 +93,7 @@ sm.set_source_current(sm2901, source_current)
 sm.set_limit_voltage(sm2901, limit_voltage)
 
 sm.set_range_current(sm2901, 1.1*source_current)
-sm.set_range_voltage(sm2901, 2*limit_voltage)
+#sm.set_range_voltage(sm2901, 2*limit_voltage)
 
 
 # Set sample time
@@ -119,10 +114,8 @@ time.sleep(wait_time)
 instr.log_and_print(log, 'Start measurement at %s' % instr.date_time())
 instr.log_and_print(log, 'And takes %0.2f minutes' % (meas_time/60))
 
-temperature = list()
 current = list()
 voltage = list()
-setpoints = list()
 pressure = list()
 
 main_time = time.time()
@@ -136,8 +129,6 @@ while t < meas_time:
     t = instr.time_since(main_time)
     current.append([t, sm.meas_current(sm2901)])
     voltage.append([t, sm.meas_voltage(sm2901)])
-    temperature.append([t, tc.get_temp(tc332)])
-    setpoints.append([t, tc.get_setpoint(tc332)])
     pressure.append([t, dmm.meas_pressure(dmm2110)])
 
     # Check current limit
@@ -159,11 +150,8 @@ while t < meas_time:
 		
     t_loop = time.time()
 
-
-temperature = np.array(temperature).transpose()
 current = np.array(current).transpose()
 voltage = np.array(voltage).transpose()
-setpoints = np.array(setpoints).transpose()
 pressure = np.array(pressure).transpose()
 
 instr.log_and_print(log, 'Measurement done')
@@ -179,15 +167,12 @@ resistances = np.array([voltage[0], voltage[1]/current[1]])
 instr.save_data('%s\%s_current' % (data_folder, meas_name), current)
 instr.save_data('%s\%s_voltage' % (data_folder, meas_name), voltage)
 instr.save_data('%s\%s_resistance' % (data_folder, meas_name), resistances)
-instr.save_data('%s\%s_temperatures' % (data_folder, meas_name), temperature)
-instr.save_data('%s\%s_setpoints' % (data_folder, meas_name), setpoints)
 instr.save_data('%s\%s_pressure' % (data_folder, meas_name), pressure)
 
 instr.log_mean_std(log, resistances[1], 'resistance')
 instr.log_mean_std(log, voltage[1], 'voltage')
 instr.log_mean_std(log, current[1], 'current')
 instr.log_mean_std(log, pressure[1], 'pressure')
-instr.log_mean_std(log, temperature[1], 'temperature')
 
 # Plots
 plt.close('all')
@@ -212,23 +197,12 @@ instr.save_plot('%s\%s_current' % (figure_folder, meas_name))
 
 # Resistance
 plt.figure(2)
-plt.plot(resistances[0], resistances[1])
+plt.plot(resistances[0], resistances[1]*1E-6)
 plt.title('Resistance')
 plt.xlabel('t(s)')
-plt.ylabel('Resistance (Ohm)')
+plt.ylabel('Resistance (MOhm)')
 
 instr.save_plot('%s\%s_resistance' % (figure_folder, meas_name))
-
-# Temperature
-plt.figure(3)
-plt.plot(setpoints[0], setpoints[1])
-plt.plot(temperature[0], temperature[1])
-plt.title('Temperatures of heater')
-plt.xlabel('t(s)')
-plt.ylabel('Temperature (*C)')
-plt.legend(['Setpoints', 'Heater'])
-
-instr.save_plot('%s\%s_temperatures' % (figure_folder, meas_name))
 
 # Pressure
 plt.figure(4)

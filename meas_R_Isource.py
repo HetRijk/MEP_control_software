@@ -42,7 +42,7 @@ def measurement(sm2901, meas_time, sample_rate, main_time):
         limit_voltage = sm.get_limit_voltage(sm2901)
         if limit_hit == 1:
             limit_hit = 0
-        elif not sm.check_voltage_limit(sm2901):
+        elif sm.check_voltage_limit(sm2901):
             # Discard last measured values
             del current[-1]
             del voltage[-1]
@@ -65,18 +65,17 @@ def measurement(sm2901, meas_time, sample_rate, main_time):
         
     return current, voltage
 
-sample_rate = 1
-meas_time = 10
-source_current = 1E-7
-limit_voltage = 1E1
-sleep_time = 10
+sample_rate     = 1
+sample_time     = 50**-1 * 0.1
+meas_time       = 60*5
 
-meas_name = '33MOhm_test' 
+source_current  = 1E-7
+limit_voltage   = 1E1
+
+sleep_time      = 20
+
+meas_name = '33MOhm_01PLC' 
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
-
- 
-sample_time = sample_rate**(-1)
-meas_len = int(meas_time / sample_time)
 
 # Setup folder structure and initialise log
 data_folder = meas_name + '\data'
@@ -102,6 +101,7 @@ instr.log_and_print(log, meas_name + '\n')
 instr.log_and_print(log, 'Measurement is done with current sourcing')
 
 instr.log_and_print(log, "Sample rate is %s Hz" % sample_rate)
+instr.log_and_print(log, "Sample time is %s s" % sample_time)
 instr.log_and_print(log, "Measurement time is %s s" % meas_time)
 instr.log_and_print(log, "Source current is %s A" % source_current)
 instr.log_and_print(log, "Limit voltage starts at %s V" % limit_voltage)
@@ -111,8 +111,18 @@ instr.log_and_print(log, "Limit voltage starts at %s V" % limit_voltage)
 sm2901 = sm.connect_sm2901()
 instr.log_and_print(log, 'Devices connected')
 
+sm.set_source_mode_current(sm2901)
+sm.set_4wire_mode(sm2901)
+sm.set_output_on(sm2901)
+
 sm.set_source_current(sm2901, source_current)
 sm.set_limit_voltage(sm2901, limit_voltage)
+
+sm.set_range_current(sm2901, 1.1*source_current)
+sm.set_range_voltage(sm2901, 2*limit_voltage)
+
+sm.set_meas_time_current(sm2901, sample_time)
+
 time.sleep(sleep_time)
 instr.log_and_print(log, 'Setup completed')
 

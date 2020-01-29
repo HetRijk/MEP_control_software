@@ -1,0 +1,17 @@
+0129_1710_2nd_sensor_h2_5300mV
+
+Measurement is done with current sourcing
+Sample rate is 1 Hz
+Sample time has been set to 0.2 s
+Measurement time is 1200 s
+Source current is 1e-07 A
+Limit voltage starts at 10.0 V
+Devices connected
+Setup completed, now waits for 10 s
+Start measurement at 2020-01-29 17:10:18.111653
+And takes 20.00 minutes
+Measurement done
+Mean resistance is 1.641028e+05 with std 1.643269e+05
+Mean voltage is 1.641028e-02 with std 1.643269e-02
+Mean current is 1.000000e-07 with std 0.000000e+00
+Mean pressure is 7.599795e-01 with std 3.974195e-01

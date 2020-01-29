@@ -1,0 +1,16 @@
+0129_1223_33MOhm_01PLC
+
+Measurement is done with current sourcing
+Sample rate is 1 Hz
+Sample time is 0.002 s
+Measurement time is 300 s
+Source current is 1e-07 A
+Limit voltage starts at 10.0 V
+Devices connected
+Setup completed
+Start measurement at 2020-01-29 12:23:26.423653
+And takes 5.00 minutes
+Measurement done
+Mean resistance is 3.314362e+07 with std 8.142065e+05
+Mean voltage is 3.318948e+00 with std 7.028813e-02
+Mean current is 1.001466e-07 with std 3.453542e-10
