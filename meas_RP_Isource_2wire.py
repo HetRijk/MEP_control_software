@@ -31,14 +31,14 @@ import multimeter_module as dmm
 
 source_current  = 1E-7
 limit_voltage   = 1E1
-meas_time       = 60 * 20
+meas_time       = 60 * 30
 
 sample_time     = 50**-1 * 10
 sample_rate     = 1
 
 wait_time       = 10
 
-meas_name = '2nd_sensor_h2_5300mV'
+meas_name = '2nd_sensor_airto05h2_4V'
 
 # =============================================================================
 # Preperatory code

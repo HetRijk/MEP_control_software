@@ -1,0 +1,17 @@
+0130_1440_2nd_sensor_air
+
+Measurement is done with current sourcing
+Sample rate is 1 Hz
+Sample time has been set to 0.2 s
+Measurement time is 300 s
+Source current is 1e-07 A
+Limit voltage starts at 10.0 V
+Devices connected
+Setup completed, now waits for 10 s
+Start measurement at 2020-01-30 14:40:39.990800
+And takes 5.00 minutes
+Measurement done
+Mean resistance is 3.099139e+05 with std 2.322266e+03
+Mean voltage is 3.099139e-02 with std 2.322266e-04
+Mean current is 1.000000e-07 with std 0.000000e+00
+Mean pressure is 1.000964e+00 with std 2.659038e-05

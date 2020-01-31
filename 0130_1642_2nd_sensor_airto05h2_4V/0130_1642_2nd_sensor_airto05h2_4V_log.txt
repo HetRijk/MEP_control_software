@@ -1,0 +1,10 @@
+0130_1642_2nd_sensor_airto05h2_4V
+
+Measurement is done with current sourcing
+Sample rate is 1 Hz
+Sample time has been set to 0.2 s
+Measurement time is 300 s
+Source current is 1e-07 A
+Limit voltage starts at 10.0 V
+Devices connected
+Setup completed, now waits for 10 s
