@@ -1,0 +1,17 @@
+0214_1539_WO3196_afterholiday_r1234
+
+Measurement is done with current sourcing
+Sample rate is 1 Hz
+Sample time has been set to 0.2 s
+Measurement time is 30.0 s
+Source current is 1e-08 A
+Limit voltage starts at 10.0 V
+Devices connected
+Setup completed, now waits for 10 s
+Start measurement at 2020-02-14 15:39:50.094520
+And takes 0.50 minutes
+Measurement done
+Mean resistance is -1.133332e+08 with std 2.970592e+05
+Mean voltage is -1.133332e+00 with std 2.970592e-03
+Mean current is 1.000000e-08 with std 3.308722e-24
+Mean pressure is 1.001063e+00 with std 4.659726e-05

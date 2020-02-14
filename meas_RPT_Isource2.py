@@ -28,17 +28,17 @@ import multimeter_module as dmm
 # Input Parameters
 # =============================================================================
 
-source_current  = 1E-7
+source_current  = 1E-8
 limit_voltage   = 1E1
-meas_time       = 60*10
+meas_time       = 60*5
 setpoint        = 65
 
 sample_time     = 50**-1 * 10
 sample_rate     = 1
 
-wait_time       = 10
+wait_time       = 30
 
-meas_name = '2nd_sensor_calibration_heatup'
+meas_name = 'WO3196_r1342_25C'
 
 # =============================================================================
 # Preperatory code

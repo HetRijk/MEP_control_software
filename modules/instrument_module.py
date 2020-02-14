@@ -96,6 +96,12 @@ def time_later(extra_time):
     text = now + datetime.timedelta(minutes=extra_time)
     return text
 
+def wait(wait_time):
+    """Sleep time function that can be manually stopped"""
+    for i in range(int(wait_time)):
+        time.sleep(1)
+        
+
 # Saving functions
     
 def save_plot(file_name):

@@ -30,7 +30,7 @@ sm2901 = sm.connect_sm2901()
 tc332 = tc.connect_tc332()
 
 start_temp = 25
-max_temp = 65
+max_temp = 100
 step_temp = 5
 step_time = 10
 wait_time = 60*10
@@ -48,7 +48,7 @@ for i, t in enumerate(temps):
     time.sleep(step_time)
     
 print('Heatup to %.2e C done' % max_temp)
-print('Now waits for %s s')
+print('Now waits for %s s' % wait_time)
 
 time.sleep(wait_time)
 

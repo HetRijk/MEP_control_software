@@ -29,16 +29,15 @@ import multimeter_module as dmm
 # Input Parameters
 # =============================================================================
 
-source_current  = 1E-7
+source_current  = 1E-8
 limit_voltage   = 1E1
-meas_time       = 60 * 30
-
+meas_time       = 60 * 0.5
 sample_time     = 50**-1 * 10
 sample_rate     = 1
 
 wait_time       = 10
 
-meas_name = '2nd_sensor_airto05h2_4V'
+meas_name = 'WO3196_afterholiday_r1234' 
 
 # =============================================================================
 # Preperatory code

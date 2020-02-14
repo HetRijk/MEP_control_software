@@ -90,9 +90,9 @@ def set_range_current(instrument, value):
     actual_value = get_range_current(instrument)
     if value != actual_value:
         print('Current measurement range was INCORRECTLY set to %s A' % actual_value)
-        print('And not to %s A' % value)
+        print('And not to %.2e A' % value)
     else:
-        print('Current measurement range was set to %s A' % actual_value)
+        print('Current measurement range was set to %.2e A' % actual_value)
     
     
 def set_range_voltage(instrument, value):
