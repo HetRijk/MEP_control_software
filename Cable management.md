@@ -9,14 +9,14 @@
 | Red                     | Orange      | Orange 2    | 8    | Top right    |
 | Blue                    | Blue        | Blue        | 12   | Bottom right |
 
-WO3196 (per 31/12/2019)
+WO3196 (per 31/12/2019, correctie 17/02/2020)
 
 | Sourcemeter (coax) | Feedthrough | Small plugs | PCB  | Chip                   |
 | ------------------ | ----------- | ----------- | ---- | ---------------------- |
-| 2                  | Black       | Black       | 1    | Top left (voltage)     |
-| 1                  | Brown       | White       | 3    | Middle left (current)  |
-| 4                  | Orange      | Orange 2    | 8    | Top right (voltage)    |
-| 3                  | Blue        | Black       | 10   | Middle right (current) |
+| 1                  | Black       | Black       | 1    | Top left (voltage)     |
+| 2                  | Brown       | White       | 3    | Middle left (current)  |
+| 3                  | Orange      | Orange 2    | 8    | Top right (voltage)    |
+| 4                  | Blue        | Black       | 10   | Middle right (current) |
 
 ## Temperature controller (black tape)
 
@@ -29,4 +29,20 @@ WO3196 (per 31/12/2019)
 
 ## PCB Layout
 
-![1571393234125](C:\Users\LocalAdmin\AppData\Roaming\Typora\typora-user-images\1571393234125.png)
+![1571393234125](C:\Users\LocalAdmin\AppData\Roaming\Typora\typora-user-images\1571393234125.png)         x
+
+| PCB Number | Colour wire | Notes            |
+| ---------- | ----------- | ---------------- |
+| 1          | Black       | Tied to Orange 8 |
+| 2          | Orange      | Red at PCB       |
+| 3          | White       | -                |
+| 4          | Green       | Tied to Orange 2 |
+| 5          | Yellow      | Disconnected     |
+| 6          | -           | -                |
+| 7          | -           | -                |
+| 8          | Orange      | Tied to Black 1  |
+| 9          | Green       | Tied to Red 11   |
+| 10         | Black       | Tied to White 3  |
+| 11         | Red         | Orange at PCB    |
+| 12         | Blue        | Disconnected     |
+
