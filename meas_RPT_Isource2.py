@@ -28,7 +28,7 @@ import multimeter_module as dmm
 # Input Parameters
 # =============================================================================
 
-source_current  = 1E-8
+source_current  = 5E-8
 limit_voltage   = 1E1
 meas_time       = 60*5
 setpoint        = 65
@@ -36,9 +36,9 @@ setpoint        = 65
 sample_time     = 50**-1 * 10
 sample_rate     = 1
 
-wait_time       = 30
+wait_time       = 10
 
-meas_name = 'WO3196_r1342_25C'
+meas_name = 'WO3196_65C_air_afterHeating'
 
 # =============================================================================
 # Preperatory code
@@ -198,6 +198,7 @@ plt.plot(voltage[0], voltage[1])
 plt.title('Voltage')
 plt.xlabel('t(s)')
 plt.ylabel('Voltage (V)')
+plt.grid()
 
 instr.save_plot('%s\%s_voltage' % (figure_folder, meas_name))
 
@@ -207,6 +208,7 @@ plt.plot(current[0], current[1]*1E9)
 plt.title('Current')
 plt.xlabel('t(s)')
 plt.ylabel('Current (nA)')
+plt.grid()
 
 instr.save_plot('%s\%s_current' % (figure_folder, meas_name))
 
@@ -216,6 +218,7 @@ plt.plot(resistances[0], resistances[1])
 plt.title('Resistance')
 plt.xlabel('t(s)')
 plt.ylabel('Resistance (Ohm)')
+plt.grid()
 
 instr.save_plot('%s\%s_resistance' % (figure_folder, meas_name))
 
@@ -227,6 +230,7 @@ plt.title('Temperatures of heater')
 plt.xlabel('t(s)')
 plt.ylabel('Temperature (*C)')
 plt.legend(['Setpoints', 'Heater'])
+plt.grid()
 
 instr.save_plot('%s\%s_temperatures' % (figure_folder, meas_name))
 
@@ -236,6 +240,7 @@ plt.plot(pressure[0], pressure[1])
 plt.title('Pressure in main chamber')
 plt.xlabel('t(s)')
 plt.ylabel('Pressure (bar)')
+plt.grid()
 
 instr.save_plot('%s\%s_pressure' % (figure_folder, meas_name))
 

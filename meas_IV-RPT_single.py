@@ -26,17 +26,17 @@ import multimeter_module as dmm
 # Settings and prep code
 # =============================================================================
 
-source_current_max      = 1E-7
+source_current_max      = 5E-8
 limit_voltage           = 1E1
-setpoint                = 25
+setpoint                = 65
 
 step_size               = 2*source_current_max/30
 
 sample_time             = 50**-1 * 10
 sample_rate             = 0.1
-wait_time               = 30
+wait_time               = 60
 
-meas_name = 'WO3196_test_rewiring' 
+meas_name = 'WO3196_iv_65C' 
 
 
 # Preparatory Code
@@ -115,7 +115,7 @@ else:
     
 instr.log_and_print(log, 'Setup completed, now waits for %s' % wait_time)
 
-time.sleep(wait_time)
+instr.sleep(wait_time)
 
 # =============================================================================
 # Measurement

@@ -29,10 +29,10 @@ dmm196  = old_dmm.connect_dmm196()
 sm2901 = sm.connect_sm2901()
 tc332 = tc.connect_tc332()
 
-start_temp = 25
+start_temp = 75
 max_temp = 100
-step_temp = 5
-step_time = 10
+step_temp = 2
+step_time = 5
 wait_time = 60*10
 
 print('Device temp starts at %.2e C' % start_temp)
