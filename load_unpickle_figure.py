@@ -11,11 +11,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 
-folder = r'C:\Users\Rijk\Documents\MEP\MEP_control_software\Measurements\WO3193\25 degrees\1112_1542_wo3193_r13_airtoh2\figures'
-file_name = '1112_1542_wo3193_r13_airtoh2_resistance'
+folder = r'D:\Rijk\MEP_control_software\0220_1500_WO3196_65C_highHz_airToH2\figures'
+file_name = '0220_1500_WO3196_65C_highHz_h2ToAir_temperatures'
 file = os.path.join(folder, file_name + '.pkl')
 
-#plt.figure()
 fig_handle = pkl.load(open(file,'rb'))
 fig_handle.show()
 

@@ -26,7 +26,7 @@ import multimeter_module as dmm
 # Settings and prep code
 # =============================================================================
 
-source_current_max      = 5E-8
+source_current_max      = 2E-8
 limit_voltage           = 1E1
 setpoint                = 65
 
@@ -34,9 +34,9 @@ step_size               = 2*source_current_max/30
 
 sample_time             = 50**-1 * 10
 sample_rate             = 0.1
-wait_time               = 60
+wait_time               = 60*0.5
 
-meas_name = 'WO3196_iv_65C' 
+meas_name = 'WO3196_iv_65C_h2_2point' 
 
 
 # Preparatory Code
@@ -94,7 +94,7 @@ instr.log_and_print(log, 'Devices connected')
 sm.set_source_mode_current(sm2901)
 
 # Set sourcemeter to 4-wire measure mode
-sm.set_4wire_mode(sm2901)
+#sm.set_4wire_mode(sm2901)
 
 # Set sourcemeter to turn on on measurement
 sm.set_output_on(sm2901)
@@ -187,6 +187,7 @@ plt.plot(voltage[0], voltage[1])
 plt.title('Voltage')
 plt.xlabel('t(s)')
 plt.ylabel('Voltage (V)')
+plt.grid()
 
 instr.save_plot('%s\%s_voltage' % (figure_folder, meas_name))
 
@@ -196,6 +197,7 @@ plt.plot(current[0], current[1]*1E9)
 plt.title('Current')
 plt.xlabel('t(s)')
 plt.ylabel('Current (nA)')
+plt.grid()
 
 instr.save_plot('%s\%s_current' % (figure_folder, meas_name))
 
@@ -205,6 +207,7 @@ plt.plot(current[1], voltage[1])
 plt.title('IV Curve')
 plt.xlabel('Current (A)')
 plt.ylabel('Voltage (V)')
+plt.grid()
 
 instr.save_plot('%s\%s_ivcurve' % (figure_folder, meas_name))
 
@@ -216,6 +219,7 @@ plt.title('Temperatures of heater')
 plt.xlabel('t(s)')
 plt.ylabel('Temperature (*C)')
 plt.legend(['Setpoints', 'Heater'])
+plt.grid()
 
 instr.save_plot('%s\%s_temperatures' % (figure_folder, meas_name))
 
@@ -225,6 +229,7 @@ plt.plot(pressure[0], pressure[1])
 plt.title('Pressure in main chamber')
 plt.xlabel('t(s)')
 plt.ylabel('Pressure (bar)')
+plt.grid()
 
 instr.save_plot('%s\%s_pressure' % (figure_folder, meas_name))
 
@@ -234,6 +239,7 @@ plt.plot(limits[0], limits[1])
 plt.title('Limit hit during measurement?')
 plt.xlabel('t(s)')
 plt.ylabel('Limit hit?')
+plt.grid()
 
 instr.save_plot('%s\%s_limits' % (figure_folder, meas_name))
 

@@ -30,15 +30,15 @@ import multimeter_module as dmm
 
 source_current  = 5E-8
 limit_voltage   = 1E1
-meas_time       = 60*5
+meas_time       = 60*3
 setpoint        = 65
 
-sample_time     = 50**-1 * 10
-sample_rate     = 1
+sample_time     = 50**-1 * 1
+sample_rate     = 10
 
-wait_time       = 10
+wait_time       = 30
 
-meas_name = 'WO3196_65C_air_afterHeating'
+meas_name = 'WO3196_65C_apres' 
 
 # =============================================================================
 # Preperatory code
