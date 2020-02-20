@@ -93,9 +93,9 @@ def set_meas_time_resistance(instrument, time_meas):
 # Query functions
 # =============================================================================
 
-def meas_voltage(instrument):
+def meas_voltage(instrument, v_range=10, resolution=0.003):
     """Measures the voltage of the dmm"""
-    return float(instrument.query('MEAS:VOLTage:DC?'))
+    return float(instrument.query('MEAS:VOLTage:DC? %s,%s' % (v_range, resolution)))
 
 
 def meas_resistance(instrument):

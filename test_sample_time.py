@@ -35,19 +35,18 @@ setpoints = list()
 pressure = list()
 t = list()
 
-dmm.set_meas_time_voltage(dmm2110, 2E-5)
+#dmm.set_meas_time_all(dmm2110, 0.02)
+#dmm2110.write('SENSE:VOLTAGE:RESOLUTION MAX')
+#print(dmm2110.query('SENSE:VOLTAGE:RESOLUTION?'))
 
 main_time = time.time()
 
-#sm.meas_current(sm2901)
-#sm.meas_voltage(sm2901)
-#tc.get_setpoint(tc332)
-#tc.get_temp(tc332)
-dmm.meas_voltage(dmm2110)
+sm.meas_current(sm2901)
+sm.meas_voltage(sm2901)
+tc.get_setpoint(tc332)
+tc.get_temp(tc332)
+dmm.meas_pressure(dmm2110)
+#dmm2110.query('MEAS:VOLT:DC? 10,0.003')
 
-print(dmm.get_meas_time_current(dmm2110))
-
-
-meas_t = instr.time_since(main_time)
-
-print(meas_t)
+print(instr.time_since(main_time))
+print(dmm2110.query('SENSE:VOLTAGE:RESOLUTION?'))
