@@ -1,0 +1,8 @@
+0219_1558_WO3196_temperature_40C_limit
+
+Temperature setpoint is 6.50e+01 C
+Devices connected
+Start measurement at 2020-02-19 15:58:10.931730
+And takes 10.00 minutes
+Measurement done
+Mean temperature is 3.820911e+01 with std 4.436934e-01
