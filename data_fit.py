@@ -15,7 +15,7 @@ from scipy.optimize import curve_fit
 import instrument_module as instr
 
 def negative_exponent(x, a, b, c):
-    return a * np.exp(- x / b)
+    return a * np.exp(- x / b) + c
 
 def reverse_exponent(x, a, b, c):
     return a * (1 - np.exp(-b * x)) + c
@@ -30,18 +30,22 @@ def linear(x, a, b):
 def power_law(x, a, b, c):
     return a * x**b + c
 
+def recovery(x, a, b, c):
+    return - a * np.exp(-x /b) + c
+
 # Inputs
     
-folder = r'C:\Users\Rijk\Documents\MEP\MEP_control_software\Measurements\20200129 Second sensor final try'
-file_name = '0130_1643_2nd_sensor_airto05h2_4V'
+folder = r'C:\Users\Rijk\Documents\MEP\MEP_control_software\20200220 Device 2 65 C\20200220 IV Curves'
+file_name = '0218_1257_WO3196_h2toAir_resistance'
 
 
-file = os.path.join(folder, file_name, 'data', file_name + '_resistance')
+#file = os.path.join(folder, file_name, 'data', file_name + '_resistance')
+file = os.path.join(folder, file_name)
 
 func = linear
 
-start   = 700
-stop    = 3600
+start   = 600
+stop    = int(1E3)
 
 #p0 = [1E12, -3/2, 1E5]
 #p0      = [2E7, 1E4, 2E7]
@@ -91,6 +95,12 @@ popt, pcov = curve_fit(func, xdata0, ydata0, maxfev=int(1E9))
 xdata = np.linspace(min(xdata0), max(xdata0), int(1E3))
 ydata = np.linspace(min(ydata0), max(ydata0), int(1E3))
 
+mean    = np.mean(ydata0)
+std     = np.std(ydata0)
+
+print('Mean is %s' % mean)
+print('Std is %s' % std)
+
 plt.figure()
 plt.plot(xdata0, ydata0)
 plt.plot(xdata, func(xdata, *popt))
@@ -99,7 +109,7 @@ plt.plot(xdata, func(xdata, *popt))
 #plt.xlabel('t(s)')
 #plt.ylabel('Resistance (Ohm)')
 
-plt.title('Resistance in H2 500ppm/0.4bar')
+#plt.title('Resistance in H2 500ppm/0.4bar')
 plt.ylabel('Resistance (Ohm)')
 plt.xlabel('t (s)')
 plt.grid()

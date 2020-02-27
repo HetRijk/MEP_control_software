@@ -32,8 +32,8 @@ def power_law(x, a, b, c):
 
 # Inputs
     
-folder = r'C:\Users\Rijk\Documents\MEP\MEP_control_software\Measurements\20200127 WO3196 Dark H2'
-file_name = '0127_1854_WO3196_full_IV_curve_h2_100nA'
+folder = r'C:\Users\Rijk\Documents\MEP\MEP_control_software\20200220 Device 2 65 C\20200220 IV Curves'
+file_name = '0220_1518_WO3196_iv_65C_h2_4point'
 
 file_current = os.path.join(folder, file_name, 'data', file_name + '_current')
 file_voltage = os.path.join(folder, file_name, 'data', file_name + '_voltage')
@@ -53,8 +53,8 @@ voltage_plus = instr.load_data(file_voltage)[1][:num_points_iv]
 current_min = instr.load_data(file_current)[1][num_points_iv:]
 voltage_min = instr.load_data(file_voltage)[1][num_points_iv:]
 
-start   = 9
-stop    = len(current_min) -9
+start   = 0
+stop    = 32
 
 xdata0 = current_min
 ydata0 = voltage_min
@@ -75,6 +75,8 @@ else:
         ydata = ydata0[:stop]
     else:
         print('Stop index too large for current array')
+        xdata = xdata0
+        ydata = ydata0
 #
 ## Correction for logarithmic fitting purposes
 ##   gets rid of the negative values in y
