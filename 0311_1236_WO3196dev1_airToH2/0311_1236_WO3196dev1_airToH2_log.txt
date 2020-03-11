@@ -1,0 +1,19 @@
+0311_1236_WO3196dev1_airToH2
+
+Measurement is done with current sourcing
+Sample rate is 5 Hz
+Sample time has been set to 0.2 s
+Measurement time is 900 s
+Source current is 1e-07 A
+Limit voltage starts at 10.0 V
+Temperature setpoint is 6.50e+01 C
+Devices connected
+Setup completed, now waits for 1 s
+Start measurement at 2020-03-11 12:36:51.966406
+And takes 15.00 minutes
+Measurement done
+Mean resistance is 8.843987e+06 with std 4.453743e+05
+Mean voltage is 8.843988e-01 with std 4.453730e-02
+Mean current is 1.000000e-07 with std 3.554329e-13
+Mean pressure is 6.259928e-01 with std 4.610341e-01
+Mean temperature is 6.500486e+01 with std 9.309110e-02

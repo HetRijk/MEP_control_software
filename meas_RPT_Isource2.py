@@ -28,17 +28,17 @@ import multimeter_module as dmm
 # Input Parameters
 # =============================================================================
 
-source_current  = 5E-8
+source_current  = 1E-7
 limit_voltage   = 1E1
-meas_time       = 60*3
+meas_time       = 60*15
 setpoint        = 65
 
-sample_time     = 50**-1 * 1
-sample_rate     = 10
+sample_time     = 50**-1 * 10
+sample_rate     = 5
 
-wait_time       = 30
+wait_time       = 1
 
-meas_name = 'WO3196_65C_apres' 
+meas_name = 'WO3196dev1_r21' 
 
 # =============================================================================
 # Preperatory code
@@ -110,7 +110,7 @@ else:
     
 instr.log_and_print(log, 'Setup completed, now waits for %s s' % wait_time)
 
-time.sleep(wait_time)
+instr.sleep(wait_time)
 
 # =============================================================================
 # Measurement
@@ -214,10 +214,10 @@ instr.save_plot('%s\%s_current' % (figure_folder, meas_name))
 
 # Resistance
 plt.figure(2)
-plt.plot(resistances[0], resistances[1])
+plt.plot(resistances[0], resistances[1]*1e-6)
 plt.title('Resistance')
 plt.xlabel('t(s)')
-plt.ylabel('Resistance (Ohm)')
+plt.ylabel('Resistance (MOhm)')
 plt.grid()
 
 instr.save_plot('%s\%s_resistance' % (figure_folder, meas_name))
