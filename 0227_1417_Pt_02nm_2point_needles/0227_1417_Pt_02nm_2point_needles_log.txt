@@ -1,0 +1,17 @@
+0227_1417_Pt_02nm_2point_needles
+
+Measurement is done with current sourcing
+Sample rate is 1 Hz
+Sample time is 0.002 s
+Measurement time is 60 s
+Source current is 0.001 A
+Limit voltage starts at 0.01 V
+Devices connected
+Setup completed
+Now waits for 20 s
+Start measurement at 2020-02-27 14:17:38.550695
+And takes 1.00 minutes
+Measurement done
+Mean resistance is 1.886044e+00 with std 4.075247e-02
+Mean voltage is 1.886045e-03 with std 4.075245e-05
+Mean current is 1.000001e-03 with std 6.104893e-09

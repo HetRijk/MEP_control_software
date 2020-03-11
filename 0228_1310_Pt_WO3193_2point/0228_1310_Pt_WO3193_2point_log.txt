@@ -1,0 +1,13 @@
+0228_1310_Pt_WO3193_2point
+
+Measurement is done with current sourcing
+Sample rate is 1 Hz
+Sample time is 0.02 s
+Measurement time is 180 s
+Source current is 2e-11 A
+Limit voltage starts at 10.0 V
+Devices connected
+Setup completed
+Now waits for 1 s
+Start measurement at 2020-02-28 13:10:41.285599
+And takes 3.00 minutes

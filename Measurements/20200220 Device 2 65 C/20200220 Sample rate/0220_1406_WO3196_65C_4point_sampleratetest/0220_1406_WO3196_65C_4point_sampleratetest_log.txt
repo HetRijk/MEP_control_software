@@ -1,0 +1,19 @@
+0220_1406_WO3196_65C_4point_sampleratetest
+
+Measurement is done with current sourcing
+Sample rate is 10 Hz
+Sample time has been set to 0.02 s
+Measurement time is 60 s
+Source current is 5e-08 A
+Limit voltage starts at 10.0 V
+Temperature setpoint is 6.50e+01 C
+Devices connected
+Setup completed, now waits for 30 s
+Start measurement at 2020-02-20 14:06:52.215930
+And takes 1.00 minutes
+Measurement done
+Mean resistance is 2.402761e+07 with std 1.179364e+04
+Mean voltage is 1.201378e+00 with std 5.896511e-04
+Mean current is 4.999990e-08 with std 2.039311e-14
+Mean pressure is 1.000901e+00 with std 1.200350e-04
+Mean temperature is 6.500462e+01 with std 1.506695e-03

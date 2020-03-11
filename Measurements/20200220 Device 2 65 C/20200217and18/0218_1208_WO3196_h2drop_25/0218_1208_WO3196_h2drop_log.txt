@@ -1,0 +1,19 @@
+0218_1208_WO3196_h2drop
+
+Measurement is done with current sourcing
+Sample rate is 1 Hz
+Sample time has been set to 0.2 s
+Measurement time is 1800 s
+Source current is 1e-08 A
+Limit voltage starts at 10.0 V
+Temperature setpoint is 2.50e+01 C
+Devices connected
+Setup completed, now waits for 10 s
+Start measurement at 2020-02-18 12:08:11.255099
+And takes 30.00 minutes
+Measurement done
+Mean resistance is 6.326961e+07 with std 2.590894e+06
+Mean voltage is 6.326956e-01 with std 2.591153e-02
+Mean current is 9.999990e-09 with std 2.629142e-13
+Mean pressure is 8.700317e-01 with std 3.254345e-01
+Mean temperature is 2.500600e+01 with std 2.805259e-02
