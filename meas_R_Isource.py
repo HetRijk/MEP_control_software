@@ -166,6 +166,7 @@ plt.plot(voltage[0], voltage[1])
 plt.title('Voltage')
 plt.xlabel('t(s)')
 plt.ylabel('Voltage (V)')
+plt.grid()
 
 instr.save_plot('%s\%s_voltage' % (figure_folder, meas_name))
 
@@ -175,6 +176,7 @@ plt.plot(current[0], current[1]*1E9)
 plt.title('Current')
 plt.xlabel('t(s)')
 plt.ylabel('Current (nA)')
+plt.grid()
 
 instr.save_plot('%s\%s_current' % (figure_folder, meas_name))
 
@@ -184,6 +186,7 @@ plt.plot(resistances[0], resistances[1])
 plt.title('Resistance')
 plt.xlabel('t(s)')
 plt.ylabel('Resistance (Ohm)')
+plt.grid()
 
 instr.save_plot('%s\%s_resistance' % (figure_folder, meas_name))
 

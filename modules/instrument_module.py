@@ -61,6 +61,9 @@ def get_all_instruments():
 def identify(instrument):
     return instrument.query('*IDN?')
 
+def id_by_address(address):
+    return identify(connect(address))
+
 # Measurement functions
 
 def measure_for(instrument, function, meas_time, sample_rate):
