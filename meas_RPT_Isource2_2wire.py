@@ -28,7 +28,7 @@ import multimeter_module as dmm
 # Input Parameters
 # =============================================================================
 
-source_current  = 1E-8
+source_current  = 3E-8
 limit_voltage   = 1E1
 meas_time       = 60*3
 setpoint        = 65
@@ -36,9 +36,9 @@ setpoint        = 65
 sample_time     = 50**-1 * 10
 sample_rate     = 1
 
-wait_time       = 60*1   
+wait_time       = 60*3
 
-meas_name = 'WO3196dev1_r43'
+meas_name = 'WO3196dev4_r43_30nA'
 
 # =============================================================================
 # Preperatory code

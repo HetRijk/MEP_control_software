@@ -35,11 +35,11 @@ import multimeter_module as dmm
 # Input Parameters
 # =============================================================================
 
-source_current    = 1E-7
+source_current    = 0.5E-7
 limit_voltage     = 1E1
 
 start_temp        = 25
-end_temp          = 30
+end_temp          = 70
 
 step_temp         = 5
 step_wait         = 240

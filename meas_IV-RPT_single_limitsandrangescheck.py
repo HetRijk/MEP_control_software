@@ -26,7 +26,7 @@ import multimeter_module as dmm
 # Settings and prep code
 # =============================================================================
 
-source_current_max      = 5E-7
+source_current_max      = 3E-7
 limit_voltage           = 1E1
 setpoint                = 65
 

@@ -46,3 +46,4 @@ WO3196 (per 31/12/2019, correctie 17/02/2020)
 | 11         | Red         | Orange at PCB    |
 | 12         | Blue        | Disconnected     |
 
+ 
