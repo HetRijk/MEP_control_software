@@ -123,7 +123,7 @@ def cooldown(instrument, setpoint):
         time.wait(1)
 
 
-def wait_for_temp(instrument, temperature, timeout=240):
+def wait_for_temp(instrument, temperature, timeout=240, wait_time=60):
     """Wait until the heater reaches a certain temperature, both higher and lower than the current one.
     NB: Does not change the heater range"""
     set_setpoint(instrument, temperature)
@@ -155,3 +155,6 @@ def wait_for_temp(instrument, temperature, timeout=240):
             print('Heated up to %s done' % temperature)
     else:
         print('Heater already at setpoint temperature')
+  
+    print('Waits for %s s' % wait_time)
+    instr.sleep(wait_time)

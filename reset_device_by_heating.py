@@ -29,11 +29,11 @@ dmm196  = old_dmm.connect_dmm196()
 sm2901 = sm.connect_sm2901()
 tc332 = tc.connect_tc332()
 
-start_temp = 75
-max_temp = 100
+start_temp = 25
+max_temp = 50
 step_temp = 2
 step_time = 5
-wait_time = 60*10
+wait_time = 1
 
 print('Device temp starts at %.2e C' % start_temp)
 
@@ -53,6 +53,6 @@ print('Now waits for %s s' % wait_time)
 time.sleep(wait_time)
 
 print('Waiting done')
-print('Reset to start temperature')
+#print('Reset to start temperature')
 
-#tc.set_setpoint(tc332, start_temp)
+tc.set_setpoint(tc332, start_temp)
