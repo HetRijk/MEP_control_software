@@ -1,0 +1,17 @@
+0227_1525_Pt_03nm_2point
+
+Measurement is done with current sourcing
+Sample rate is 1 Hz
+Sample time is 0.02 s
+Measurement time is 180 s
+Source current is 2e-11 A
+Limit voltage starts at 10.0 V
+Devices connected
+Setup completed
+Now waits for 1 s
+Start measurement at 2020-02-27 15:25:20.070668
+And takes 3.00 minutes
+Measurement done
+Mean resistance is 3.439258e+11 with std 5.112157e+09
+Mean voltage is 6.849622e+00 with std 9.967670e-02
+Mean current is 1.991611e-11 with std 3.676334e-14
