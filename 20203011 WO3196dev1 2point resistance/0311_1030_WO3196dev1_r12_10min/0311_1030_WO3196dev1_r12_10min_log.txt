@@ -1,9 +1,0 @@
-0311_1030_WO3196dev1_r12_10min
-
-Measurement is done with current sourcing
-Sample rate is 1 Hz
-Sample time has been set to 0.2 s
-Measurement time is 600 s
-Source current is 1e-08 A
-Limit voltage starts at 10.0 V
-Temperature setpoint is 6.50e+01 C
