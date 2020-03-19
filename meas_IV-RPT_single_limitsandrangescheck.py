@@ -15,6 +15,7 @@ import datetime
 import numpy as np
 import matplotlib.pyplot as plt
 import os
+from playsound import playsound as play
 
 # Custom libraries
 import tc332_module as tc
@@ -26,9 +27,9 @@ import multimeter_module as dmm
 # Settings and prep code
 # =============================================================================
 
-source_current_max      = 1.5E-7
+source_current_max      = 2E-7
 limit_voltage           = 1E1
-setpoint                = 65
+setpoint                = 25
 
 step_size               = 2*source_current_max/30
 
@@ -36,7 +37,7 @@ sample_time             = 50**-1 * 10
 sample_rate             = 0.1
 wait_time               = 60*3
 
-meas_name = 'WO3196dev4_IVcurve_65' 
+meas_name = 'WO3196dev7_IVcurve_25' 
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
 # Setting calculations
@@ -252,3 +253,5 @@ instr.save_plot('%s\%s_limits' % (figure_folder, meas_name))
 
 # Close log file
 log.close()
+
+play('eventually.mp3')

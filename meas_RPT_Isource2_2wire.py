@@ -16,6 +16,7 @@ import datetime
 import numpy as np
 import matplotlib.pyplot as plt
 import os
+from playsound import playsound as play
 
 # Custom libraries
 import tc332_module as tc
@@ -28,7 +29,7 @@ import multimeter_module as dmm
 # Input Parameters
 # =============================================================================
 
-source_current  = 3E-8
+source_current  = 1E-7
 limit_voltage   = 1E1
 meas_time       = 60*3
 setpoint        = 65
@@ -38,11 +39,14 @@ sample_rate     = 1
 
 wait_time       = 60*3
 
-<<<<<<< Updated upstream
-meas_name = 'WO3196dev4_r43_30nA'
-=======
-meas_name = 'WO3196dev4_r34_30nA'
->>>>>>> Stashed changes
+# Not sure what the Git stuff below is 
+#<<<<<<< Updated upstream
+#meas_name = 'WO3196dev4_r43_30nA'
+#=======
+#meas_name = 'WO3196dev4_r34_30nA'
+#>>>>>>> Stashed changes
+
+meas_name = 'WO3196dev7_r12'
 
 # =============================================================================
 # Preperatory code
@@ -250,3 +254,5 @@ instr.save_plot('%s\%s_pressure' % (figure_folder, meas_name))
 
 # Close log file
 log.close()
+
+play('eventually.mp3')
