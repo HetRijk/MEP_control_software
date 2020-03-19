@@ -38,7 +38,11 @@ sample_rate     = 1
 
 wait_time       = 60*3
 
+<<<<<<< Updated upstream
 meas_name = 'WO3196dev4_r43_30nA'
+=======
+meas_name = 'WO3196dev4_r34_30nA'
+>>>>>>> Stashed changes
 
 # =============================================================================
 # Preperatory code

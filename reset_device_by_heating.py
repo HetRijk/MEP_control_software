@@ -29,8 +29,8 @@ dmm196  = old_dmm.connect_dmm196()
 sm2901 = sm.connect_sm2901()
 tc332 = tc.connect_tc332()
 
-start_temp = 25
-max_temp = 50
+start_temp = 65
+max_temp = 100
 step_temp = 2
 step_time = 5
 wait_time = 1

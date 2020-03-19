@@ -1,0 +1,13 @@
+0318_1808_WO3196dev4_after2
+
+Measurement is done with current sourcing
+Sample rate is 5 Hz
+Sample time has been set to 0.2 s
+Measurement time is 300 s
+Source current is 5e-08 A
+Limit voltage starts at 10.0 V
+Temperature setpoint is 6.50e+01 C
+Devices connected
+Setup completed, now waits for 1 s
+Start measurement at 2020-03-18 18:08:03.616421
+And takes 5.00 minutes

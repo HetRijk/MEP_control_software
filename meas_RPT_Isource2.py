@@ -16,6 +16,7 @@ import datetime
 import numpy as np
 import matplotlib.pyplot as plt
 import os
+from playsound import playsound as play
 
 # Custom libraries
 import tc332_module as tc
@@ -28,9 +29,9 @@ import multimeter_module as dmm
 # Input Parameters
 # =============================================================================
 
-source_current  = 1E-7
+source_current  = 0.5E-7
 limit_voltage   = 1E1
-meas_time       = 60*3
+meas_time       = 60*5
 setpoint        = 65
 
 sample_time     = 50**-1 * 10
@@ -38,7 +39,7 @@ sample_rate     = 5
 
 wait_time       = 1
 
-meas_name = 'WO3196dev1' 
+meas_name = 'WO3196dev4_check_1120_lowerI' 
 
 # =============================================================================
 # Preperatory code
@@ -97,8 +98,8 @@ sm.set_output_on(sm2901)
 sm.set_source_current(sm2901, source_current)
 sm.set_limit_voltage(sm2901, limit_voltage)
 
-sm.set_range_current(sm2901, 1.1*source_current)
-sm.set_range_voltage(sm2901, 2*limit_voltage)
+#sm.set_range_current(sm2901, 1.1*source_current)
+#sm.set_range_voltage(sm2901, 2*limit_voltage)
 
 
 # Set sample time
@@ -246,3 +247,5 @@ instr.save_plot('%s\%s_pressure' % (figure_folder, meas_name))
 
 # Close log file
 log.close()
+
+play('eventually.mp3')

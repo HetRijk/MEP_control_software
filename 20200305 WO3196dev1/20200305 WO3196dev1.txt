@@ -1,0 +1,8 @@
+# 20200305 WO3196dev1 
+
+Several IV curves, most at 65C
+
+Most important ones are correctWiring and sensingSwitched
+
+For these measurements the voltage/sensing cables are swapped
+This lead to a negative resistance in the middle range when the voltages probes are switched. Outside of this range the resistance is positive!
