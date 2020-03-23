@@ -38,18 +38,18 @@ import multimeter_module as dmm
 source_current    = 0.5E-7
 limit_voltage     = 1E1
 
-start_temp        = 25
+start_temp        = 60
 end_temp          = 70
 
-step_temp         = 5
-step_wait         = 240
+step_temp         = 0.5
+step_wait         = 480
 
 sample_time       = 50**-1 * 10
 sample_rate       = 5
 
 wait_time         = 60*10
 
-meas_name         = 'WO3196dev4_Tsteps5C_long' 
+meas_name         = 'WO3196dev7_Tsteps05C_long' 
 
 # =============================================================================
 # Preperatory code
@@ -98,6 +98,8 @@ instr.log_and_print(log, "Temperature steps take %s s" % step_wait)
 # Connect to devices and setup
 # =============================================================================
 
+instr.sleep(wait_time*4)
+
 tc332 = tc.connect_tc332()
 sm2901 = sm.connect_sm2901()
 dmm2110 = dmm.connect_dmm2110()
@@ -117,8 +119,8 @@ sm.set_output_on(sm2901)
 sm.set_source_current(sm2901, source_current)
 sm.set_limit_voltage(sm2901, limit_voltage)
 
-sm.set_range_current(sm2901, 1.1*source_current)
-sm.set_range_voltage(sm2901, 2*limit_voltage)
+#sm.set_range_current(sm2901, 1.1*source_current)
+#sm.set_range_voltage(sm2901, 2*limit_voltage)
 
 
 # Set sample time

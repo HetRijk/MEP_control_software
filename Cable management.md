@@ -9,14 +9,14 @@
 | Red                     | Orange      | Orange 2    | 8    | Top right    |
 | Blue                    | Blue        | Blue        | 12   | Bottom right |
 
-WO3196 (per 31/12/2019, correctie 17/02/2020)
+WO3196 (per 2020/03/19, device 7)
 
-| Sourcemeter (coax) | Feedthrough | Small plugs | PCB  | Chip                   |
-| ------------------ | ----------- | ----------- | ---- | ---------------------- |
-| 1                  | Brown       | White       | 3    | Middle left (current)  |
-| 2                  | Black       | Black       | 10   | Middle right (current) |
-| 4                  | Blue        | Black       | 1    | Top left (voltage)     |
-| 3                  | Orange      | Orange      | 8    | Top right (voltage)    |
+| Sourcemeter (coax) | Feedthrough | Small plugs | PCB  | Chip |
+| ------------------ | ----------- | ----------- | ---- | ---- |
+| 1                  | Brown       | Black       | 1    | I+   |
+| 2                  | Black       | Black       | 10   | I-   |
+| 3                  | Orange      | White       | 3    | V+   |
+| 4                  | Blue        | Yellow      | 5    | V-   |
 
 ## Temperature controller (black tape)
 

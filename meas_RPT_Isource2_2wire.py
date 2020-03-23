@@ -46,7 +46,7 @@ wait_time       = 60*3
 #meas_name = 'WO3196dev4_r34_30nA'
 #>>>>>>> Stashed changes
 
-meas_name = 'WO3196dev7_r12'
+meas_name = 'WO3196dev7_r43'
 
 # =============================================================================
 # Preperatory code
@@ -105,8 +105,8 @@ sm.set_output_on(sm2901)
 sm.set_source_current(sm2901, source_current)
 sm.set_limit_voltage(sm2901, limit_voltage)
 
-sm.set_range_current(sm2901, 1.1*source_current)
-sm.set_range_voltage(sm2901, 2*limit_voltage)
+#sm.set_range_current(sm2901, 1.1*source_current)
+#sm.set_range_voltage(sm2901, 2*limit_voltage)
 
 
 # Set sample time
