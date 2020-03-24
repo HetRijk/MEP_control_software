@@ -35,21 +35,21 @@ import multimeter_module as dmm
 # Input Parameters
 # =============================================================================
 
-source_current    = 0.5E-7
+source_current    = 5E-7
 limit_voltage     = 1E1
 
 start_temp        = 60
 end_temp          = 70
 
 step_temp         = 0.5
-step_wait         = 480
+step_wait         = 240
 
 sample_time       = 50**-1 * 10
 sample_rate       = 5
 
 wait_time         = 60*10
 
-meas_name         = 'WO3196dev7_Tsteps05C_long' 
+meas_name         = 'WO3196dev9_Tsteps05C' 
 
 # =============================================================================
 # Preperatory code

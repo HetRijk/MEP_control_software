@@ -29,7 +29,7 @@ import multimeter_module as dmm
 # Input Parameters
 # =============================================================================
 
-source_current  = 1E-7
+source_current  = 5E-7
 limit_voltage   = 1E1
 meas_time       = 60*15
 setpoint        = 65
@@ -39,7 +39,7 @@ sample_rate     = 5
 
 wait_time       = 1
 
-meas_name = 'WO3196dev7_H2ToAir_really' 
+meas_name = 'WO3196dev9_H2ToAir' 
 
 # =============================================================================
 # Preperatory code

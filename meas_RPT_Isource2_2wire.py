@@ -46,7 +46,7 @@ wait_time       = 60*3
 #meas_name = 'WO3196dev4_r34_30nA'
 #>>>>>>> Stashed changes
 
-meas_name = 'WO3196dev7_r43'
+meas_name = 'WO3196dev9_r43'
 
 # =============================================================================
 # Preperatory code
