@@ -1,0 +1,18 @@
+0324_1501_WO3196dev9_IVcurve_65
+
+Measurement is done with current sourcing
+Sample rate is 0.1 Hz
+Sample time has been set to 0.2 s
+Measurement time is 600.0 s
+Maximum source current is 2e-06 A
+Limit voltage starts at 10.0 V
+Number of points per IV curve is 30
+Step size for the IV curves is 1.33e-07 A
+Temperature setpoint is 6.50e+01 C
+Devices connected
+Setup completed, now waits for 180
+Start measurement at 2020-03-24 15:04:30.747679
+And takes 10.00 minutes
+Measurement done
+Mean pressure is 9.987457e-01 with std 1.477121e-04
+Mean temperature is 6.500508e+01 with std 1.369813e-03
