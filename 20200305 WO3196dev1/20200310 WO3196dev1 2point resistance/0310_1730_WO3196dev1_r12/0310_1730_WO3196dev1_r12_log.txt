@@ -1,0 +1,19 @@
+0310_1730_WO3196dev1_r12
+
+Measurement is done with current sourcing
+Sample rate is 1 Hz
+Sample time has been set to 0.2 s
+Measurement time is 180 s
+Source current is 2e-07 A
+Limit voltage starts at 10.0 V
+Temperature setpoint is 6.50e+01 C
+Devices connected
+Setup completed, now waits for 60 s
+Start measurement at 2020-03-10 17:31:13.178515
+And takes 3.00 minutes
+Measurement done
+Mean resistance is 2.613294e+07 with std 7.500097e+04
+Mean voltage is 5.226588e+00 with std 1.500067e-02
+Mean current is 2.000000e-07 with std 1.638939e-13
+Mean pressure is 1.000375e+00 with std 1.827888e-04
+Mean temperature is 6.500457e+01 with std 1.445868e-03
