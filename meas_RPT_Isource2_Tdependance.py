@@ -35,13 +35,13 @@ import multimeter_module as dmm
 # Input Parameters
 # =============================================================================
 
-source_current    = 3E-7
+source_current    = 2E-7
 limit_voltage     = 1E1
 
-start_temp        = 25
-end_temp          = 100
+start_temp        = 60
+end_temp          = 70
 
-step_temp         = 5
+step_temp         = 0.5
 step_wait         = 240
 
 sample_time       = 50**-1 * 10
@@ -49,7 +49,7 @@ sample_rate       = 5
 
 wait_time         = 60*10
 
-meas_name         = 'WO3196dev9_Tsteps5C_correctSource' 
+meas_name         = 'WO3196dev9_Tsteps05C_long' 
 
 # =============================================================================
 # Preperatory code
@@ -98,7 +98,7 @@ instr.log_and_print(log, "Temperature steps take %s s" % step_wait)
 # Connect to devices and setup
 # =============================================================================
 
-instr.sleep(wait_time*4)
+instr.sleep(wait_time*2)
 
 tc332 = tc.connect_tc332()
 sm2901 = sm.connect_sm2901()

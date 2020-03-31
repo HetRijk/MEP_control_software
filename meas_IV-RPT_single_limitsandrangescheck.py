@@ -27,7 +27,7 @@ import multimeter_module as dmm
 # Settings and prep code
 # =============================================================================
 
-source_current_max      = 15E-7
+source_current_max      = 4.5E-7
 limit_voltage           = 1E1
 setpoint                = 65
 
@@ -35,9 +35,9 @@ step_size               = 2*source_current_max/30
 
 sample_time             = 50**-1 * 10
 sample_rate             = 0.1
-wait_time               = 1
+wait_time               = 60*5
 
-meas_name = 'WO3196dev9_IVcurve_65' 
+meas_name = 'WO3196dev9_IVcurve_65_correctPI' 
 meas_name = str(time.strftime("%m%d_%H%M_")) + meas_name
 
 # Setting calculations
