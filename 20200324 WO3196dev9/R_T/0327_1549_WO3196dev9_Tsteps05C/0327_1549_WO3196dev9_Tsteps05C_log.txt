@@ -1,0 +1,22 @@
+0327_1549_WO3196dev9_Tsteps05C
+
+Measurement is done with current sourcing
+Sample rate is 5 Hz
+Sample time has been set to 0.2 s
+Measurement time is 5040.0 s
+Source current is 5e-07 A
+Limit voltage starts at 10.0 V
+Temperature starts at 60 C
+Temperature ends at 70 C
+Temperature steps are 0.5 C in size
+Temperature steps take 240 s
+Devices connected
+Setup completed, now waits for 600 s
+Start measurement at 2020-03-27 16:24:17.227379
+And takes 84.00 minutes
+Measurement done
+Mean resistance is 2.705777e+07 with std 4.039287e+05
+Mean voltage is 1.000000e+01 with std 0.000000e+00
+Mean current is 3.696610e-07 with std 5.450309e-09
+Mean pressure is 1.000753e+00 with std 1.592066e-04
+Mean temperature is 6.499180e+01 with std 3.026663e+00
