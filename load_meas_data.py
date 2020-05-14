@@ -14,19 +14,18 @@ import os
 import instrument_module as instr
 
 # Inputs
-meas_name = '0324_1904_WO3196dev9_H2ToAir'
+meas_name = 'WO3_RC_(WO3)_001_1s_exported'
 
 start   = 0
-stop    = 600
+stop    = -1
 
-base = r'C:\Users\Rijk\Documents\MEP\MEP_control_software\20200324 WO3196dev9\Hydrogen'
-data_type = 'resistance'
+base = r'C:\Users\Rijk\Documents\MEP\Experiments\First Growth WO3\WO3_structural_characterization'
 
 # =============================================================================
 # Code
 # =============================================================================
 # Create path to file
-file = os.path.join(base, meas_name, 'data', meas_name + '_' + data_type)
+file = os.path.join(base, meas_name)
 
 # Import data
 data = instr.load_data(file)
@@ -69,7 +68,7 @@ print('Std resistance is %s' % std)
 # =============================================================================
 # Plotting data
 # =============================================================================
-plt.close('all')
+#plt.close('all')
 plt.figure()
 plt.plot(xdata0, ydata0)
 plt.plot(xdata, ydata)
@@ -77,9 +76,8 @@ plt.grid()
 
 #plt.yscale('log')
 
-plt.xlabel('t (s)')
-plt.ylabel('Resistance (Ohm)')
-plt.legend(['Original', 'Cropped'])
+plt.xlabel('$\omega$ (degrees)')
+plt.ylabel('Intensity (cps)')
 
 
 

@@ -14,13 +14,14 @@ import os
 import instrument_module as instr
 
 # Inputs
-meas_name = '0324_1904_WO3196dev9_H2ToAir'
+meas_name = '0327_1231_WO3196dev9_Tsteps5C_correcterSource'
 
 start   = 0
-stop    = 600
+stop    = 500
 
-base = r'C:\Users\Rijk\Documents\MEP\MEP_control_software\20200324 WO3196dev9\Hydrogen'
+base = r'C:\Users\Rijk\Documents\MEP\MEP_control_software\20200324 WO3196dev9\R_T'
 data_type = 'resistance'
+#data_type = 'temperatures'
 
 # =============================================================================
 # Code

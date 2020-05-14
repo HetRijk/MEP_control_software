@@ -11,13 +11,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 
-folder = r'D:\Rijk\MEP_control_software\0220_1500_WO3196_65C_highHz_airToH2\figures'
-file_name = '0220_1500_WO3196_65C_highHz_h2ToAir_temperatures'
+folder = r'C:\Users\Rijk\Documents\MEP\MEP_control_software\20200324 WO3196dev9\Hydrogen\0324_1904_WO3196dev9_H2ToAir\figures'
+file_name = '0324_1904_WO3196dev9_H2ToAir_resistance'
 file = os.path.join(folder, file_name + '.pkl')
 
 fig_handle = pkl.load(open(file,'rb'))
 fig_handle.show()
 
 #plt.yscale('log')
-plt.yscale('linear')
+#plt.yscale('linear')
 #plt.ylim([1E1, 1E8])
