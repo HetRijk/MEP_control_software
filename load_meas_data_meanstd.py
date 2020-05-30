@@ -14,20 +14,18 @@ import os
 import instrument_module as instr
 
 # Inputs
-meas_name = '0327_1231_WO3196dev9_Tsteps5C_correcterSource'
+meas_name = 'pt_02nm_2_step'
 
 start   = 0
 stop    = 500
 
-base = r'C:\Users\Rijk\Documents\MEP\MEP_control_software\20200324 WO3196dev9\R_T'
-data_type = 'resistance'
-#data_type = 'temperatures'
+base = r'C:\Users\Rijk\Google Drive\Master Thesis\Production\Platinum\200302 Temescal Pt test\AFM'
 
 # =============================================================================
 # Code
 # =============================================================================
 # Create path to file
-file = os.path.join(base, meas_name, 'data', meas_name + '_' + data_type)
+file = os.path.join(base, meas_name)
 
 # Import data
 data = instr.load_data(file)

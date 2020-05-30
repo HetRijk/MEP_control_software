@@ -14,13 +14,13 @@ import os
 import instrument_module as instr
 
 # Inputs
-meas_name   = 'WO3_T2T_001_002_5s_exported_adjusted_meas'
-fit_name    = 'WO3_T2T_001_002_5s_exported_adjusted_sim'
+meas_name   = 'WO3196_XRD'
+fit_name    = 'WO3196_XRD_STO_FIT'
 
 start   = 0
 stop    = -1
 
-base = r'C:\Users\Rijk\Documents\MEP\Experiments\First Growth WO3\WO3_structural_characterization\WO3_T2T_001_002_5s_exported_adjusted'
+base = r'C:\Users\Rijk\Google Drive\Master Thesis\Production\Sample 07 LAO1 WO3196\XRD'
 
 # =============================================================================
 # Code
@@ -72,12 +72,12 @@ print('Std resistance is %s' % std)
 #plt.close('all')
 plt.figure()
 #plt.plot(xdata0, ydata0)
-plt.plot(xdata - 11.905, ydata)
+plt.plot(xdata, ydata)
 plt.grid()
 
-#plt.yscale('log')
+plt.yscale('log')
 
-plt.xlim([-0.1, 0.1])
+#plt.xlim([-0.1, 0.1])
 
 plt.xlabel('$\Delta \omega$ (degrees)')
 plt.ylabel('Intensity (cps)')

@@ -32,8 +32,8 @@ def power_law(x, a, b, c):
 
 # Inputs
     
-folder = r'C:\Users\Rijk\Documents\MEP\MEP_control_software\20200220 Device 2 65 C\20200220 IV Curves'
-file_name = '0220_1518_WO3196_iv_65C_h2_4point'
+folder = r'C:\Users\Rijk\Documents\MEP\MEP_control_software\20200305 WO3196dev1'
+file_name = '0310_1546_WO3196dev1_IVcurve'
 
 file_current = os.path.join(folder, file_name, 'data', file_name + '_current')
 file_voltage = os.path.join(folder, file_name, 'data', file_name + '_voltage')

@@ -18,10 +18,10 @@ def negative_exponent(x, a, b, c):
     return a * np.exp(- x / b) + c
 
 def reverse_exponent(x, a, b, c):
-    return a * (1 - np.exp(-b * x)) + c
+    return a * (1 - np.exp(-x/b)) + c
 
-def logarithm(x, a, b, c, d):
-    loga = a * np.log(b * x + d) + c
+def logarithm(x, a, b):
+    loga = a * np.log(x) + b
     return loga
 
 def linear(x, a, b):
@@ -58,28 +58,28 @@ def inverse(x, a, b):
 
 # Inputs
     
-folder = r'C:\Users\Rijk\Documents\MEP\MEP_control_software\20200324 WO3196dev9\R_T\0327_1231_WO3196dev9_Tsteps5C_RvsT'
-file_name = '0327_1231_WO3196dev9_Tsteps5C_RvsT'
+folder = r'C:\Users\Rijk\Documents\MEP\Literature\WO3'
+file_name = 'gio_wo3_h2_figure5b_EaVsRho300K'
 
 
 #file = os.path.join(folder, file_name, 'data', file_name + '_resistance')
 file = os.path.join(folder, file_name)
 
-func = arrhenius
+func = logarithm
 
-start   = -1
-stop    = int(1E7)
+start   = 0
+stop    = -1
 
-Ea = 310e-3
+#Ea = 310e-3
 
-#p0 = [1E9, 1E-3, 1E9]
+#p0 = [1E11, 1E3, 1E7]
 #p0      = [2E7, 1E4, 2E7]
 #bounds = ([1E1, 0, 1E1], [1E12, 1E1, 1E12]) 
 
 # Import data
 data = instr.load_data(file)
 
-xdata0 = data[0] + 273.15
+xdata0 = data[0]
 ydata0 = data[1]
 
 if start > stop:
@@ -107,18 +107,15 @@ else:
             ydata = ydata0
 
 # Perform regular fit and constrained fit
-popt, pcov = curve_fit(func, xdata0, ydata0, maxfev=int(1E9))
-#popt, pcov = curve_fit(func, xdata0, ydata0, p0, maxfev=int(1E9))
+popt, pcov = curve_fit(func, xdata, ydata, maxfev=int(1E9))
+#popt, pcov = curve_fit(func, xdata, ydata, p0, maxfev=int(1E9))
 #popt, pcov = curve_fit(func, xdata, ydata, p0, maxfev=int(1E7), bounds=bounds)
 
 perr = np.sqrt(np.diag(pcov))
 
-# Plot fit
-
-#plt.close('all')
-
-xdata = np.linspace(min(xdata0), max(xdata0), int(1E2))
-ydata = np.linspace(min(ydata0), max(ydata0), int(1E2))
+xdata = np.linspace(min(xdata), max(xdata), int(1E3))
+#ydata = np.linspace(min(ydata0), max(ydata0), int(1E2))
+yfit   = func(xdata, *popt)
 
 mean    = np.mean(ydata0)
 std     = np.std(ydata0)
@@ -132,33 +129,29 @@ print('Std is %s' % std)
 plt.close('all')
 
 plt.figure()
-plt.plot(xdata0, ydata0)
-#plt.plot(data20to50[0], data20to50[1])
-plt.plot(xdata, func(xdata, *popt))
-plt.plot(xdata, func(xdata, popt[0], Ea))
-#plt.title('Resistance with source voltage %s mV' % 1000)
-#plt.xlabel('t(s)')
-#plt.ylabel('Resistance (Ohm)')
+plt.plot(xdata0, ydata0, label='Measured')
+plt.plot(xdata, yfit, label='Fit')
+plt.plot(xdata0, 19*np.log(xdata0)+90)
 
-#plt.title('Resistance in H2 500ppm/0.4bar')
-plt.ylabel('Resistance (Ohm)')
-#plt.xlabel('t (s)')
-plt.xlabel('T (K)')
+plt.xlabel('t(s)')
+#plt.xlabel('T (K)')
+plt.ylabel('Resistance (M$\Omega$)')
+
 plt.grid()
+#plt.legend()
 
-#plt.ylim(min(xdata0), 120)
-#plt.xlim(min(ydata0), 1.2E5)
-plt.title('WO3196 Device 9 R(T)')
-#plt.ylim([0, 1E9])
-#plt.xlim([20, 105])
+plt.xlim([min(xdata0), max(xdata0)])
 
-#plt.yscale('log')
-plt.yscale('linear')
-#
-#plt.xscale('log')
-#plt.yscale('log')
+#plt.xlim([1100, 2000])
+#plt.ylim([1E-2, 1E2])
+#plt.ylim([-0.5, 20])
 
-plt.legend(['Data', 'Fit Arrhenius', '%s eV' % Ea])
-#plt.legend(['40 to 100$^\circ$C', '25 to 50$^\circ$C'])
+plt.xscale('log')
 
-#instr.save_plot(os.path.join(folder, file_name + '_fit_arr'))
+data_fit = np.array([xdata, yfit])
+fit_name = 'full'
+#fit_name = 'fit_AirToH2'
+#instr.save_data(file + '_' + fit_name, data_fit)
+
+#instr.save_plot(os.path.join(folder, file_name + '_' + fit_name))
+#instr.save_plot(os.path.join(folder, file_name + '_' + fit_name + '_log'))

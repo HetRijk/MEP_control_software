@@ -14,13 +14,13 @@ import os
 import instrument_module as instr
 
 # Inputs
-meas_name   = 'xrd_wo3195'
-fit_name    = 'xrd_wo3195_fit'
+meas_name   = 'wo3196_xrd'
+fit_name    = 'wo3196_xrd_sto_fit'
 
 start   = 0
 stop    = -1
 
-base = r'C:\Users\Rijk\Google Drive\Master Thesis\Sample 12 WO3195 Blanket Film\XRD'
+base = r'C:\Users\Rijk\Google Drive\Master Thesis\Production\Sample 07 LAO1 WO3196\XRD'
 
 # =============================================================================
 # Code
@@ -43,17 +43,18 @@ plt.close('all')
 
 plt.figure()
 plt.plot(x_meas, y_meas, label='Measurement')
-plt.plot(x_fit, y_fit, label='Fit')
+#plt.plot(x_fit, y_fit, label='Fit')
 
 plt.yscale('log')
 #plt.xlim(min(x_meas), max(x_meas))
-plt.xlim([15, 55])
-plt.ylim([1E-2, 1E7])
+#plt.xlim([15, 55])
+plt.xlim([46, 47])
+plt.ylim([1E-1, 1E5])
 
 plt.xlabel('$2\Theta$ (degrees)')
 plt.ylabel('Intensity (cps)')
 
-plt.legend()
+#plt.legend()
 plt.grid()
 
-instr.save_plot(file_meas + '_fig')
+#instr.save_plot(file_meas + '_secondSTOpeak')
