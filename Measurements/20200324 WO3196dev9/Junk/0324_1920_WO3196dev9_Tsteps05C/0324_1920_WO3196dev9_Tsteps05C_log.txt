@@ -1,0 +1,16 @@
+0324_1920_WO3196dev9_Tsteps05C
+
+Measurement is done with current sourcing
+Sample rate is 5 Hz
+Sample time has been set to 0.2 s
+Measurement time is 5040.0 s
+Source current is 5e-07 A
+Limit voltage starts at 10.0 V
+Temperature starts at 60 C
+Temperature ends at 70 C
+Temperature steps are 0.5 C in size
+Temperature steps take 240 s
+Devices connected
+Setup completed, now waits for 600 s
+Start measurement at 2020-03-24 20:11:59.408051
+And takes 84.00 minutes
